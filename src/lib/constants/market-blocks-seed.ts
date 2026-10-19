@@ -155,13 +155,23 @@ function build96BlockDataset(): Iex96TimeBlock[] {
         freqHz = 49.92 + Math.sin(b * 0.4) * 0.02; // Heavy industrial + domestic lighting load dips frequency
         volumeMw = Math.round(8400 + eveningPeakProgress * 1250);
         status = baseMwh > 9400 ? "Grid Alert" : "Peak Stress";
-      } else {
-        // Shoulder peak (16:00-18:00 and 22:00-22:30)
-        baseMwh = Math.round(6200 + ((b - 64) / 8) * 1800);
+      } else if (b >= 65 && b <= 72) {
+        // Evening ramp-up (16:00 to 18:00)
+        baseMwh = Math.round(5800 + ((b - 64) / 8) * 2600);
+        baseMwh = Math.min(9980, baseMwh);
         gdamMwh = Math.round(baseMwh + 150);
         rtmDelta = Math.round(Math.sin(b * 0.8) * 210);
         freqHz = 49.97;
         volumeMw = 6800;
+        status = "Peak Stress";
+      } else {
+        // Evening cool-off (22:00 to 22:30)
+        baseMwh = Math.round(8200 - ((b - 88) / 2) * 1500);
+        baseMwh = Math.min(9980, baseMwh);
+        gdamMwh = Math.round(baseMwh + 120);
+        rtmDelta = Math.round(Math.sin(b * 0.8) * 180);
+        freqHz = 49.98;
+        volumeMw = 6400;
         status = "Peak Stress";
       }
     } else {
