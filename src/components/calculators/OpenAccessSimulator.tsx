@@ -1248,7 +1248,7 @@ Requesting formal technical diligence, SLDC standing clearance filing, and PPA t
                     ))}
                   </Pie>
                   <RechartsTooltip
-                    formatter={(value: any, name: any) => [`${value}% of Load`, name]}
+                    formatter={(value: unknown, name: unknown) => [`${value}% of Load`, String(name)]}
                     contentStyle={{
                       backgroundColor: "#0F172A",
                       border: "1px solid #334155",

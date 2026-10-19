@@ -361,9 +361,9 @@ export default function SavingsDashboardPage() {
                     fontFamily: "monospace",
                     color: "#FFFFFF",
                   }}
-                  formatter={(value: any, name: any) => {
-                    const formatted = typeof value === "number" ? value.toFixed(1) : value;
-                    return [`₹${formatted} Lakhs`, name];
+                  formatter={(value: unknown, name: unknown) => {
+                    const formatted = typeof value === "number" ? value.toFixed(1) : String(value ?? "");
+                    return [`₹${formatted} Lakhs`, String(name ?? "")];
                   }}
                 />
                 <Legend

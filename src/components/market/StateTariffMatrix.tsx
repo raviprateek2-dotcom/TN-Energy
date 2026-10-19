@@ -4,16 +4,14 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {
   Search,
-  CheckCircle,
   ExternalLink,
   ChevronDown,
   ChevronUp,
   Shield,
-  Zap,
-  Info,
   ArrowRight,
+  Zap,
 } from "lucide-react";
-import { INDIAN_STATES_OA_DATA, POPULAR_STATES, type StateOpenAccessProfile } from "@/lib/constants/indian-states-oa-data";
+import { POPULAR_STATES } from "@/lib/constants/indian-states-oa-data";
 
 export function StateTariffMatrix() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -76,14 +74,16 @@ export function StateTariffMatrix() {
               placeholder="Search state, hub, or Discom..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 pr-3 py-1.5 bg-grid-navy-900 border border-grid-slate-800 rounded-xl text-xs text-white placeholder:text-grid-slate-600 font-mono focus:outline-none focus:border-grid-cyan-500 transition-colors w-48 sm:w-64"
+              className="pl-8 pr-3 py-1.5 bg-grid-navy-900 border border-grid-slate-800 rounded-xl text-xs text-white placeholder:text-grid-slate-600 font-mono focus:outline-none focus:border-grid-cyan-500 transition-colors w-full sm:w-64"
             />
           </div>
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto mt-4">
+      {/* ------------------------------------------------------------------ */}
+      {/* 1. Desktop High-Density Table (hidden on mobile, visible md+)      */}
+      {/* ------------------------------------------------------------------ */}
+      <div className="hidden md:block overflow-x-auto mt-4">
         <table className="w-full text-left text-xs font-mono">
           <thead>
             <tr className="border-b border-grid-slate-800 text-grid-slate-400 uppercase text-[10px] tracking-wider bg-grid-navy-900/50">
@@ -247,6 +247,128 @@ export function StateTariffMatrix() {
             })}
           </tbody>
         </table>
+      </div>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* 2. Mobile Responsive Card Deck (< 768px view)                       */}
+      {/* ------------------------------------------------------------------ */}
+      <div className="md:hidden space-y-3 mt-4">
+        {states.map((state) => {
+          const isExpanded = expandedStateId === state.stateId;
+          const wheeling = state.wheelingChargesPerKwh[selectedVoltage];
+
+          return (
+            <div
+              key={state.stateId}
+              className="bg-grid-navy-900 border border-grid-slate-800 rounded-xl p-4 font-mono transition-colors"
+            >
+              {/* Card Header */}
+              <div
+                onClick={() => toggleExpand(state.stateId)}
+                className="flex items-center justify-between cursor-pointer"
+              >
+                <div>
+                  <div className="flex items-center space-x-2">
+                    <span className="font-bold text-white text-sm font-sans">{state.stateName}</span>
+                    <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-grid-emerald-500/10 text-grid-emerald-400 border border-grid-emerald-500/30">
+                      Captive 100% Exempt
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-grid-slate-400 block mt-0.5">
+                    {state.sldcName.split("(")[0].trim()}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  aria-label={isExpanded ? "Collapse state details" : "Expand state details"}
+                  className="p-1 rounded text-grid-slate-400 hover:text-white"
+                >
+                  {isExpanded ? (
+                    <ChevronUp className="w-4 h-4 text-grid-cyan-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+
+              {/* Card Metrics Grid */}
+              <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-grid-slate-800 text-xs">
+                <div className="bg-grid-navy-950 p-2 rounded-lg">
+                  <span className="text-[10px] text-grid-slate-500 block">HT Base Tariff</span>
+                  <span className="font-bold text-white tabular-nums">
+                    ₹{state.industrialGridTariffPerKwh.toFixed(2)}/kWh
+                  </span>
+                </div>
+                <div className="bg-grid-navy-950 p-2 rounded-lg">
+                  <span className="text-[10px] text-grid-slate-500 block">CSS (₹/kWh)</span>
+                  <span className="font-bold text-grid-amber-400 tabular-nums">
+                    ₹{state.crossSubsidySurchargePerKwh.toFixed(2)}
+                  </span>
+                </div>
+                <div className="bg-grid-navy-950 p-2 rounded-lg">
+                  <span className="text-[10px] text-grid-slate-500 block">Addl. Surcharge</span>
+                  <span className="font-bold text-purple-400 tabular-nums">
+                    ₹{state.additionalSurchargePerKwh.toFixed(2)}
+                  </span>
+                </div>
+                <div className="bg-grid-navy-950 p-2 rounded-lg">
+                  <span className="text-[10px] text-grid-slate-500 block">Wheeling ({selectedVoltage})</span>
+                  <span className="font-bold text-grid-cyan-400 tabular-nums">
+                    ₹{wheeling.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Expanded Card Details */}
+              {isExpanded && (
+                <div className="mt-3 pt-3 border-t border-grid-slate-800 space-y-3 text-xs animate-in fade-in duration-150">
+                  <div className="bg-grid-navy-950 p-3 rounded-lg">
+                    <span className="text-[10px] uppercase text-grid-slate-500 font-bold block mb-1">
+                      Operating Discoms
+                    </span>
+                    <div className="text-[11px] text-grid-slate-300">
+                      {state.discomNames.join(", ")}
+                    </div>
+                  </div>
+
+                  <div className="bg-grid-navy-950 p-3 rounded-lg">
+                    <span className="text-[10px] uppercase text-grid-slate-500 font-bold block mb-1">
+                      Key Industrial Hubs
+                    </span>
+                    <div className="flex flex-wrap gap-1">
+                      {state.keyIndustrialHubs.map((hub) => (
+                        <span
+                          key={hub}
+                          className="px-1.5 py-0.5 rounded bg-grid-navy-900 border border-grid-slate-800 text-[10px] text-grid-slate-300"
+                        >
+                          {hub}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-grid-emerald-500/10 border border-grid-emerald-500/20 p-2.5 rounded-lg text-[11px] text-grid-emerald-400 flex items-center justify-between">
+                    <span>Captive Net Waiver (CSS + AS):</span>
+                    <span className="font-bold">
+                      Save ₹{(state.crossSubsidySurchargePerKwh + state.additionalSurchargePerKwh).toFixed(2)}/kWh
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Action Button */}
+              <div className="mt-3">
+                <Link
+                  href="/tools/open-access-calculator"
+                  className="w-full flex items-center justify-center space-x-1.5 py-2 rounded-lg bg-grid-emerald-500 text-grid-navy-950 font-bold text-xs shadow-md"
+                >
+                  <Zap className="w-3.5 h-3.5" />
+                  <span>Simulate {state.stateName} Plant Savings</span>
+                </Link>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Footer Note */}

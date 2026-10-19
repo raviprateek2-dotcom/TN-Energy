@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert";
-import { spawn, execSync } from "node:child_process";
+import { spawn, execSync, type ChildProcess } from "node:child_process";
 import { platform } from "node:os";
 
 const PORT = 3001;
@@ -21,7 +21,7 @@ async function waitForServer(url: string, timeoutMs = 15000): Promise<void> {
 }
 
 test("Full End-to-End HTTP Route & API Integration Test Suite", async (t) => {
-  let serverProcess: any;
+  let serverProcess: ChildProcess | undefined;
 
   // 1. Start Next.js production server on isolated port 3001
   await t.test("Boot Next.js production server", async () => {
@@ -30,7 +30,7 @@ test("Full End-to-End HTTP Route & API Integration Test Suite", async (t) => {
       stdio: "pipe",
     });
 
-    serverProcess.stderr.on("data", (data: any) => {
+    serverProcess.stderr?.on("data", (_data: Buffer) => {
       // Suppress or log non-fatal warnings
     });
 
@@ -177,6 +177,23 @@ test("Full End-to-End HTTP Route & API Integration Test Suite", async (t) => {
     assert.strictEqual(data.name, "Topnotch Energy Solutions");
     assert.strictEqual(data.theme_color, "#10B981");
   });
+
+  await t.test("GET / includes JSON-LD structured data and canonical link", async () => {
+    const res = await fetch(`${BASE_URL}/`);
+    assert.strictEqual(res.status, 200);
+    const html = await res.text();
+    assert.ok(html.includes('"@type":"Organization"'), "Missing Organization JSON-LD");
+    assert.ok(html.includes("energysolutions.co.in"), "Missing canonical domain reference");
+  });
+
+  await t.test("GET /api/market-rates rejects invalid query parameters with 400 Bad Request", async () => {
+    const res = await fetch(`${BASE_URL}/api/market-rates?from=999`);
+    assert.strictEqual(res.status, 400);
+    const data = await res.json();
+    assert.strictEqual(data.success, false);
+    assert.ok(data.errors);
+  });
+
 
   // Teardown: terminate Next.js server
   await t.test("Shutdown Next.js production server", () => {

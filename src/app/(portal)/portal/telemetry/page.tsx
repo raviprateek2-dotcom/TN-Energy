@@ -242,9 +242,9 @@ export default function TelemetryPage() {
                     fontFamily: "monospace",
                     color: "#FFFFFF",
                   }}
-                  formatter={(val: any, name: any) => {
-                    const formatted = typeof val === "number" ? val.toFixed(3) : val;
-                    return [formatted, name];
+                  formatter={(val: unknown, name: unknown) => {
+                    const formatted = typeof val === "number" ? val.toFixed(3) : String(val ?? "");
+                    return [formatted, String(name ?? "")];
                   }}
                   labelFormatter={(b) => {
                     const point = telemetry.find((t) => t.block === b);

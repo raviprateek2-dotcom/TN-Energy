@@ -1,16 +1,45 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { IEX_96_BLOCKS_DATA, IEX_MARKET_SUMMARY_KPIS } from "@/lib/constants/market-blocks-seed";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+
+const marketQuerySchema = z.object({
+  segment: z.enum(["dam", "gdam", "rtm", "all"]).optional().default("all"),
+  from: z.coerce.number().int().min(1).max(96).optional().default(1),
+  to: z.coerce.number().int().min(1).max(96).optional().default(96),
+});
 
 export async function GET(request: NextRequest) {
+  const ip = getClientIp(request);
+  const rateLimit = checkRateLimit(`market:${ip}`, { limit: 120, windowMs: 60000 });
+
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { success: false, error: "Too many market rate requests. Please throttle." },
+      { status: 429, headers: { "Retry-After": String(rateLimit.resetInSec) } }
+    );
+  }
+
   const { searchParams } = new URL(request.url);
-  const segment = searchParams.get("segment"); // dam | gdam | rtm | all
-  const blockFrom = parseInt(searchParams.get("from") ?? "1");
-  const blockTo = parseInt(searchParams.get("to") ?? "96");
+  const parsed = marketQuerySchema.safeParse({
+    segment: searchParams.get("segment") ?? undefined,
+    from: searchParams.get("from") ?? undefined,
+    to: searchParams.get("to") ?? undefined,
+  });
+
+  if (!parsed.success) {
+    return NextResponse.json(
+      { success: false, errors: parsed.error.flatten().fieldErrors },
+      { status: 400 }
+    );
+  }
+
+  const { segment, from: blockFrom, to: blockTo } = parsed.data;
 
   let data = IEX_96_BLOCKS_DATA;
 
   // Filter block range
-  if (blockFrom >= 1 && blockTo <= 96 && blockFrom <= blockTo) {
+  if (blockFrom <= blockTo) {
     data = data.filter((b) => b.blockNumber >= blockFrom && b.blockNumber <= blockTo);
   }
 

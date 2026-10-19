@@ -299,10 +299,20 @@ export function Iex96BlockChart() {
   );
 }
 
+interface TooltipPayloadItem {
+  payload: ChartDataPoint;
+  [key: string]: unknown;
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: TooltipPayloadItem[];
+}
+
 // Custom Tooltip with Tabular Figure Alignment
-function CustomEnterpriseTooltip({ active, payload }: any) {
+function CustomEnterpriseTooltip({ active, payload }: CustomTooltipProps) {
   if (!active || !payload || !payload.length) return null;
-  const data = payload[0].payload as ChartDataPoint;
+  const data = payload[0].payload;
 
   return (
     <div className="bg-grid-navy-900/98 border border-grid-slate-700 p-3 rounded-xl shadow-2xl text-xs font-mono backdrop-blur-md">

@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { INDIAN_STATES_OA_DATA } from "@/lib/constants/indian-states-oa-data";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 const calculatorSchema = z.object({
-  stateKey: z.string(),
+  stateKey: z.string().trim().min(1).max(50),
   contractDemandKva: z.number().min(100).max(500000),
   annualConsumptionMwh: z.number().min(0.1),
   voltageLevel: z.enum(["11kV", "33kV", "132kV"]),
@@ -52,6 +53,17 @@ export interface CalculatorResult {
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = getClientIp(request);
+    // 60 calculation requests per minute per IP
+    const rateLimit = checkRateLimit(`calc:${ip}`, { limit: 60, windowMs: 60000 });
+
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { success: false, error: "Rate limit exceeded. Please wait a moment." },
+        { status: 429, headers: { "Retry-After": String(rateLimit.resetInSec) } }
+      );
+    }
+
     const body = await request.json();
     const parsed = calculatorSchema.safeParse(body);
 
