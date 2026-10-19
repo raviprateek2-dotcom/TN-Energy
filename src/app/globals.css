@@ -1,26 +1,341 @@
 @import "tailwindcss";
+@config "../../tailwind.config.ts";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* High-Stakes Light Mode: Crisp Technical Substation Dashboard */
+  --background: 220 20% 98%;
+  --foreground: 222 47% 11%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+
+  /* Topnotch Grid Emerald */
+  --primary: 160 84% 39%;
+  --primary-foreground: 210 40% 98%;
+
+  /* Industrial Deep Slate */
+  --secondary: 220 14% 94%;
+  --secondary-foreground: 222 47% 11%;
+
+  --muted: 220 14% 94%;
+  --muted-foreground: 215 16% 47%;
+
+  --accent: 199 89% 48%;
+  --accent-foreground: 222 47% 11%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 220 13% 89%;
+  --input: 220 13% 89%;
+  --ring: 160 84% 39%;
+
+  --radius: 0.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark, :root[class~="dark"] {
+  /* 24/7 Grid Control Room / SLDC Dark Mode */
+  --background: 224 50% 6%;
+  --foreground: 210 40% 98%;
+
+  --card: 224 45% 9%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 224 45% 8%;
+  --popover-foreground: 210 40% 98%;
+
+  /* Kilowatt Neon Green (10B981) */
+  --primary: 160 84% 39%;
+  --primary-foreground: 224 50% 6%;
+
+  /* Control Panel Elevators */
+  --secondary: 224 35% 15%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 224 35% 15%;
+  --muted-foreground: 215 20% 65%;
+
+  /* Transmission Telemetry Cyan (06B6D4) */
+  --accent: 189 94% 43%;
+  --accent-foreground: 224 50% 6%;
+
+  /* Tripping / DSM Penalty Red */
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 224 30% 18%;
+  --input: 224 30% 18%;
+  --ring: 160 84% 39%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Base Body Styles */
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Font Scaling for Accessibility */
+html.text-scale-sm {
+  font-size: 14px;
+}
+html.text-scale-base {
+  font-size: 16px;
+}
+html.text-scale-lg {
+  font-size: 18px;
+}
+
+/* Multi-Theme Cascade Engine: Light Mode Overrides */
+.light body {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+.light .bg-grid-navy-950 {
+  background-color: #F8FAFC !important;
+}
+
+.light .bg-grid-navy-900,
+.light .bg-grid-navy-900\/90,
+.light .bg-grid-navy-900\/80,
+.light .bg-grid-navy-900\/60,
+.light .bg-grid-navy-900\/98 {
+  background-color: #FFFFFF !important;
+}
+
+.light .bg-grid-navy-850,
+.light .bg-grid-navy-800 {
+  background-color: #F1F5F9 !important;
+}
+
+.light .bg-grid-navy-750,
+.light .bg-grid-navy-700 {
+  background-color: #E2E8F0 !important;
+}
+
+.light .text-white {
+  color: #0F172A !important;
+}
+
+.light .text-grid-slate-300 {
+  color: #334155 !important;
+}
+
+.light .text-grid-slate-400 {
+  color: #475569 !important;
+}
+
+.light .text-grid-slate-500 {
+  color: #64748B !important;
+}
+
+.light .border-grid-slate-800,
+.light .border-grid-slate-700,
+.light .border-grid-slate-700\/80,
+.light .border-grid-slate-900 {
+  border-color: #CBD5E1 !important;
+}
+
+.light .shadow-2xl,
+.light .shadow-xl {
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* Multi-Theme Cascade Engine: High-Contrast Mode */
+.theme-high-contrast body {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+.theme-high-contrast .bg-grid-navy-950,
+.theme-high-contrast .bg-grid-navy-900,
+.theme-high-contrast .bg-grid-navy-850,
+.theme-high-contrast .bg-grid-navy-800 {
+  background-color: #000000 !important;
+  border-color: #F59E0B !important;
+}
+
+.theme-high-contrast .text-white,
+.theme-high-contrast .text-grid-slate-300,
+.theme-high-contrast .text-grid-slate-400 {
+  color: #FFFFFF !important;
+}
+
+/* Numeric Precision Enforcement for Power Sector Data */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle Industrial Substation Grid Background */
+.bg-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(100, 116, 139, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(100, 116, 139, 0.08) 1px, transparent 1px);
+}
+
+.dark .bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(30, 41, 59, 0.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(30, 41, 59, 0.5) 1px, transparent 1px);
+}
+
+/* High-Density Dense Grid for 96-block charts */
+.bg-grid-dense {
+  background-size: 16px 16px;
+  background-image: 
+    linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+}
+
+/* Custom Scrollbar for Market Data Tables */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.45);
+}
+
+/* Grid Pulse Glow effects */
+.glow-emerald {
+  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.35);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.35);
+}
+
+.glow-amber {
+  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.35);
+}
+
+/* Directional Energy Flow Stream Animation */
+@keyframes energyFlow {
+  0% {
+    stroke-dashoffset: 40;
+  }
+  100% {
+    stroke-dashoffset: 0;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes energyPulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.2;
+  }
+}
+
+.animate-energy-flow {
+  stroke-dasharray: 6 4;
+  animation: energyFlow 1.2s linear infinite;
+}
+
+.animate-energy-pulse-glow {
+  animation: energyPulseGlow 2.2s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   Bankable PDF Print Stylesheet (@media print)
+   Isolates executive feasibility term sheets for CFOs, Boards & Banks.
+   ========================================================================== */
+@media print {
+  /* Hide all UI layout and navigationchrome */
+  header,
+  footer,
+  nav,
+  aside,
+  .accessibility-toolbar,
+  .live-ticker-bar,
+  .mobile-bottom-nav,
+  .whatsapp-floating-desk,
+  button:not(#printable-term-sheet button),
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #111827 !important;
+    font-size: 10pt !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Isolate modal content for crisp A4 paper delivery */
+  #printable-term-sheet {
+    position: static !important;
+    visibility: visible !important;
+    display: block !important;
+    background: #FFFFFF !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+    border: 1px solid #E5E7EB !important;
+    padding: 1.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    page-break-inside: avoid;
+  }
+
+  #printable-term-sheet * {
+    color: #111827 !important;
+    border-color: #E5E7EB !important;
+    background: transparent !important;
+  }
+
+  #printable-term-sheet .text-grid-emerald-400,
+  #printable-term-sheet .text-grid-emerald-500,
+  #printable-term-sheet .text-grid-cyan-400 {
+    color: #047857 !important;
+    font-weight: 700 !important;
+  }
+
+  #printable-term-sheet .text-grid-slate-400,
+  #printable-term-sheet .text-grid-slate-500 {
+    color: #4B5563 !important;
+  }
+
+  #printable-term-sheet table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  #printable-term-sheet th,
+  #printable-term-sheet td {
+    border: 1px solid #E5E7EB !important;
+    padding: 6px 8px !important;
+  }
+
+  #printable-term-sheet thead {
+    background-color: #F9FAFB !important;
+    font-weight: 700 !important;
+  }
+
+  @page {
+    margin: 1.2cm;
+    size: A4 portrait;
+  }
 }

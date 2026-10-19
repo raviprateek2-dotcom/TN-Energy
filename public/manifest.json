@@ -1,0 +1,18 @@
+{
+  "name": "Topnotch Energy Solutions",
+  "short_name": "Topnotch Energy",
+  "description": "Enterprise B2B Indian Power Trading, Open Access Advisory & Renewable Procurement Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050914",
+  "theme_color": "#10B981",
+  "orientation": "portrait-primary",
+  "categories": ["business", "finance", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
