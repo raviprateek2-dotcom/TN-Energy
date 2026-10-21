@@ -17,8 +17,10 @@ import {
   Sparkles,
   ExternalLink,
   PhoneCall,
+  Rotate3d,
 } from "lucide-react";
 import { BRAND } from "@/lib/constants/brand";
+import { Substation3DViewer } from "@/components/market/Substation3DViewer";
 
 interface BayComponent {
   id: string;
@@ -114,6 +116,7 @@ const BAY_COMPONENTS: BayComponent[] = [
 ];
 
 export function SubstationBayExplorer() {
+  const [viewMode, setViewMode] = useState<"3d-twin" | "schematic">("3d-twin");
   const [activeComponentId, setActiveComponentId] = useState<string>("sem-meter");
   const [isSimulatingCurrent, setIsSimulatingCurrent] = useState<boolean>(true);
 
@@ -133,218 +136,233 @@ export function SubstationBayExplorer() {
             33 kV Substation &amp; Telemetry Bay Explorer
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 font-sans max-w-2xl leading-relaxed">
-            Click on any substation component below to inspect statutory CEA accuracy benchmarks, NABL calibration standards, and real-time AMR modems required for SLDC Open Access standing clearance.
+            Click on any substation component below or rotate the 3D switchyard digital twin to inspect statutory CEA accuracy benchmarks, NABL calibration standards, and real-time AMR modems required for SLDC Open Access standing clearance.
           </p>
         </div>
 
-        {/* Live Current Simulation Indicator */}
-        <div className="flex items-center space-x-3 bg-slate-50 border border-slate-200 p-2.5 rounded-2xl">
+        {/* View Mode & Simulation Toggles */}
+        <div className="flex flex-wrap items-center gap-2 bg-slate-100 border border-slate-200 p-1.5 rounded-2xl">
           <button
             type="button"
-            onClick={() => setIsSimulatingCurrent(!isSimulatingCurrent)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all flex items-center space-x-1.5 ${
-              isSimulatingCurrent
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "bg-slate-200 text-slate-700 hover:bg-slate-300"
+            onClick={() => setViewMode("3d-twin")}
+            className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all flex items-center space-x-2 ${
+              viewMode === "3d-twin"
+                ? "bg-white text-slate-900 shadow-sm border border-slate-200"
+                : "text-slate-600 hover:text-slate-900"
             }`}
           >
-            <span
-              className={`w-2 h-2 rounded-full ${
-                isSimulatingCurrent ? "bg-white animate-pulse" : "bg-slate-400"
-              }`}
-            />
-            <span>{isSimulatingCurrent ? "Grid Current Live (50 Hz)" : "Grid Isolated"}</span>
+            <Rotate3d className="w-3.5 h-3.5 text-emerald-600" />
+            <span>3D Digital Twin</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setViewMode("schematic")}
+            className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all flex items-center space-x-2 ${
+              viewMode === "schematic"
+                ? "bg-white text-slate-900 shadow-sm border border-slate-200"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5 text-[#F8BC26]" />
+            <span>CEA Bay Specs</span>
           </button>
         </div>
       </div>
 
-      {/* Interactive Single Line Diagram (SLD) Component Selector Strip */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {BAY_COMPONENTS.map((item, idx) => {
-          const isSelected = item.id === activeComponentId;
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setActiveComponentId(item.id)}
-              className={`p-5 rounded-3xl border text-left transition-all relative overflow-hidden flex flex-col justify-between space-y-4 group ${
-                isSelected
-                  ? "bg-[#1C2C34] text-white border-[#F8BC26] shadow-xl ring-2 ring-[#F8BC26]/40 -translate-y-1"
-                  : "bg-white text-slate-800 border-slate-200 hover:border-slate-400 hover:shadow-md"
-              }`}
-            >
-              {/* Component Sequence Tag */}
-              <div className="flex items-center justify-between w-full">
-                <span
-                  className={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full ${
+      {/* 3D Switchyard Digital Twin View */}
+      {viewMode === "3d-twin" && (
+        <div className="space-y-4">
+          <Substation3DViewer />
+        </div>
+      )}
+
+      {/* Single Line Diagram & CEA Schematics View */}
+      {viewMode === "schematic" && (
+        <div className="space-y-8">
+          {/* Interactive Single Line Diagram (SLD) Component Selector Strip */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {BAY_COMPONENTS.map((item, idx) => {
+              const isSelected = item.id === activeComponentId;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setActiveComponentId(item.id)}
+                  className={`p-5 rounded-3xl border text-left transition-all relative overflow-hidden flex flex-col justify-between space-y-4 group ${
                     isSelected
-                      ? "bg-[#F8BC26] text-[#1C2C34]"
-                      : "bg-slate-100 text-slate-600"
+                      ? "bg-[#1C2C34] text-white border-[#F8BC26] shadow-xl ring-2 ring-[#F8BC26]/40 -translate-y-1"
+                      : "bg-white text-slate-800 border-slate-200 hover:border-slate-400 hover:shadow-md"
                   }`}
                 >
-                  Bay Bay Stage 0{idx + 1}
-                </span>
-                <span
-                  className={`text-xs font-mono font-bold ${
-                    isSelected ? "text-emerald-400" : "text-emerald-700"
-                  }`}
-                >
-                  {item.accuracyClass.split(" ")[0]} {item.accuracyClass.split(" ")[1]}
-                </span>
+                  {/* Component Sequence Tag */}
+                  <div className="flex items-center justify-between w-full">
+                    <span
+                      className={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full ${
+                        isSelected
+                          ? "bg-[#F8BC26] text-[#1C2C34]"
+                          : "bg-slate-100 text-slate-600"
+                      }`}
+                    >
+                      Bay Stage 0{idx + 1}
+                    </span>
+                    <span
+                      className={`text-xs font-mono font-bold ${
+                        isSelected ? "text-emerald-400" : "text-emerald-700"
+                      }`}
+                    >
+                      {item.accuracyClass.split(" ")[0]} {item.accuracyClass.split(" ")[1]}
+                    </span>
+                  </div>
+
+                  <div>
+                    <h3
+                      className={`text-sm sm:text-base font-bold tracking-tight line-clamp-2 ${
+                        isSelected ? "text-white" : "text-[#1C2C34] group-hover:text-amber-700"
+                      }`}
+                    >
+                      {item.name}
+                    </h3>
+                    <p
+                      className={`text-[11px] font-mono mt-1 ${
+                        isSelected ? "text-slate-300" : "text-slate-500"
+                      }`}
+                    >
+                      {item.tag}
+                    </p>
+                  </div>
+
+                  {/* Status Indicator */}
+                  <div
+                    className={`pt-3 border-t text-[11px] font-mono flex items-center justify-between ${
+                      isSelected ? "border-slate-700 text-[#F8BC26]" : "border-slate-100 text-slate-500"
+                    }`}
+                  >
+                    <span>Inspect Technical Specs</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Main Selected Component Digital Inspection Panel */}
+          <div className="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xl grid grid-cols-1 lg:grid-cols-12">
+            {/* Left Column (7 cols): Deep Technical Data & CEA Regulations */}
+            <div className="lg:col-span-7 p-6 sm:p-10 space-y-6 flex flex-col justify-between">
+              <div className="space-y-4">
+                {/* Regulatory Badges */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-3 py-1 rounded-full bg-amber-50 border border-amber-300 text-amber-900 text-xs font-mono font-bold uppercase tracking-wider">
+                    {activeComponent.accuracyClass}
+                  </span>
+                  <span className="px-3 py-1 rounded-full bg-slate-100 border border-slate-300 text-slate-700 text-xs font-mono font-semibold">
+                    NABL Calibrated
+                  </span>
+                  <span className="px-3 py-1 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-mono font-semibold">
+                    SLDC Telemetry Compliant
+                  </span>
+                </div>
+
+                {/* Component Title & Purpose */}
+                <div>
+                  <h3 className="text-2xl sm:text-3xl font-black text-[#1C2C34] tracking-tight">
+                    {activeComponent.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm font-mono text-[#D97706] font-bold mt-1">
+                    {activeComponent.tag}
+                  </p>
+                </div>
+
+                {/* Description */}
+                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans">
+                  {activeComponent.description}
+                </p>
+
+                {/* Statutory Compliance Citations */}
+                <div className="p-4 rounded-2xl bg-[#F9FAFB] border border-slate-200/90 space-y-2">
+                  <div className="flex items-start space-x-2.5">
+                    <Shield className="w-4 h-4 text-emerald-700 flex-shrink-0 mt-0.5" />
+                    <div className="text-xs font-mono">
+                      <span className="text-slate-500 font-bold uppercase block">CEA Standard:</span>
+                      <span className="text-slate-800 font-bold">{activeComponent.ceaStandard}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-2.5 pt-2 border-t border-slate-200">
+                    <CheckCircle2 className="w-4 h-4 text-[#D97706] flex-shrink-0 mt-0.5" />
+                    <div className="text-xs font-mono">
+                      <span className="text-slate-500 font-bold uppercase block">State SLDC Role:</span>
+                      <span className="text-slate-700">{activeComponent.sldcRole}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hardware Specification Matrix */}
+                <div className="space-y-2 pt-2">
+                  <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold block">
+                    Engineering Technical Ratings:
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {activeComponent.specs.map((spec, sIdx) => (
+                      <div
+                        key={sIdx}
+                        className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono"
+                      >
+                        <span className="text-slate-500 block text-[11px]">{spec.label}</span>
+                        <span className="text-slate-900 font-bold mt-0.5 block">{spec.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <h3
-                  className={`text-sm sm:text-base font-bold tracking-tight line-clamp-2 ${
-                    isSelected ? "text-white" : "text-[#1C2C34] group-hover:text-amber-700"
-                  }`}
-                >
-                  {item.name}
-                </h3>
-                <p
-                  className={`text-[11px] font-mono mt-1 ${
-                    isSelected ? "text-slate-300" : "text-slate-500"
-                  }`}
-                >
-                  {item.tag}
+              {/* Action Footer */}
+              <div className="pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+                <div className="text-xs font-mono text-slate-500">
+                  Inspection Interval: <strong className="text-slate-800">{activeComponent.inspectionCycle}</strong>
+                </div>
+
+                <div className="flex items-center space-x-3">
+                  <a
+                    href={`tel:${BRAND.contacts.phonePrimary}`}
+                    className="px-5 py-2.5 rounded-xl bg-[#F8BC26] hover:bg-[#eab308] text-[#1C2C34] font-bold text-xs font-mono uppercase tracking-wider transition-all shadow-md active:scale-95 flex items-center space-x-2"
+                  >
+                    <PhoneCall className="w-3.5 h-3.5" />
+                    <span>Consult Substation Bay Engineer</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column (5 cols): Engineering Photo */}
+            <div className="lg:col-span-5 relative min-h-[350px] lg:min-h-full bg-slate-950 overflow-hidden">
+              <Image
+                src={activeComponent.image}
+                alt={activeComponent.name}
+                fill
+                sizes="(max-width: 1024px) 100vw, 42vw"
+                className="object-cover object-center opacity-70 scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent lg:hidden" />
+              <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-transparent hidden lg:block" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" />
+
+              <div className="absolute bottom-6 left-6 right-6 z-20 space-y-2 text-white">
+                <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-mono uppercase font-bold tracking-wider border border-white/30">
+                  <Sparkles className="w-3 h-3 text-[#F8BC26]" />
+                  <span>NABL Lab Test Verified</span>
+                </div>
+                <h4 className="text-lg font-bold text-white tracking-tight">
+                  Turnkey Substation Bay Supply &amp; Commissioning
+                </h4>
+                <p className="text-xs text-slate-300 font-mono leading-relaxed">
+                  Topnotch Energy Solutions provides turnkey supply, installation, testing, and commissioning (SITC) of complete 33 kV / 66 kV / 132 kV incoming bays with SLDC optical telemetry handover across 14 states.
                 </p>
               </div>
-
-              {/* Status Indicator */}
-              <div
-                className={`pt-3 border-t text-[11px] font-mono flex items-center justify-between ${
-                  isSelected ? "border-slate-700 text-[#F8BC26]" : "border-slate-100 text-slate-500"
-                }`}
-              >
-                <span>Inspect Technical Specs</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </div>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Main Selected Component Digital Inspection Panel (Half-Merging Style) */}
-      <div className="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xl grid grid-cols-1 lg:grid-cols-12">
-        
-        {/* Left Column (7 cols): Deep Technical Data & CEA Regulations */}
-        <div className="lg:col-span-7 p-6 sm:p-10 space-y-6 flex flex-col justify-between">
-          <div className="space-y-4">
-            
-            {/* Regulatory Badges */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-amber-50 border border-amber-300 text-amber-900 text-xs font-mono font-bold uppercase tracking-wider">
-                {activeComponent.accuracyClass}
-              </span>
-              <span className="px-3 py-1 rounded-full bg-slate-100 border border-slate-300 text-slate-700 text-xs font-mono font-semibold">
-                NABL Calibrated
-              </span>
-              <span className="px-3 py-1 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-mono font-semibold">
-                SLDC Telemetry Compliant
-              </span>
-            </div>
-
-            {/* Component Title & Purpose */}
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-black text-[#1C2C34] tracking-tight">
-                {activeComponent.name}
-              </h3>
-              <p className="text-xs sm:text-sm font-mono text-[#D97706] font-bold mt-1">
-                {activeComponent.tag}
-              </p>
-            </div>
-
-            {/* Description */}
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans">
-              {activeComponent.description}
-            </p>
-
-            {/* Statutory Compliance Citations */}
-            <div className="p-4 rounded-2xl bg-[#F9FAFB] border border-slate-200/90 space-y-2">
-              <div className="flex items-start space-x-2.5">
-                <Shield className="w-4 h-4 text-emerald-700 flex-shrink-0 mt-0.5" />
-                <div className="text-xs font-mono">
-                  <span className="text-slate-500 font-bold uppercase block">CEA Standard:</span>
-                  <span className="text-slate-800 font-bold">{activeComponent.ceaStandard}</span>
-                </div>
-              </div>
-              <div className="flex items-start space-x-2.5 pt-2 border-t border-slate-200">
-                <CheckCircle2 className="w-4 h-4 text-[#D97706] flex-shrink-0 mt-0.5" />
-                <div className="text-xs font-mono">
-                  <span className="text-slate-500 font-bold uppercase block">State SLDC Role:</span>
-                  <span className="text-slate-700">{activeComponent.sldcRole}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Hardware Specification Matrix */}
-            <div className="space-y-2 pt-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold block">
-                Engineering Technical Ratings:
-              </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {activeComponent.specs.map((spec, sIdx) => (
-                  <div
-                    key={sIdx}
-                    className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono"
-                  >
-                    <span className="text-slate-500 block text-[11px]">{spec.label}</span>
-                    <span className="text-slate-900 font-bold mt-0.5 block">{spec.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-
-          {/* Action Footer */}
-          <div className="pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
-            <div className="text-xs font-mono text-slate-500">
-              Inspection Interval: <strong className="text-slate-800">{activeComponent.inspectionCycle}</strong>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <a
-                href={`tel:${BRAND.contacts.phonePrimary}`}
-                className="px-5 py-2.5 rounded-xl bg-[#F8BC26] hover:bg-[#eab308] text-[#1C2C34] font-bold text-xs font-mono uppercase tracking-wider transition-all shadow-md active:scale-95 flex items-center space-x-2"
-              >
-                <PhoneCall className="w-3.5 h-3.5" />
-                <span>Consult Substation Bay Engineer</span>
-              </a>
             </div>
           </div>
         </div>
-
-        {/* Right Column (5 cols): Cinematic Engineering Photo Merging into Section */}
-        <div className="lg:col-span-5 relative min-h-[350px] lg:min-h-full bg-slate-950 overflow-hidden">
-          <Image
-            src={activeComponent.image}
-            alt={activeComponent.name}
-            fill
-            sizes="(max-width: 1024px) 100vw, 42vw"
-            className="object-cover object-center opacity-70 scale-105 transition-transform duration-700"
-          />
-          {/* Gradient Masks */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent lg:hidden" />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-transparent hidden lg:block" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" />
-
-          {/* Overlay Schematic Tag */}
-          <div className="absolute bottom-6 left-6 right-6 z-20 space-y-2 text-white">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-mono uppercase font-bold tracking-wider border border-white/30">
-              <Sparkles className="w-3 h-3 text-[#F8BC26]" />
-              <span>NABL Lab Test Verified</span>
-            </div>
-            <h4 className="text-lg font-bold text-white tracking-tight">
-              Turnkey Substation Bay Supply &amp; Commissioning
-            </h4>
-            <p className="text-xs text-slate-300 font-mono leading-relaxed">
-              Topnotch Energy Solutions provides turnkey supply, installation, testing, and commissioning (SITC) of complete 33 kV / 66 kV / 132 kV incoming bays with SLDC optical telemetry handover across 14 states.
-            </p>
-          </div>
-        </div>
-
-      </div>
+      )}
 
     </div>
   );

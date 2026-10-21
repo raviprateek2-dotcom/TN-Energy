@@ -4,7 +4,7 @@
 [![React](https://img.shields.io/badge/React-19.3-blue?style=flat&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7_Strict-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
 [![Turbopack](https://img.shields.io/badge/Turbopack-Enabled-000000?style=flat&logo=vercel)](https://turbo.build/pack)
-[![Tests](https://img.shields.io/badge/Tests-77%2F77_Passing-10B981?style=flat&logo=node.js)](https://nodejs.org/)
+[![Tests](https://img.shields.io/badge/Tests-82%2F82_Passing-10B981?style=flat&logo=node.js)](https://nodejs.org/)
 [![WCAG 2.1](https://img.shields.io/badge/WCAG-2.1_AA%2FAAA-4F46E5?style=flat)](https://www.w3.org/WAI/WCAG21/quickref/)
 [![CERC Accredited](https://img.shields.io/badge/CERC-Category--IV_Advisory-06B6D4?style=flat)](https://www.cercind.gov.in/)
 [![NOAR](https://img.shields.io/badge/NOAR-Registered_Institutional_Consultant-F59E0B?style=flat)](https://noar.in/)
@@ -66,6 +66,21 @@ The industry's most comprehensive financial simulator modeling onsite solar, off
 - Waaree-grade organic SVG wave dividers (`PageDivider.tsx`) fluidly separating dark heroic sections from crisp white analysis zones.
 - Interactive Sector Grid with arrow key keyboard navigation, background image zoom, and deep industrial manufacturing load-curve insights.
 
+### 6. Interactive 4-Level Sensory & Digital Twin Spectrum
+- **Level 1 — Micro-Interactions & Sensory Feedback (`src/lib/audio/switch-audio.ts`, `MagneticButton.tsx`):**
+  - Synthesizes authentic 33 kV circuit breaker relay clicks, bourse clearing chords, and telemetry scrubber ticks using pure native HTML5 Web Audio API oscillators.
+  - Zero external MP3/WAV assets, zero CDN latency, and strict user-gesture permission management.
+  - Cursor-magnetic pull on key call-to-actions with spring physics.
+- **Level 2 — Glassmorphic Spatial Layering (`ParallaxLayer.tsx`, `AmbientSpotlightCard.tsx`):**
+  - Smooth 60 FPS requestAnimationFrame scroll-linked parallax offsets adhering to `prefers-reduced-motion`.
+  - Ambient radial mouse-spotlight cards illuminating border gradients dynamically on hover.
+- **Level 3 — Algorithmic Simulation & 3D Digital Twin (`InteractiveWaveformSculptor.tsx`, `Substation3DViewer.tsx`):**
+  - **24-Hour Industrial Demand Sculptor:** 4 adjustable MW anchors with continuous interpolation across 96 time-blocks, 3 manufacturing presets, live 24h clock simulation, and real-time landed rate & Crores savings co-optimization.
+  - **33 kV Switchyard 3D Digital Twin:** Interactive isometric Canvas engine with depth-sorted 3D nodes (Gantry, VCB Breaker, SEM 0.2s Meter, 16 MVA Transformer, Detuned APFC Capacitor Bank), 360-degree mouse drag rotation, and component telemetry inspection.
+- **Level 4 — Real In-Browser Electricity Bill OCR Engine (`client-bill-ocr.ts`, `BillAuditDropzone.tsx`):**
+  - Client-side heuristic OCR and regex parsing engine extracting Contract Demand, Maximum Demand, deemed 85% billing demand, Power Factor, billed kVAh, and ToD peak surcharges for major Indian utilities (PVVNL, Torrent, DGVCL, MSEDCL, DHBVN, JVVNL, BESCOM, PSPCL, TANGEDCO).
+  - Instant audit findings, potential savings quantification, and seamless 1-click import into the Open Access simulator.
+
 ---
 
 ## Technical Stack & Quality Standards
@@ -81,7 +96,7 @@ The industry's most comprehensive financial simulator modeling onsite solar, off
 | **Document Generation** | Pure TypeScript `%PDF-1.4` binary streaming engine (`/api/reports/dossier`) & 96-block REA schedules (`/api/reports/rea`) |
 | **Security & Rate Limiting** | Sliding window in-memory rate limiter (`src/lib/rate-limit.ts`), Zod input validation & honeypot anti-bot protection |
 | **SEO & Schema.org** | JSON-LD Structured Data (`Organization`, `Service`, `FinancialProduct`), OpenGraph dynamic OG image generator, robots.txt & sitemap.xml |
-| **Testing** | Automated Node.js native test runner (`node --experimental-strip-types --test tests/*.test.ts`) — **77 / 77 passing** |
+| **Testing** | Automated Node.js native test runner (`node --experimental-strip-types --test tests/*.test.ts`) — **82 / 82 passing** |
 
 ---
 

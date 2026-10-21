@@ -23,6 +23,7 @@ import { StateTariffMatrix } from "@/components/market/StateTariffMatrix";
 import { PageDivider } from "@/components/ui/PageDivider";
 import { CornerIndustrialWatermark } from "@/components/ui/CornerIndustrialWatermark";
 import { PlantArbitrageSimulator } from "@/components/market/PlantArbitrageSimulator";
+import { InteractiveWaveformSculptor } from "@/components/calculators/InteractiveWaveformSculptor";
 import { SplitImageMergeSection } from "@/components/ui/SplitImageMergeSection";
 import { BRAND } from "@/lib/constants/brand";
 
@@ -186,6 +187,16 @@ export default function MarketIntelligencePage() {
           <div className="p-4 sm:p-8 bg-slate-50/60 border border-slate-200/90 rounded-3xl shadow-sm">
             <Iex96BlockChart />
           </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          INTERACTIVE 24-HOUR INDUSTRIAL DEMAND & SOLAR WAVEFORM SCULPTOR
+         ========================================================================= */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-200 bg-[#F9FAFB] relative overflow-hidden">
+        <CornerIndustrialWatermark type="solar-array" position="top-right" opacity={0.05} />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <InteractiveWaveformSculptor />
         </div>
       </section>
 

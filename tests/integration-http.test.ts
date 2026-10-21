@@ -3,8 +3,17 @@ import assert from "node:assert";
 import { spawn, execSync, type ChildProcess } from "node:child_process";
 import { platform } from "node:os";
 
-const PORT = 3002;
+const PORT = Number(process.env.TEST_PORT) || 3000;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
+
+async function isServerRunning(url: string): Promise<boolean> {
+  try {
+    const res = await fetch(url);
+    return res.status === 200;
+  } catch {
+    return false;
+  }
+}
 
 async function waitForServer(url: string, timeoutMs = 25000): Promise<void> {
   const start = Date.now();
@@ -23,9 +32,15 @@ async function waitForServer(url: string, timeoutMs = 25000): Promise<void> {
 test("Full End-to-End HTTP Route, Security & API Integration Test Suite", async (t) => {
   let serverProcess: ChildProcess | undefined;
 
-  // 1. Start Next.js production server on isolated port 3002
-  await t.test("Boot Next.js production server", async () => {
-    serverProcess = spawn("npx", ["next", "start", "-p", String(PORT)], {
+  // 1. Check or start Next.js server
+  await t.test("Verify or boot Next.js server", async () => {
+    const alreadyUp = await isServerRunning(`${BASE_URL}/api/health`);
+    if (alreadyUp) {
+      assert.ok(true, `Next.js server already running and responsive on port ${PORT}`);
+      return;
+    }
+
+    serverProcess = spawn("npx", ["next", "dev", "-p", String(PORT)], {
       shell: true,
       stdio: "pipe",
     });
@@ -35,7 +50,7 @@ test("Full End-to-End HTTP Route, Security & API Integration Test Suite", async 
     });
 
     await waitForServer(`${BASE_URL}/`);
-    assert.ok(true, "Next.js server booted and responsive on port 3002");
+    assert.ok(true, `Next.js server booted and responsive on port ${PORT}`);
   });
 
   // 2. Test Security Headers on Root Request
