@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { leadsRepository } from "@/lib/db/leads-repository";
 
 // Input Sanitizer: strips HTML markup and trims dangerous characters
 function sanitizeString(str: string): string {
@@ -32,12 +33,23 @@ const leadSchema = z.object({
     .string()
     .regex(/^[6-9]\d{9}$/, "Please provide a valid 10-digit Indian mobile number")
     .transform((p) => p.trim()),
+  gstin: z
+    .string()
+    .max(15)
+    .regex(
+      /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/,
+      "Invalid GSTIN format (15 characters alphanumeric)"
+    )
+    .optional()
+    .or(z.literal(""))
+    .transform((v) => (v ? v.toUpperCase().trim() : undefined)),
   state: z.string().min(1, "Please select a state").max(50).transform(sanitizeString),
   contractDemandKva: z
     .string()
     .min(1, "Contract demand is required")
     .max(30)
     .transform(sanitizeString),
+  voltageLevel: z.string().max(20).optional().transform((v) => (v ? sanitizeString(v) : undefined)),
   enquiryType: z
     .string()
     .min(1, "Enquiry type is required")
@@ -50,52 +62,11 @@ const leadSchema = z.object({
     .transform((val) => (val ? sanitizeString(val) : undefined)),
   message: z
     .string()
-    .min(10, "Message must provide at least 10 characters of plant context")
+    .min(6, "Message must provide at least 6 characters of plant context")
     .max(2500)
     .transform(sanitizeString),
   consentGiven: z.boolean(),
 });
-
-export interface StoredLead {
-  referenceId: string;
-  companyName: string;
-  contactName: string;
-  designation: string;
-  email?: string;
-  phone?: string;
-  state: string;
-  contractDemandKva: string;
-  enquiryType: string;
-  currentDiscomTariffPerKwh?: string;
-  message?: string;
-  createdAt: string;
-  status: string;
-}
-
-const inMemoryLeads: StoredLead[] = [
-  {
-    referenceId: "TES-M4K9B2",
-    companyName: "Varun Beverages Ltd",
-    contactName: "Rajeev Singhal",
-    designation: "CFO / Director - Finance",
-    state: "Uttar Pradesh",
-    contractDemandKva: "3,500 kVA",
-    enquiryType: "Group Captive Solar SPV & Open Access",
-    createdAt: new Date(Date.now() - 3600000 * 4).toISOString(),
-    status: "Technical Due Diligence",
-  },
-  {
-    referenceId: "TES-L1X8Z0",
-    companyName: "Kandhari Beverages (Coca-Cola Franchisee)",
-    contactName: "Amanpreet Singh",
-    designation: "VP Infrastructure & Energy",
-    state: "Punjab",
-    contractDemandKva: "6,000 kVA",
-    enquiryType: "IEX DAM/RTM Exchange Trading Desk",
-    createdAt: new Date(Date.now() - 3600000 * 26).toISOString(),
-    status: "SLDC Standing Clearance In Progress",
-  },
-];
 
 export async function GET(request: NextRequest) {
   const ip = getClientIp(request);
@@ -108,10 +79,12 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const allLeads = leadsRepository.getInquiries();
+
   return NextResponse.json({
     success: true,
-    count: inMemoryLeads.length,
-    leads: inMemoryLeads,
+    count: allLeads.length,
+    leads: allLeads,
   });
 }
 
@@ -142,39 +115,30 @@ export async function POST(request: NextRequest) {
     }
 
     const lead = parsed.data;
-    const referenceId = `TES-${Date.now().toString(36).toUpperCase()}`;
 
-    // Record in queue
-    inMemoryLeads.unshift({
-      referenceId,
+    // Persist lead with audit trail and automated priority scoring
+    const stored = leadsRepository.createInquiry({
       companyName: lead.companyName,
       contactName: lead.contactName,
       designation: lead.designation,
       email: lead.email,
       phone: lead.phone,
+      gstin: lead.gstin,
       state: lead.state,
       contractDemandKva: lead.contractDemandKva,
+      voltageLevel: lead.voltageLevel,
       enquiryType: lead.enquiryType,
       currentDiscomTariffPerKwh: lead.currentDiscomTariffPerKwh,
       message: lead.message,
-      createdAt: new Date().toISOString(),
-      status: "Under Review by 24x7 Bidding Desk",
-    });
-
-    console.log("[LEAD CAPTURED]", {
-      timestamp: new Date().toISOString(),
-      referenceId,
-      companyName: lead.companyName,
-      contactName: lead.contactName,
-      phone: lead.phone,
-      state: lead.state,
     });
 
     return NextResponse.json({
       success: true,
       message:
-        "Enquiry received. Our power trading advisory team will contact you within 48 working hours.",
-      referenceId,
+        "Enquiry received. Our power trading advisory team will contact you within the SLA window.",
+      referenceId: stored.referenceId,
+      priorityScore: stored.priorityScore,
+      slaWindowHours: stored.slaWindowHours,
     });
   } catch {
     return NextResponse.json(

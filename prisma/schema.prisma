@@ -1,0 +1,112 @@
+// Topnotch Energy Solutions - Enterprise Database Schema
+// Supported Providers: postgresql (Default Enterprise), sqlite (Local Offline Dev)
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum LeadStatus {
+  NEW
+  ASSIGNED_TO_TRADER
+  NDA_EXECUTED
+  TARIFF_AUDIT_IN_PROGRESS
+  COMMERCIAL_TERM_SHEET_ISSUED
+  SLDC_CLEARANCE_FILED
+  CLOSED_WON
+  CLOSED_LOST
+}
+
+enum ProcurementType {
+  GROUP_CAPTIVE_SOLAR
+  GROUP_CAPTIVE_WIND_HYBRID
+  THIRD_PARTY_PPA
+  IEX_DAY_AHEAD_MARKET
+  IEX_REAL_TIME_MARKET
+  ROOFTOP_RESCO
+  ABT_METERING_INFRASTRUCTURE
+  ENERGY_AUDIT_BILL_OPTIMIZATION
+}
+
+model Inquiry {
+  id                        String          @id @default(uuid())
+  referenceId               String          @unique // e.g. TES-M4K9B2
+  companyName               String
+  contactName               String
+  designation               String
+  email                     String
+  phone                     String
+  gstin                     String?
+  state                     String
+  contractDemandKva         String
+  voltageLevel              String?         // 11kV, 33kV, 66kV, 132kV
+  enquiryType               String
+  currentDiscomTariffPerKwh Float?
+  message                   String
+  priorityScore             Int             @default(50) // 1-100 based on kVA scale
+  status                    LeadStatus      @default(NEW)
+  ipAddress                 String?
+  userAgent                 String?
+  
+  auditLogs                 LeadAuditLog[]
+  createdAt                 DateTime        @default(now())
+  updatedAt                 DateTime        @updatedAt
+
+  @@index([state])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model LeadAuditLog {
+  id          String     @id @default(uuid())
+  inquiryId   String
+  inquiry     Inquiry    @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  actor       String     // System, NOC Desk, Trader ID
+  fromStatus  LeadStatus
+  toStatus    LeadStatus
+  notes       String?
+  timestamp   DateTime   @default(now())
+
+  @@index([inquiryId])
+}
+
+model BillAuditSubmission {
+  id                    String   @id @default(uuid())
+  referenceId           String   @unique
+  companyName           String
+  state                 String
+  discom                String
+  voltageKv             String
+  contractDemandKva     Float
+  recordedMaxDemandKva  Float
+  billingDemandKva      Float
+  monthlyBilledKvah     Float
+  monthlyBillAmountInr  Float
+  powerFactor           Float
+  totalMonthlyLeakageInr Float
+  ndaAccepted           Boolean  @default(true)
+  signatoryName         String?
+  createdAt             DateTime @default(now())
+
+  @@index([state])
+}
+
+model MarketRateArchive {
+  id            String   @id @default(uuid())
+  deliveryDate  DateTime
+  timeBlock     Int      // 1 to 96
+  timeSlot      String   // e.g. "09:15-09:30"
+  segment       String   // "DAM" | "GDAM" | "RTM"
+  mcpInrMwh     Float
+  mcpPaiseKwh   Float
+  gridFrequency Float
+  volumeClearedMw Float
+  createdAt     DateTime @default(now())
+
+  @@unique([deliveryDate, timeBlock, segment])
+  @@index([deliveryDate])
+}

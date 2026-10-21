@@ -1,15 +1,21 @@
+export const instant = false;
 import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ChevronRight,
-  CheckCircle,
+  CheckCircle2,
   ArrowRight,
   FileText,
   Zap,
   HelpCircle,
   BarChart3,
+  ShieldCheck,
+  PhoneCall,
+  Sparkles,
+  Award,
 } from "lucide-react";
 import {
   ENTERPRISE_SOLUTIONS,
@@ -19,15 +25,19 @@ import {
   type SolutionFaq,
   type SolutionKpi,
 } from "@/lib/constants/enterprise-content";
+import { BRAND } from "@/lib/constants/brand";
+import { PageDivider } from "@/components/ui/PageDivider";
+import { CornerIndustrialWatermark } from "@/components/ui/CornerIndustrialWatermark";
+import { SolutionSavingsWaterfall } from "@/components/market/SolutionSavingsWaterfall";
+import { SplitImageMergeSection } from "@/components/ui/SplitImageMergeSection";
 
-// Tailwind color map per solution index
-const SOLUTION_ACCENT_COLORS = [
-  { text: "text-grid-cyan-400", bg: "bg-grid-cyan-400/10", border: "border-grid-cyan-400/30" },
-  { text: "text-grid-emerald-400", bg: "bg-grid-emerald-400/10", border: "border-grid-emerald-400/30" },
-  { text: "text-grid-amber-400", bg: "bg-grid-amber-400/10", border: "border-grid-amber-400/30" },
-  { text: "text-purple-400", bg: "bg-purple-400/10", border: "border-purple-400/30" },
-  { text: "text-blue-400", bg: "bg-blue-400/10", border: "border-blue-400/30" },
-];
+const SOLUTION_HERO_PHOTOS: Record<string, string> = {
+  "power-trading-bilateral-contracts": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2000&q=80",
+  "open-access-execution-regulatory": "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2000&q=80",
+  "renewable-energy-sustainability": "https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=2000&q=80",
+  "abt-metering-telemetry-infrastructure": "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=2000&q=80",
+  "energy-cost-optimization-bill-audits": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2000&q=80",
+};
 
 export async function generateStaticParams() {
   return ENTERPRISE_SOLUTIONS.map((s: EnterpriseSolution) => ({ slug: s.slug }));
@@ -64,178 +74,233 @@ export default async function SolutionPage({
   if (solutionIndex === -1) notFound();
 
   const solution = ENTERPRISE_SOLUTIONS[solutionIndex];
-  const accent = SOLUTION_ACCENT_COLORS[solutionIndex % SOLUTION_ACCENT_COLORS.length];
   const otherSolutions = ENTERPRISE_SOLUTIONS.filter(
     (s: EnterpriseSolution) => s.slug !== slug
   ).slice(0, 3);
 
+  const heroPhoto =
+    SOLUTION_HERO_PHOTOS[solution.slug] ||
+    "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=2000&q=80";
+
   return (
-    <main className="min-h-screen bg-grid-navy-950 text-white">
-      {/* Breadcrumb */}
-      <div className="border-b border-grid-slate-800 bg-grid-navy-950/90 sticky top-0 z-30 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center space-x-2 text-[11px] font-mono text-grid-slate-500">
-          <Link href="/" className="hover:text-white transition-colors">
+    <main className="min-h-screen bg-white text-slate-800">
+      
+      {/* Breadcrumb Strip */}
+      <div className="border-b border-slate-200 bg-white/95 sticky top-0 z-30 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center space-x-2 text-xs font-mono text-slate-500">
+          <Link href="/" className="hover:text-slate-900 transition-colors">
             Home
           </Link>
-          <ChevronRight className="w-3 h-3" />
-          <Link href="/#solutions" className="hover:text-white transition-colors">
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+          <Link href="/#solutions" className="hover:text-slate-900 transition-colors">
             Solutions
           </Link>
-          <ChevronRight className="w-3 h-3" />
-          <span className="text-grid-slate-300 truncate">{solution.title}</span>
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+          <span className="text-slate-900 font-semibold truncate">{solution.title}</span>
         </div>
       </div>
 
-      {/* Hero */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800 overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
-          {/* Left: Title + Executive Summary */}
-          <div>
-            <div className="flex items-center space-x-3 mb-4">
-              <span
-                className={`inline-block px-3 py-1 rounded-full border text-[11px] font-mono font-bold uppercase tracking-widest ${accent.bg} ${accent.border} ${accent.text}`}
-              >
-                Solution {solution.number}
+      {/* =========================================================================
+          HERO SECTION WITH CINEMATIC PHOTOGRAPHY BACKDROP
+         ========================================================================= */}
+      <section className="relative min-h-[55vh] flex items-center justify-center overflow-hidden bg-[#0A0F1D] py-20 px-4 sm:px-6 lg:px-8 text-white">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={heroPhoto}
+            alt={solution.title}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center opacity-30 scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1D]/95 via-[#0A0F1D]/85 to-[#0A0F1D]/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1D] via-transparent to-transparent" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-12 items-center">
+          
+          {/* Left Column: Solution Brief */}
+          <div className="lg:col-span-7 space-y-5">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-white/10 backdrop-blur-md border border-white/20 text-[#F8BC26]">
+                Module {solution.number}
               </span>
-              <span className="text-[11px] font-mono text-grid-slate-500">{solution.badge}</span>
+              <span className="text-xs font-mono text-emerald-400 font-bold bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/40">
+                {solution.badge}
+              </span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+            
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
               {solution.title}
             </h1>
-            <p className={`mt-2 font-mono text-sm ${accent.text}`}>{solution.tagline}</p>
-            <p className="mt-4 text-grid-slate-300 text-sm leading-relaxed">
+            
+            <p className="font-semibold text-base sm:text-lg text-slate-200 font-sans leading-snug">
+              {solution.tagline}
+            </p>
+
+            <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-sans max-w-2xl">
               {solution.executiveSummary}
             </p>
 
-            {/* Target Audience */}
-            <div className="mt-6">
-              <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-grid-slate-500 mb-2">
-                Target Industrial Segments
-              </div>
-              <div className="space-y-1.5">
-                {solution.targetAudience.map((segment: string) => (
-                  <div key={segment} className="flex items-start space-x-2 text-xs">
-                    <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5 ${accent.text.replace("text-", "bg-")}`} />
-                    <span className="text-grid-slate-300">{segment}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/contact"
-                className="px-5 py-3 rounded-xl bg-grid-emerald-500 hover:bg-grid-emerald-400 text-grid-navy-950 font-bold font-mono text-sm transition-all shadow-lg shadow-grid-emerald-500/20 flex items-center space-x-2"
-              >
-                <span>Request Technical Proposal</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+            <div className="flex flex-wrap gap-4 pt-3">
               <Link
                 href="/tools/open-access-calculator"
-                className="px-5 py-3 rounded-xl border border-grid-slate-700 bg-grid-navy-900 hover:bg-grid-navy-800 text-white font-mono text-sm font-bold transition-colors"
+                className="px-8 py-4 rounded-full bg-[#F8BC26] hover:bg-[#eab308] text-[#1C2C34] font-bold text-xs uppercase tracking-wider transition-all shadow-xl active:scale-95 flex items-center space-x-2"
               >
-                Calculate Plant ROI
+                <span>Simulate Plant Economics</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
+              
+              <a
+                href={`tel:${BRAND.contacts.phonePrimary}`}
+                className="px-6 py-4 rounded-full border border-white/30 bg-white/10 hover:bg-white/20 text-white font-mono text-xs font-bold transition-colors flex items-center space-x-2"
+              >
+                <PhoneCall className="w-4 h-4 text-[#F8BC26]" />
+                <span>Talk to Lead Specialist</span>
+              </a>
             </div>
           </div>
 
-          {/* Right: KPIs + Deliverables */}
-          <div className="space-y-5">
-            {/* KPIs */}
-            <div className="grid grid-cols-2 gap-3">
-              {solution.kpis.map((kpi: SolutionKpi) => (
-                <div
-                  key={kpi.label}
-                  className="bg-grid-navy-900 border border-grid-slate-800 rounded-xl p-4"
-                >
-                  <div className={`text-xl font-extrabold font-mono tabular-nums ${accent.text}`}>
-                    {kpi.value}
-                  </div>
-                  <div className="text-white font-bold text-xs mt-0.5">{kpi.label}</div>
-                  <div className="text-grid-slate-500 font-mono text-[10px] mt-0.5">{kpi.subtext}</div>
+          {/* Right Column: Key KPIs Grid */}
+          <div className="lg:col-span-5 grid grid-cols-2 gap-4">
+            {solution.kpis.map((kpi: SolutionKpi) => (
+              <div
+                key={kpi.label}
+                className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-5 shadow-lg text-white"
+              >
+                <div className="text-2xl sm:text-3xl font-black font-mono text-[#F8BC26] tabular-nums">
+                  {kpi.value}
+                </div>
+                <div className="text-white font-bold text-xs mt-1.5">{kpi.label}</div>
+                <div className="text-slate-300 font-mono text-[11px] mt-0.5">{kpi.subtext}</div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* =========================================================================
+          TARGET AUDIENCE & STATUTORY DELIVERABLES
+         ========================================================================= */}
+      <section className="relative py-16 px-4 sm:px-6 lg:px-8 bg-[#F9FAFB] border-b border-slate-200 overflow-hidden">
+        <CornerIndustrialWatermark type="solar-array" position="top-right" opacity={0.05} />
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-8 items-start relative z-10">
+          
+          {/* Target Industrial Segments (7 cols) */}
+          <div className="lg:col-span-7 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#D97706] block">
+              Facility Eligibility &amp; Feasibility
+            </span>
+            <h3 className="text-xl sm:text-2xl font-black text-[#1C2C34] tracking-tight">
+              Target Industrial Segments &amp; Plant Profiles
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              This module is engineered for high-tension manufacturing plants operating at 11 kV, 33 kV, 66 kV, or 132 kV voltage levels with multi-shift continuous or batch electrical demand.
+            </p>
+
+            <div className="grid sm:grid-cols-2 gap-3 pt-2">
+              {solution.targetAudience.map((segment: string) => (
+                <div key={segment} className="flex items-start space-x-3 text-xs sm:text-sm text-slate-700 p-3 rounded-2xl bg-slate-50 border border-slate-100">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span className="leading-snug font-medium">{segment}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Statutory Deliverables & Accreditations (5 cols) */}
+          <div className="lg:col-span-5 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-700 block">
+              Contractual Assurance
+            </span>
+            <h3 className="text-xl font-black text-[#1C2C34] tracking-tight flex items-center space-x-2">
+              <ShieldCheck className="w-5 h-5 text-emerald-600" />
+              <span>Statutory Deliverables</span>
+            </h3>
+
+            <div className="space-y-3 pt-1">
+              {solution.statutoryDeliverables.map((d: string) => (
+                <div key={d} className="flex items-start space-x-3 text-xs text-slate-700">
+                  <div className="w-2 h-2 rounded-full bg-[#10B981] flex-shrink-0 mt-1.5" />
+                  <span className="font-medium leading-relaxed">{d}</span>
                 </div>
               ))}
             </div>
 
-            {/* Statutory Deliverables */}
-            <div className="bg-grid-navy-900 border border-grid-slate-800 rounded-2xl p-5">
-              <h3 className="text-white font-extrabold text-sm mb-3 flex items-center space-x-2">
-                <CheckCircle className="w-4 h-4 text-grid-emerald-400" />
-                <span>Statutory Deliverables</span>
-              </h3>
-              <div className="space-y-2">
-                {solution.statutoryDeliverables.map((d: string) => (
-                  <div key={d} className="flex items-start space-x-2 text-xs">
-                    <div className="w-1.5 h-1.5 rounded-full bg-grid-emerald-400 flex-shrink-0 mt-1.5" />
-                    <span className="text-grid-slate-300">{d}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             {/* Regulatory References */}
-            <div className="bg-grid-navy-900 border border-grid-slate-800 rounded-2xl p-5">
-              <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-grid-slate-500 mb-2 flex items-center space-x-1.5">
-                <FileText className="w-3 h-3" />
-                <span>Regulatory Framework</span>
-              </div>
-              <div className="space-y-2">
-                {solution.regulatoryReferences.map((ref: RegulatoryCitation) => (
-                  <div key={ref.clauseReference} className="text-xs">
-                    <span className={`font-mono font-bold text-[11px] ${accent.text}`}>
-                      {ref.authority}
-                    </span>{" "}
-                    <span className="text-grid-slate-400">{ref.regulationTitle}</span>
-                    <div className="text-grid-slate-600 font-mono text-[10px]">
-                      § {ref.clauseReference}
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div className="pt-4 border-t border-slate-100 space-y-2">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold block">
+                CERC / SERC Citations:
+              </span>
+              {solution.regulatoryReferences.map((ref: RegulatoryCitation) => (
+                <div key={ref.clauseReference} className="text-xs font-mono text-slate-600">
+                  <span className="font-bold text-slate-800">{ref.authority}:</span> {ref.regulationTitle} ({ref.clauseReference})
+                </div>
+              ))}
             </div>
           </div>
+
         </div>
       </section>
 
-      {/* Technical Sub-Features */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-10">
-            <span className={`text-[11px] font-mono font-bold uppercase tracking-widest ${accent.text}`}>
-              Deep-Dive Capability Suite
+      {/* =========================================================================
+          STATUTORY LANDED COST WATERFALL ECONOMICS
+         ========================================================================= */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white border-b border-slate-200 relative overflow-hidden">
+        <CornerIndustrialWatermark type="windmills" position="bottom-left" opacity={0.05} />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <SolutionSavingsWaterfall solutionSlug={slug} />
+        </div>
+      </section>
+
+      {/* =========================================================================
+          TECHNICAL SUB-FEATURES ARCHITECTURE
+         ========================================================================= */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-200 bg-[#F9FAFB] relative overflow-hidden">
+        <CornerIndustrialWatermark type="transmission-tower" position="top-right" opacity={0.05} />
+        <div className="max-w-7xl mx-auto relative z-10">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+            <span className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#D97706]">
+              Deep-Dive Execution Modules
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
-              Technical Sub-Features
+            <h2 className="text-2xl sm:text-4xl font-black text-[#1C2C34] tracking-tight">
+              Technical Architecture &amp; Delivery Specifications
             </h2>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans">
+              Precision engineering grounded in Indian electricity market regulations and physical grid connection standards.
+            </p>
           </div>
-          <div className="grid sm:grid-cols-2 gap-5">
+
+          <div className="grid sm:grid-cols-2 gap-8">
             {solution.subFeatures.map((feature: SolutionSubFeature) => (
               <div
                 key={feature.title}
-                className="bg-grid-navy-900 border border-grid-slate-800 rounded-2xl p-6 hover:border-grid-slate-700 transition-colors"
+                className="bg-[#F9FAFB] border border-slate-200/90 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6"
               >
-                <div
-                  className={`w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${accent.bg} border ${accent.border}`}
-                >
-                  <Zap className={`w-4 h-4 ${accent.text}`} />
+                <div className="space-y-3">
+                  <div className="w-12 h-12 rounded-2xl bg-amber-50 text-[#D97706] border border-amber-200 flex items-center justify-center font-bold">
+                    <Zap className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-[#1C2C34] font-black text-lg tracking-tight">{feature.title}</h3>
+                  <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans">
+                    {feature.technicalDetails}
+                  </p>
                 </div>
-                <h3 className="text-white font-extrabold text-sm">{feature.title}</h3>
-                <p className="text-grid-slate-400 text-xs leading-relaxed mt-2">
-                  {feature.technicalDetails}
-                </p>
-                <div className="mt-4 pt-4 border-t border-grid-slate-800/80 grid grid-cols-2 gap-3">
-                  <div>
-                    <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-grid-slate-600 mb-1">
+
+                <div className="pt-6 border-t border-slate-200 grid grid-cols-2 gap-4">
+                  <div className="p-3 bg-white rounded-2xl border border-slate-200">
+                    <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1">
                       Business Impact
                     </div>
-                    <p className="text-grid-slate-300 text-xs">{feature.businessImpact}</p>
+                    <p className="text-slate-900 text-xs font-bold leading-snug">{feature.businessImpact}</p>
                   </div>
-                  <div>
-                    <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-grid-slate-600 mb-1">
-                      Benchmark
+                  <div className="p-3 bg-emerald-50/70 rounded-2xl border border-emerald-200">
+                    <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-700 mb-1">
+                      Benchmark Metric
                     </div>
-                    <p className={`font-mono font-bold text-xs ${accent.text}`}>
+                    <p className="font-mono font-black text-xs text-emerald-800 leading-snug">
                       {feature.benchmarkMetric}
                     </p>
                   </div>
@@ -243,32 +308,36 @@ export default async function SolutionPage({
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
-      {/* FAQs */}
+      {/* =========================================================================
+          TECHNICAL FAQ ACCORDION
+         ========================================================================= */}
       {solution.faqs.length > 0 && (
-        <section className="py-16 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#F9FAFB] border-b border-slate-200">
           <div className="max-w-4xl mx-auto">
-            <div className="mb-10 text-center">
-              <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-grid-amber-400">
-                Technical FAQs
+            <div className="mb-12 text-center space-y-2">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200">
+                Technical FAQ
               </span>
-              <h2 className="text-2xl font-extrabold text-white mt-2">
-                Common Questions from Industrial Procurement Teams
+              <h2 className="text-2xl sm:text-3xl font-black text-[#1C2C34] tracking-tight">
+                Frequently Asked Regulatory &amp; Commercial Questions
               </h2>
             </div>
+            
             <div className="space-y-4">
               {solution.faqs.map((faq: SolutionFaq, idx: number) => (
                 <div
                   key={idx}
-                  className="bg-grid-navy-900 border border-grid-slate-800 rounded-2xl p-5"
+                  className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs"
                 >
-                  <div className="flex items-start space-x-3">
-                    <HelpCircle className={`w-4 h-4 flex-shrink-0 mt-0.5 ${accent.text}`} />
-                    <div>
-                      <h4 className="text-white font-bold text-sm">{faq.question}</h4>
-                      <p className="text-grid-slate-400 text-xs leading-relaxed mt-2">
+                  <div className="flex items-start space-x-4">
+                    <HelpCircle className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                    <div className="space-y-2">
+                      <h4 className="text-[#1C2C34] font-bold text-base">{faq.question}</h4>
+                      <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans">
                         {faq.answer}
                       </p>
                     </div>
@@ -280,72 +349,76 @@ export default async function SolutionPage({
         </section>
       )}
 
-      {/* CTA */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800">
-        <div className="max-w-3xl mx-auto text-center">
-          <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-grid-emerald-400">
-            Ready to Proceed?
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
-            Get a Confidential Tariff Assessment
+      {/* =========================================================================
+          WAAREE-GRADE EXECUTIVE SOLUTION IMPLEMENTATION BANNER (HALF-MERGING IMAGE ON WHITE)
+         ========================================================================= */}
+      <SplitImageMergeSection
+        badgeText={`Module ${solution.number} Technical Consultation`}
+        title={
+          <>
+            Deploy <span className="text-[#D97706]">{solution.title}</span> at Your Facility
+          </>
+        }
+        description={`Our BEE Certified Energy Auditors and CERC Power Traders will analyze your last 12 months of DISCOM electricity bills, ABT meter logs, and shift load curves to structure an optimized ${solution.title} architecture.`}
+        bullets={[
+          "12-Month Joint Meter Reading (JMR) Analysis",
+          "Customized Single Line Diagram (SLD) Engineering",
+          "Turnkey SLDC NOC & Standing Clearance Filings",
+          "Guaranteed Tariff Reduction Signoff",
+        ]}
+        imageUrl={heroPhoto}
+        imageAlt={`Industrial execution of ${solution.title}`}
+        primaryCta={{
+          label: "Simulate Plant Savings →",
+          href: "/tools/open-access-calculator",
+        }}
+        secondaryCta={{
+          label: "Download Vendor Empanelment Kit",
+          href: "/procurement-dossier",
+        }}
+        stats={[
+          { value: solution.kpis[0]?.value || "18%–42%", label: solution.kpis[0]?.label || "Net Savings", sublabel: "Guaranteed Reduction" },
+          { value: solution.kpis[1]?.value || "45 Days", label: solution.kpis[1]?.label || "Turnkey Flow", sublabel: "From Audit to Grid" },
+        ]}
+      />
+
+      {/* =========================================================================
+          RELATED SOLUTIONS GRID
+         ========================================================================= */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-xl sm:text-2xl font-black text-[#1C2C34] mb-8 tracking-tight">
+            Related Enterprise Solutions
           </h2>
-          <p className="text-grid-slate-400 text-sm font-mono mt-3 max-w-xl mx-auto">
-            Our BEE Certified Energy Auditors will analyse your last 12 months of Discom billing data, ABT
-            meter readings, and production schedules to quantify {solution.title.toLowerCase()} savings with
-            financial precision.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3 justify-center">
-            <Link
-              href="/contact"
-              className="px-6 py-3 rounded-xl bg-grid-emerald-500 hover:bg-grid-emerald-400 text-grid-navy-950 font-bold font-mono text-sm transition-all shadow-lg shadow-grid-emerald-500/20 flex items-center space-x-2"
-            >
-              <span>Schedule Tariff Audit</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/case-studies"
-              className="px-6 py-3 rounded-xl border border-grid-slate-700 bg-grid-navy-900 hover:bg-grid-navy-800 text-white font-mono text-sm font-bold transition-colors flex items-center space-x-2"
-            >
-              <BarChart3 className="w-4 h-4 text-grid-cyan-400" />
-              <span>View Client Case Studies</span>
-            </Link>
+          <div className="grid sm:grid-cols-3 gap-6">
+            {otherSolutions.map((s: EnterpriseSolution) => (
+              <Link
+                key={s.slug}
+                href={`/solutions/${s.slug}`}
+                className="bg-[#F9FAFB] border border-slate-200/90 rounded-3xl p-6 hover:shadow-xl hover:border-slate-300 hover:bg-white transition-all group flex flex-col justify-between"
+              >
+                <div>
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                    Module {s.number}
+                  </span>
+                  <h3 className="text-[#1C2C34] font-bold text-base mt-3 group-hover:text-[#D97706] transition-colors">
+                    {s.title}
+                  </h3>
+                  <p className="text-slate-500 text-xs sm:text-sm mt-2 line-clamp-2">
+                    {s.tagline}
+                  </p>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between text-xs font-bold text-[#1C2C34] group-hover:text-[#D97706]">
+                  <span>Explore Module</span>
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Other Solutions */}
-      <section className="py-14 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-xl font-extrabold text-white mb-6">Related Solutions</h2>
-          <div className="grid sm:grid-cols-3 gap-5">
-            {otherSolutions.map((s: EnterpriseSolution, i: number) => {
-              const otherAccent = SOLUTION_ACCENT_COLORS[
-                ENTERPRISE_SOLUTIONS.findIndex((es: EnterpriseSolution) => es.slug === s.slug) %
-                  SOLUTION_ACCENT_COLORS.length
-              ];
-              return (
-                <Link
-                  key={s.slug}
-                  href={`/solutions/${s.slug}`}
-                  className="bg-grid-navy-900 border border-grid-slate-800 rounded-2xl p-5 hover:border-grid-slate-700 hover:bg-grid-navy-800 transition-all group"
-                >
-                  <span
-                    className={`text-[10px] font-mono font-bold uppercase tracking-widest ${otherAccent.text}`}
-                  >
-                    Solution {s.number}
-                  </span>
-                  <h3 className="text-white font-bold text-sm mt-1.5 group-hover:text-grid-emerald-400 transition-colors">
-                    {s.title}
-                  </h3>
-                  <p className="text-grid-slate-500 text-xs font-mono mt-1 line-clamp-2">
-                    {s.tagline}
-                  </p>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

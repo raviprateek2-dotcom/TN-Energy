@@ -32,33 +32,33 @@ export function StateTariffMatrix() {
   };
 
   return (
-    <div className="bg-grid-navy-950 border border-grid-slate-800 rounded-2xl p-4 sm:p-6 shadow-2xl">
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
       {/* Header & Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-grid-slate-800">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
         <div>
           <div className="flex items-center space-x-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-grid-cyan-400" />
-            <h3 className="text-base sm:text-lg font-bold text-white font-sans">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
+            <h3 className="text-lg sm:text-xl font-black text-[#1C2C34]">
               State-Wise Open Access &amp; Tariff Surcharge Matrix
             </h3>
           </div>
-          <p className="text-xs text-grid-slate-400 font-mono mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-500 font-mono mt-1">
             SERC FY 2024–25 Orders &amp; MoP Green Energy Open Access (GEOA) Rules 2022
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
           {/* Voltage Selector */}
-          <div className="flex items-center space-x-1 bg-grid-navy-900 border border-grid-slate-800 rounded-xl p-1 text-[11px] font-mono">
-            <span className="text-grid-slate-500 px-2">Voltage:</span>
+          <div className="flex items-center space-x-1 bg-slate-100 border border-slate-200 rounded-xl p-1 text-xs font-mono">
+            <span className="text-slate-500 px-2 font-medium">Voltage:</span>
             {(["11kV", "33kV", "132kV"] as const).map((v) => (
               <button
                 key={v}
                 onClick={() => setSelectedVoltage(v)}
-                className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                className={`px-3 py-1 rounded-lg font-bold transition-all ${
                   selectedVoltage === v
-                    ? "bg-grid-cyan-500 text-grid-navy-950 shadow-sm"
-                    : "text-grid-slate-400 hover:text-white"
+                    ? "bg-[#F8BC26] text-[#1C2C34] shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
                 }`}
               >
                 {v}
@@ -68,25 +68,23 @@ export function StateTariffMatrix() {
 
           {/* Search Box */}
           <div className="relative">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-grid-slate-500 pointer-events-none" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
             <input
               type="text"
-              placeholder="Search state, hub, or Discom..."
+              placeholder="Search state, hub, or DISCOM..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 pr-3 py-1.5 bg-grid-navy-900 border border-grid-slate-800 rounded-xl text-xs text-white placeholder:text-grid-slate-600 font-mono focus:outline-none focus:border-grid-cyan-500 transition-colors w-full sm:w-64"
+              className="pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder:text-slate-400 font-mono focus:outline-none focus:border-emerald-600 transition-colors w-full sm:w-64"
             />
           </div>
         </div>
       </div>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* 1. Desktop High-Density Table (hidden on mobile, visible md+)      */}
-      {/* ------------------------------------------------------------------ */}
+      {/* 1. Desktop High-Density Table */}
       <div className="hidden md:block overflow-x-auto mt-4">
         <table className="w-full text-left text-xs font-mono">
           <thead>
-            <tr className="border-b border-grid-slate-800 text-grid-slate-400 uppercase text-[10px] tracking-wider bg-grid-navy-900/50">
+            <tr className="border-b border-slate-200 text-slate-500 uppercase text-[10px] tracking-wider bg-slate-50/80">
               <th className="py-3 px-3">State &amp; Nodal SLDC</th>
               <th className="py-3 px-3 text-right">HT Base Tariff</th>
               <th className="py-3 px-3 text-right">CSS (₹/kWh)</th>
@@ -98,7 +96,7 @@ export function StateTariffMatrix() {
               <th className="py-3 px-3 text-center">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-grid-slate-800/60">
+          <tbody className="divide-y divide-slate-100">
             {states.map((state) => {
               const isExpanded = expandedStateId === state.stateId;
               const wheeling = state.wheelingChargesPerKwh[selectedVoltage];
@@ -107,52 +105,52 @@ export function StateTariffMatrix() {
                 <React.Fragment key={state.stateId}>
                   <tr
                     onClick={() => toggleExpand(state.stateId)}
-                    className="hover:bg-grid-navy-900/60 cursor-pointer transition-colors"
+                    className="hover:bg-slate-50/80 cursor-pointer transition-colors"
                   >
                     <td className="py-3 px-3">
                       <div className="flex items-center space-x-2">
                         {isExpanded ? (
-                          <ChevronUp className="w-3.5 h-3.5 text-grid-cyan-400 flex-shrink-0" />
+                          <ChevronUp className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                         ) : (
-                          <ChevronDown className="w-3.5 h-3.5 text-grid-slate-500 flex-shrink-0" />
+                          <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
                         )}
                         <div>
-                          <span className="font-bold text-white block">{state.stateName}</span>
-                          <span className="text-[10px] text-grid-slate-500 truncate block max-w-xs">
+                          <span className="font-bold text-slate-900 block">{state.stateName}</span>
+                          <span className="text-[10px] text-slate-500 truncate block max-w-xs">
                             {state.sldcName.split("(")[0].trim()}
                           </span>
                         </div>
                       </div>
                     </td>
 
-                    <td className="py-3 px-3 text-right font-bold text-white tabular-nums">
+                    <td className="py-3 px-3 text-right font-bold text-slate-900 tabular-nums">
                       ₹{state.industrialGridTariffPerKwh.toFixed(2)}/kWh
                     </td>
 
-                    <td className="py-3 px-3 text-right text-grid-amber-400 font-bold tabular-nums">
+                    <td className="py-3 px-3 text-right text-amber-800 font-bold tabular-nums">
                       ₹{state.crossSubsidySurchargePerKwh.toFixed(2)}
                     </td>
 
-                    <td className="py-3 px-3 text-right text-purple-400 tabular-nums">
+                    <td className="py-3 px-3 text-right text-slate-700 tabular-nums">
                       ₹{state.additionalSurchargePerKwh.toFixed(2)}
                     </td>
 
-                    <td className="py-3 px-3 text-right text-grid-cyan-400 tabular-nums">
+                    <td className="py-3 px-3 text-right text-slate-800 font-medium tabular-nums">
                       ₹{wheeling.toFixed(2)}
                     </td>
 
-                    <td className="py-3 px-3 text-right text-grid-slate-300 tabular-nums">
+                    <td className="py-3 px-3 text-right text-slate-600 tabular-nums">
                       {state.stuLossesPercent.toFixed(2)}%
                     </td>
 
                     <td className="py-3 px-3 text-center">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-grid-emerald-500/10 text-grid-emerald-400 border border-grid-emerald-500/30">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
                         100% Exempt
                       </span>
                     </td>
 
                     <td className="py-3 px-3 text-center">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] bg-grid-navy-800 text-grid-slate-300 border border-grid-slate-700">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] bg-slate-100 text-slate-700 border border-slate-200">
                         {state.greenOpenAccessMinLoadKw} kW
                       </span>
                     </td>
@@ -160,7 +158,7 @@ export function StateTariffMatrix() {
                     <td className="py-3 px-3 text-center" onClick={(e) => e.stopPropagation()}>
                       <Link
                         href={`/tools/open-access-calculator`}
-                        className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-grid-emerald-500/10 border border-grid-emerald-500/30 text-grid-emerald-400 hover:bg-grid-emerald-500 hover:text-grid-navy-950 font-bold text-[11px] transition-all"
+                        className="inline-flex items-center space-x-1 px-3 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 hover:bg-emerald-600 hover:text-white font-bold text-[11px] transition-all"
                       >
                         <span>Simulate</span>
                         <ArrowRight className="w-3 h-3" />
@@ -170,18 +168,18 @@ export function StateTariffMatrix() {
 
                   {/* Expanded Detail Drawer */}
                   {isExpanded && (
-                    <tr className="bg-grid-navy-900/30 border-b border-grid-slate-800">
-                      <td colSpan={9} className="p-4">
+                    <tr className="bg-slate-50/60 border-b border-slate-200">
+                      <td colSpan={9} className="p-4 sm:p-5">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
-                          {/* Discoms */}
-                          <div className="bg-grid-navy-950/80 border border-grid-slate-800 rounded-xl p-3">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-grid-slate-500 block mb-2">
-                              Operating Distribution Utilities (Discoms)
+                          {/* DISCOMs */}
+                          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-2">
+                              Operating Distribution Utilities (DISCOMs)
                             </span>
                             <ul className="space-y-1">
                               {state.discomNames.map((d) => (
-                                <li key={d} className="text-grid-slate-300 text-[11px] flex items-start space-x-1.5">
-                                  <span className="text-grid-cyan-400 mt-0.5">›</span>
+                                <li key={d} className="text-slate-700 text-[11px] flex items-start space-x-1.5">
+                                  <span className="text-emerald-700 mt-0.5">›</span>
                                   <span>{d}</span>
                                 </li>
                               ))}
@@ -189,41 +187,41 @@ export function StateTariffMatrix() {
                           </div>
 
                           {/* Industrial Hubs */}
-                          <div className="bg-grid-navy-950/80 border border-grid-slate-800 rounded-xl p-3">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-grid-slate-500 block mb-2">
+                          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-2">
                               Key Industrial Demand Clusters
                             </span>
                             <div className="flex flex-wrap gap-1.5">
                               {state.keyIndustrialHubs.map((hub) => (
                                 <span
                                   key={hub}
-                                  className="px-2 py-0.5 rounded bg-grid-navy-900 border border-grid-slate-700 text-grid-slate-300 text-[10px]"
+                                  className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-slate-700 text-[10px]"
                                 >
                                   {hub}
                                 </span>
                               ))}
                             </div>
-                            <div className="mt-3 pt-2 border-t border-grid-slate-800 text-[10px] text-grid-slate-400">
-                              Banking Framework: <strong className="text-white">{state.bankingCycle}</strong> ({state.bankingChargesPercent}% fee)
+                            <div className="mt-3 pt-2 border-t border-slate-100 text-[10px] text-slate-500">
+                              Banking Framework: <strong className="text-slate-800">{state.bankingCycle}</strong> ({state.bankingChargesPercent}% fee)
                             </div>
                           </div>
 
                           {/* Regulatory Reference & Economics */}
-                          <div className="bg-grid-navy-950/80 border border-grid-slate-800 rounded-xl p-3 flex flex-col justify-between">
+                          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs flex flex-col justify-between">
                             <div>
-                              <span className="text-[10px] font-bold uppercase tracking-wider text-grid-slate-500 block mb-1">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
                                 Regulatory Basis
                               </span>
-                              <p className="text-[11px] text-grid-slate-300 leading-relaxed">
+                              <p className="text-[11px] text-slate-700 leading-relaxed">
                                 {state.regulatoryOrderRef}
                               </p>
-                              <div className="mt-2 text-[10px] text-grid-slate-500">
+                              <div className="mt-2 text-[10px] text-slate-500">
                                 SERC Portal:{" "}
                                 <a
                                   href={state.sercWebsite}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-grid-cyan-400 hover:underline inline-flex items-center"
+                                  className="text-emerald-700 font-semibold hover:underline inline-flex items-center"
                                 >
                                   {state.sercName.split("(")[0].trim()}
                                   <ExternalLink className="w-2.5 h-2.5 ml-1" />
@@ -231,9 +229,9 @@ export function StateTariffMatrix() {
                               </div>
                             </div>
 
-                            <div className="mt-3 pt-2 border-t border-grid-slate-800 flex items-center justify-between text-[11px]">
-                              <span className="text-grid-slate-400">Captive Savings:</span>
-                              <span className="text-grid-emerald-400 font-bold">
+                            <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                              <span className="text-slate-500">Captive Savings:</span>
+                              <span className="text-emerald-800 font-bold">
                                 Save ₹{(state.crossSubsidySurchargePerKwh + state.additionalSurchargePerKwh).toFixed(2)}/kWh (CSS+AS waiver)
                               </span>
                             </div>
@@ -249,9 +247,7 @@ export function StateTariffMatrix() {
         </table>
       </div>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* 2. Mobile Responsive Card Deck (< 768px view)                       */}
-      {/* ------------------------------------------------------------------ */}
+      {/* 2. Mobile Responsive Card Deck */}
       <div className="md:hidden space-y-3 mt-4">
         {states.map((state) => {
           const isExpanded = expandedStateId === state.stateId;
@@ -260,7 +256,7 @@ export function StateTariffMatrix() {
           return (
             <div
               key={state.stateId}
-              className="bg-grid-navy-900 border border-grid-slate-800 rounded-xl p-4 font-mono transition-colors"
+              className="bg-[#F9FAFB] border border-slate-200 rounded-xl p-4 font-mono transition-colors"
             >
               {/* Card Header */}
               <div
@@ -269,22 +265,22 @@ export function StateTariffMatrix() {
               >
                 <div>
                   <div className="flex items-center space-x-2">
-                    <span className="font-bold text-white text-sm font-sans">{state.stateName}</span>
-                    <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-grid-emerald-500/10 text-grid-emerald-400 border border-grid-emerald-500/30">
+                    <span className="font-black text-slate-900 text-sm font-sans">{state.stateName}</span>
+                    <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
                       Captive 100% Exempt
                     </span>
                   </div>
-                  <span className="text-[10px] text-grid-slate-400 block mt-0.5">
+                  <span className="text-[10px] text-slate-500 block mt-0.5">
                     {state.sldcName.split("(")[0].trim()}
                   </span>
                 </div>
                 <button
                   type="button"
                   aria-label={isExpanded ? "Collapse state details" : "Expand state details"}
-                  className="p-1 rounded text-grid-slate-400 hover:text-white"
+                  className="p-1 rounded text-slate-500 hover:text-slate-900"
                 >
                   {isExpanded ? (
-                    <ChevronUp className="w-4 h-4 text-grid-cyan-400" />
+                    <ChevronUp className="w-4 h-4 text-emerald-700" />
                   ) : (
                     <ChevronDown className="w-4 h-4" />
                   )}
@@ -292,28 +288,28 @@ export function StateTariffMatrix() {
               </div>
 
               {/* Card Metrics Grid */}
-              <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-grid-slate-800 text-xs">
-                <div className="bg-grid-navy-950 p-2 rounded-lg">
-                  <span className="text-[10px] text-grid-slate-500 block">HT Base Tariff</span>
-                  <span className="font-bold text-white tabular-nums">
+              <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-200 text-xs">
+                <div className="bg-white p-2.5 rounded-lg border border-slate-100">
+                  <span className="text-[10px] text-slate-500 block">HT Base Tariff</span>
+                  <span className="font-bold text-slate-900 tabular-nums">
                     ₹{state.industrialGridTariffPerKwh.toFixed(2)}/kWh
                   </span>
                 </div>
-                <div className="bg-grid-navy-950 p-2 rounded-lg">
-                  <span className="text-[10px] text-grid-slate-500 block">CSS (₹/kWh)</span>
-                  <span className="font-bold text-grid-amber-400 tabular-nums">
+                <div className="bg-white p-2.5 rounded-lg border border-slate-100">
+                  <span className="text-[10px] text-slate-500 block">CSS (₹/kWh)</span>
+                  <span className="font-bold text-amber-800 tabular-nums">
                     ₹{state.crossSubsidySurchargePerKwh.toFixed(2)}
                   </span>
                 </div>
-                <div className="bg-grid-navy-950 p-2 rounded-lg">
-                  <span className="text-[10px] text-grid-slate-500 block">Addl. Surcharge</span>
-                  <span className="font-bold text-purple-400 tabular-nums">
+                <div className="bg-white p-2.5 rounded-lg border border-slate-100">
+                  <span className="text-[10px] text-slate-500 block">Addl. Surcharge</span>
+                  <span className="font-bold text-slate-800 tabular-nums">
                     ₹{state.additionalSurchargePerKwh.toFixed(2)}
                   </span>
                 </div>
-                <div className="bg-grid-navy-950 p-2 rounded-lg">
-                  <span className="text-[10px] text-grid-slate-500 block">Wheeling ({selectedVoltage})</span>
-                  <span className="font-bold text-grid-cyan-400 tabular-nums">
+                <div className="bg-white p-2.5 rounded-lg border border-slate-100">
+                  <span className="text-[10px] text-slate-500 block">Wheeling ({selectedVoltage})</span>
+                  <span className="font-bold text-slate-900 tabular-nums">
                     ₹{wheeling.toFixed(2)}
                   </span>
                 </div>
@@ -321,25 +317,25 @@ export function StateTariffMatrix() {
 
               {/* Expanded Card Details */}
               {isExpanded && (
-                <div className="mt-3 pt-3 border-t border-grid-slate-800 space-y-3 text-xs animate-in fade-in duration-150">
-                  <div className="bg-grid-navy-950 p-3 rounded-lg">
-                    <span className="text-[10px] uppercase text-grid-slate-500 font-bold block mb-1">
-                      Operating Discoms
+                <div className="mt-3 pt-3 border-t border-slate-200 space-y-3 text-xs animate-in fade-in duration-150">
+                  <div className="bg-white p-3 rounded-lg border border-slate-200">
+                    <span className="text-[10px] uppercase text-slate-500 font-bold block mb-1">
+                      Operating DISCOMs
                     </span>
-                    <div className="text-[11px] text-grid-slate-300">
+                    <div className="text-[11px] text-slate-700">
                       {state.discomNames.join(", ")}
                     </div>
                   </div>
 
-                  <div className="bg-grid-navy-950 p-3 rounded-lg">
-                    <span className="text-[10px] uppercase text-grid-slate-500 font-bold block mb-1">
+                  <div className="bg-white p-3 rounded-lg border border-slate-200">
+                    <span className="text-[10px] uppercase text-slate-500 font-bold block mb-1">
                       Key Industrial Hubs
                     </span>
                     <div className="flex flex-wrap gap-1">
                       {state.keyIndustrialHubs.map((hub) => (
                         <span
                           key={hub}
-                          className="px-1.5 py-0.5 rounded bg-grid-navy-900 border border-grid-slate-800 text-[10px] text-grid-slate-300"
+                          className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-[10px] text-slate-700"
                         >
                           {hub}
                         </span>
@@ -347,7 +343,7 @@ export function StateTariffMatrix() {
                     </div>
                   </div>
 
-                  <div className="bg-grid-emerald-500/10 border border-grid-emerald-500/20 p-2.5 rounded-lg text-[11px] text-grid-emerald-400 flex items-center justify-between">
+                  <div className="bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg text-[11px] text-emerald-800 flex items-center justify-between">
                     <span>Captive Net Waiver (CSS + AS):</span>
                     <span className="font-bold">
                       Save ₹{(state.crossSubsidySurchargePerKwh + state.additionalSurchargePerKwh).toFixed(2)}/kWh
@@ -360,7 +356,7 @@ export function StateTariffMatrix() {
               <div className="mt-3">
                 <Link
                   href="/tools/open-access-calculator"
-                  className="w-full flex items-center justify-center space-x-1.5 py-2 rounded-lg bg-grid-emerald-500 text-grid-navy-950 font-bold text-xs shadow-md"
+                  className="w-full flex items-center justify-center space-x-1.5 py-2.5 rounded-xl bg-[#F8BC26] text-[#1C2C34] font-bold text-xs shadow-sm"
                 >
                   <Zap className="w-3.5 h-3.5" />
                   <span>Simulate {state.stateName} Plant Savings</span>
@@ -372,12 +368,12 @@ export function StateTariffMatrix() {
       </div>
 
       {/* Footer Note */}
-      <div className="mt-4 pt-3 border-t border-grid-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-grid-slate-500">
+      <div className="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-mono text-slate-500">
         <div className="flex items-center space-x-2">
-          <Shield className="w-3.5 h-3.5 text-grid-emerald-400" />
+          <Shield className="w-4 h-4 text-emerald-700" />
           <span>Section 42 of Electricity Act 2003: Group Captive SPVs are 100% exempt from CSS and Additional Surcharge across all states.</span>
         </div>
-        <Link href="/statutory-compliance" className="text-grid-cyan-400 hover:underline">
+        <Link href="/statutory-compliance" className="text-emerald-700 font-bold hover:underline">
           View SERC Tariff Orders →
         </Link>
       </div>

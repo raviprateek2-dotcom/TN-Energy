@@ -2,82 +2,70 @@
 @config "../../tailwind.config.ts";
 
 :root {
-  /* High-Stakes Light Mode: Crisp Technical Substation Dashboard */
-  --background: 220 20% 98%;
-  --foreground: 222 47% 11%;
+  /* Waaree-Inspired Clean White Canvas Theme */
+  --background: 0 0% 100%;       /* #FFFFFF */
+  --foreground: 202 30% 16%;     /* #1C2C34 */
 
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
+  --card: 0 0% 100%;             /* #FFFFFF */
+  --card-foreground: 202 30% 16%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 222 47% 11%;
+  --popover-foreground: 202 30% 16%;
 
-  /* Topnotch Grid Emerald */
-  --primary: 160 84% 39%;
-  --primary-foreground: 210 40% 98%;
+  /* Brand Solar Gold */
+  --primary: 43 93% 56%;         /* #F8BC26 */
+  --primary-foreground: 202 30% 16%;
 
-  /* Industrial Deep Slate */
-  --secondary: 220 14% 94%;
-  --secondary-foreground: 222 47% 11%;
+  /* Deep Corporate Slate */
+  --secondary: 210 20% 98%;      /* #F8FAFC */
+  --secondary-foreground: 202 30% 16%;
 
-  --muted: 220 14% 94%;
-  --muted-foreground: 215 16% 47%;
+  --muted: 220 14% 96%;          /* #F1F5F9 */
+  --muted-foreground: 215 16% 47%;/* #64748B */
 
-  --accent: 199 89% 48%;
-  --accent-foreground: 222 47% 11%;
+  --accent: 199 89% 48%;         /* #0EA5E9 */
+  --accent-foreground: 202 30% 16%;
 
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 210 40% 98%;
+  --destructive: 0 84% 60%;      /* #EF4444 */
+  --destructive-foreground: 0 0% 100%;
 
-  --border: 220 13% 89%;
-  --input: 220 13% 89%;
-  --ring: 160 84% 39%;
+  --border: 220 13% 91%;         /* #E2E8F0 */
+  --input: 220 13% 91%;
+  --ring: 43 93% 56%;            /* #F8BC26 */
 
-  --radius: 0.5rem;
+  --radius: 0.75rem;
 }
 
-.dark, :root[class~="dark"] {
-  /* 24/7 Grid Control Room / SLDC Dark Mode */
-  --background: 224 50% 6%;
-  --foreground: 210 40% 98%;
-
-  --card: 224 45% 9%;
-  --card-foreground: 210 40% 98%;
-
-  --popover: 224 45% 8%;
-  --popover-foreground: 210 40% 98%;
-
-  /* Kilowatt Neon Green (10B981) */
-  --primary: 160 84% 39%;
-  --primary-foreground: 224 50% 6%;
-
-  /* Control Panel Elevators */
-  --secondary: 224 35% 15%;
-  --secondary-foreground: 210 40% 98%;
-
-  --muted: 224 35% 15%;
-  --muted-foreground: 215 20% 65%;
-
-  /* Transmission Telemetry Cyan (06B6D4) */
-  --accent: 189 94% 43%;
-  --accent-foreground: 224 50% 6%;
-
-  /* Tripping / DSM Penalty Red */
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 210 40% 98%;
-
-  --border: 224 30% 18%;
-  --input: 224 30% 18%;
-  --ring: 160 84% 39%;
+/* Base HTML & Body Styles */
+html {
+  scroll-behavior: smooth;
 }
 
-/* Base Body Styles */
 body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
+  background-color: #FFFFFF;
+  color: #1C2C34;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fluid Heading Scale */
+h1, .h1 {
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+h2, .h2 {
+  font-size: clamp(1.75rem, 3.8vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+h3, .h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
 }
 
 /* Font Scaling for Accessibility */
@@ -91,143 +79,50 @@ html.text-scale-lg {
   font-size: 18px;
 }
 
-/* Multi-Theme Cascade Engine: Light Mode Overrides */
-.light body {
-  background-color: #F8FAFC !important;
-  color: #0F172A !important;
-}
-
-.light .bg-grid-navy-950 {
-  background-color: #F8FAFC !important;
-}
-
-.light .bg-grid-navy-900,
-.light .bg-grid-navy-900\/90,
-.light .bg-grid-navy-900\/80,
-.light .bg-grid-navy-900\/60,
-.light .bg-grid-navy-900\/98 {
-  background-color: #FFFFFF !important;
-}
-
-.light .bg-grid-navy-850,
-.light .bg-grid-navy-800 {
-  background-color: #F1F5F9 !important;
-}
-
-.light .bg-grid-navy-750,
-.light .bg-grid-navy-700 {
-  background-color: #E2E8F0 !important;
-}
-
-.light .text-white {
-  color: #0F172A !important;
-}
-
-.light .text-grid-slate-300 {
-  color: #334155 !important;
-}
-
-.light .text-grid-slate-400 {
-  color: #475569 !important;
-}
-
-.light .text-grid-slate-500 {
-  color: #64748B !important;
-}
-
-.light .border-grid-slate-800,
-.light .border-grid-slate-700,
-.light .border-grid-slate-700\/80,
-.light .border-grid-slate-900 {
-  border-color: #CBD5E1 !important;
-}
-
-.light .shadow-2xl,
-.light .shadow-xl {
-  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04) !important;
-}
-
-/* Multi-Theme Cascade Engine: High-Contrast Mode */
-.theme-high-contrast body {
-  background-color: #000000 !important;
-  color: #FFFFFF !important;
-}
-
-.theme-high-contrast .bg-grid-navy-950,
-.theme-high-contrast .bg-grid-navy-900,
-.theme-high-contrast .bg-grid-navy-850,
-.theme-high-contrast .bg-grid-navy-800 {
-  background-color: #000000 !important;
-  border-color: #F59E0B !important;
-}
-
-.theme-high-contrast .text-white,
-.theme-high-contrast .text-grid-slate-300,
-.theme-high-contrast .text-grid-slate-400 {
-  color: #FFFFFF !important;
-}
-
 /* Numeric Precision Enforcement for Power Sector Data */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
 
-/* Subtle Industrial Substation Grid Background */
-.bg-grid-pattern {
-  background-size: 32px 32px;
+/* Clean Technical Grid Background (White Mode) */
+.bg-grid-pattern-light {
+  background-size: 36px 36px;
   background-image: 
-    linear-gradient(to right, rgba(100, 116, 139, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(100, 116, 139, 0.08) 1px, transparent 1px);
+    linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
 }
 
-.dark .bg-grid-pattern {
-  background-image: 
-    linear-gradient(to right, rgba(30, 41, 59, 0.5) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(30, 41, 59, 0.5) 1px, transparent 1px);
+/* High-Contrast Interactive Focus Ring (WCAG 2.1 AA) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #F8BC26 !important;
+  outline-offset: 3px !important;
 }
 
-/* High-Density Dense Grid for 96-block charts */
-.bg-grid-dense {
-  background-size: 16px 16px;
-  background-image: 
-    linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
-}
-
-/* Custom Scrollbar for Market Data Tables */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #F8FAFC;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.25);
-  border-radius: 3px;
+  background: #CBD5E1;
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.45);
+  background: #94A3B8;
 }
 
-/* Grid Pulse Glow effects */
-.glow-emerald {
-  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.35);
-}
-
-.glow-cyan {
-  box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.35);
-}
-
-.glow-amber {
-  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.35);
-}
-
-/* Directional Energy Flow Stream Animation */
-@keyframes energyFlow {
+/* Directional Energy Flow Stream Animation (Light Theme) */
+@keyframes energyFlowLight {
   0% {
     stroke-dashoffset: 40;
   }
@@ -236,32 +131,25 @@ html.text-scale-lg {
   }
 }
 
-@keyframes energyPulseGlow {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.9;
+.animate-energy-flow-light {
+  stroke-dasharray: 6 5;
+  animation: energyFlowLight 1.4s linear infinite;
+}
+
+/* Mandatory WCAG 2.1 §2.3.3 Reduced Motion Protection */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
-  50% {
-    transform: scale(1.4);
-    opacity: 0.2;
-  }
 }
 
-.animate-energy-flow {
-  stroke-dasharray: 6 4;
-  animation: energyFlow 1.2s linear infinite;
-}
-
-.animate-energy-pulse-glow {
-  animation: energyPulseGlow 2.2s ease-in-out infinite;
-}
-
-/* ==========================================================================
-   Bankable PDF Print Stylesheet (@media print)
-   Isolates executive feasibility term sheets for CFOs, Boards & Banks.
-   ========================================================================== */
+/* Print Stylesheet for Bankable PDF Term Sheets */
 @media print {
-  /* Hide all UI layout and navigationchrome */
   header,
   footer,
   nav,
@@ -279,63 +167,41 @@ html.text-scale-lg {
     background: #FFFFFF !important;
     color: #111827 !important;
     font-size: 10pt !important;
-    line-height: 1.4 !important;
-    margin: 0 !important;
-    padding: 0 !important;
   }
 
-  /* Isolate modal content for crisp A4 paper delivery */
   #printable-term-sheet {
-    position: static !important;
-    visibility: visible !important;
     display: block !important;
     background: #FFFFFF !important;
     color: #111827 !important;
-    box-shadow: none !important;
-    border: 1px solid #E5E7EB !important;
+    border: 1px solid #D1D5DB !important;
     padding: 1.5rem !important;
     width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    page-break-inside: avoid;
   }
 
   #printable-term-sheet * {
     color: #111827 !important;
     border-color: #E5E7EB !important;
-    background: transparent !important;
+    background-color: transparent !important;
   }
 
-  #printable-term-sheet .text-grid-emerald-400,
-  #printable-term-sheet .text-grid-emerald-500,
-  #printable-term-sheet .text-grid-cyan-400 {
+  #printable-term-sheet .text-emerald-700,
+  #printable-term-sheet .text-grid-emerald-400 {
     color: #047857 !important;
-    font-weight: 700 !important;
-  }
-
-  #printable-term-sheet .text-grid-slate-400,
-  #printable-term-sheet .text-grid-slate-500 {
-    color: #4B5563 !important;
-  }
-
-  #printable-term-sheet table {
-    border-collapse: collapse !important;
-    width: 100% !important;
-  }
-
-  #printable-term-sheet th,
-  #printable-term-sheet td {
-    border: 1px solid #E5E7EB !important;
-    padding: 6px 8px !important;
-  }
-
-  #printable-term-sheet thead {
-    background-color: #F9FAFB !important;
-    font-weight: 700 !important;
+    font-weight: bold !important;
   }
 
   @page {
-    margin: 1.2cm;
+    margin: 1cm;
     size: A4 portrait;
+  }
+}
+
+/* 10-Second Hero Progress Keyframe */
+@keyframes heroProgress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
   }
 }

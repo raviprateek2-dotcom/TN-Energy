@@ -327,8 +327,7 @@ export function OpenAccessSimulator() {
     // 6. Cumulative 25-Year Projection & IRR
     // Assumes 2.5% annual DISCOM tariff inflation and 0.5% annual solar degradation
     let cumulative25YearSavingsInr = 0;
-    let discFactor = 1;
-    for (let yr = 1; yr <= 25; yr++) {
+        for (let yr = 1; yr <= 25; yr++) {
       const inflatedSavings =
         totalAnnualSavingsInr * Math.pow(1.025, yr - 1) * Math.pow(0.995, yr - 1);
       cumulative25YearSavingsInr += inflatedSavings;
@@ -1455,7 +1454,7 @@ Requesting formal technical diligence, SLDC standing clearance filing, and PPA t
                   </span>
                 </div>
                 <div className="text-right text-[10px] text-grid-slate-500">
-                  <span>Ref: TES-FEAS-{(Date.now() % 100000).toString().padStart(5, "0")}</span>
+                  <span>Ref: TES-FEAS-84920</span>
                   <span className="block mt-0.5">Valid: 30 Days</span>
                 </div>
               </div>

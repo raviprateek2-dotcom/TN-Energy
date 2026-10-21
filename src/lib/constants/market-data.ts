@@ -28,7 +28,7 @@ export function generate96BlockMarketData(): TimeBlockMarketData[] {
 
     let baseKwh = 3.8;
     let gdamDiff = -0.3; // Green power is often competitive during daytime solar
-    let rtmNoise = (Math.sin(b * 0.4) * 0.25);
+    const rtmNoise = Math.sin(b * 0.4) * 0.25;
 
     if (b >= 1 && b <= 24) {
       // 00:00 to 06:00 - Night valley

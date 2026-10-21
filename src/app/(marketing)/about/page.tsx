@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   Shield,
@@ -10,11 +11,22 @@ import {
   Phone,
   Mail,
   Award,
-  CheckCircle,
+  CheckCircle2,
   TrendingUp,
-  Globe,
+  Globe2,
+  ArrowRight,
+  Clock,
+  Sparkles,
+  Building,
+  PhoneCall,
+  Scale,
 } from "lucide-react";
 import { BRAND } from "@/lib/constants/brand";
+import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { PageDivider } from "@/components/ui/PageDivider";
+import { CornerIndustrialWatermark } from "@/components/ui/CornerIndustrialWatermark";
+import { AccreditationsShowcase } from "@/components/home/AccreditationsShowcase";
+import { SplitImageMergeSection } from "@/components/ui/SplitImageMergeSection";
 
 export const metadata: Metadata = {
   title: "About Us | Topnotch Energy Solutions – NOAR-Registered Power Trading Advisory",
@@ -53,15 +65,15 @@ const LEADERSHIP = [
 ];
 
 const MILESTONES = [
-  { year: "2015", event: "Founded in Ghaziabad, UP as a power trading advisory firm" },
-  { year: "2017", event: "Registered as NOAR Institutional Consultant on National Open Access Registry" },
-  { year: "2018", event: "First Group Captive Solar PPA signed – 6.8 MW for DS Group FMCG, Noida" },
-  { year: "2019", event: "Expanded to ABT 0.2s SEM metering infrastructure services; first SLDC telemetry project" },
-  { year: "2021", event: "Crossed ₹50 Cr cumulative annual savings facilitated for industrial clients" },
-  { year: "2022", event: "Post-MNRE Green Energy Open Access Rules (GoI 2022) – launched 100 kW GDAM rooftop advisory" },
-  { year: "2023", event: "Reached 14 state coverage; ₹100 Cr annual savings milestone; first HPX (Hindi Power Exchange) bidding client onboarded" },
-  { year: "2024", event: "Launched 24x7 NOC Bidding Desk for RTM real-time market participation" },
-  { year: "2025", event: "Onboarded 110+ active industrial consumers; total facilitated savings exceeding ₹185 Cr" },
+  { year: "2015", title: "Inception in Ghaziabad", event: "Founded in Ghaziabad, UP as an industrial power procurement and regulatory advisory firm." },
+  { year: "2017", title: "NOAR Registration", event: "Accredited as NOAR Institutional Consultant on the Ministry of Power National Open Access Registry." },
+  { year: "2018", title: "First Group Captive PPA", event: "Structured landmark 6.8 MW Group Captive Solar PPA for DS Group FMCG manufacturing campus in Noida." },
+  { year: "2019", title: "ABT Metering Division", event: "Commissioned dedicated ABT 0.2s SEM telemetry engineering team; executed first SLDC real-time telemetry bay." },
+  { year: "2021", title: "₹50 Cr Savings Milestone", event: "Crossed ₹50 Crores in cumulative annual power cost savings facilitated for steel and textile clients." },
+  { year: "2022", title: "GEOA 100 kW Rollout", event: "Pioneered Green Energy Open Access (GEOA 2022) adoption for SME manufacturing loads above 100 kW." },
+  { year: "2023", title: "14-State Network", event: "Reached active standing clearances across 14 state SLDCs; onboarded first HPX exchange bidding industrial client." },
+  { year: "2024", title: "24×7 NOC Bidding Desk", event: "Launched continuous 24×7 desk monitoring 48 RTM trading windows and real-time DSM frequency deviations." },
+  { year: "2025", title: "₹185 Cr+ Cumulative Savings", event: "Expanded portfolio to 110+ industrial enterprises with over ₹185 Crores in verified landed savings." },
 ];
 
 const ACCREDITATIONS = [
@@ -69,31 +81,31 @@ const ACCREDITATIONS = [
     icon: Shield,
     label: "NOAR Institutional Consultant",
     detail: "National Open Access Registry (Government of India, MoP)",
-    color: "text-grid-emerald-400",
+    badge: "Ministry of Power",
   },
   {
     icon: Award,
     label: "CERC Category-IV Advisory",
     detail: "Central Electricity Regulatory Commission, New Delhi",
-    color: "text-grid-cyan-400",
+    badge: "CERC Regulated",
   },
   {
-    icon: CheckCircle,
+    icon: CheckCircle2,
     label: "BEE Certified Energy Auditors",
     detail: "Bureau of Energy Efficiency, Ministry of Power",
-    color: "text-grid-amber-400",
+    badge: "Grade-A Certified",
   },
   {
     icon: Zap,
     label: "CEA 0.2s SEM Infrastructure",
     detail: "Central Electricity Authority – Special Energy Meter Standards",
-    color: "text-purple-400",
+    badge: "CEA Compliant",
   },
   {
-    icon: Globe,
+    icon: Globe2,
     label: "QCA – Pooling Substations",
     detail: "Qualified Coordinating Agency for Group Captive Renewable Plants",
-    color: "text-blue-400",
+    badge: "RLDC / SLDC",
   },
 ];
 
@@ -105,320 +117,319 @@ const COVERAGE_STATES = [
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-grid-navy-950 text-white">
-      {/* Page Hero */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800 overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-grid-navy-950 via-grid-navy-900/80 to-grid-navy-950 pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto">
-          <div className="max-w-3xl">
-            <span className="inline-block px-3 py-1 rounded-full bg-grid-emerald-500/10 border border-grid-emerald-500/30 text-grid-emerald-400 text-[11px] font-mono font-bold uppercase tracking-widest mb-4">
-              About Us
-            </span>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight">
-              India&apos;s Enterprise{" "}
-              <span className="text-grid-emerald-400">Power Trading</span> &amp;{" "}
-              <span className="text-grid-cyan-400">Open Access</span> Advisory
+    <main className="min-h-screen bg-white text-slate-800">
+      
+      {/* =========================================================================
+          HERO SECTION WITH CINEMATIC DISPATCH PHOTOGRAPHY
+         ========================================================================= */}
+      <section className="relative min-h-[55vh] flex items-center justify-center overflow-hidden bg-[#0A0F1D] py-20 px-4 sm:px-6 lg:px-8 text-white">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=2000&q=80"
+            alt="Corporate clean energy infrastructure"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center opacity-30 scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1D]/95 via-[#0A0F1D]/85 to-[#0A0F1D]/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1D] via-transparent to-transparent" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto w-full">
+          <div className="max-w-3xl space-y-4">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-mono font-bold uppercase tracking-wider">
+              <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+              <span>Headquartered in Ghaziabad, UP • Serving 14 States</span>
+            </div>
+            
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
+              Pioneering India&apos;s Industrial{" "}
+              <span className="text-[#F8BC26]">
+                Open Access Revolution
+              </span>
             </h1>
-            <p className="mt-4 text-grid-slate-300 text-base leading-relaxed max-w-2xl">
-              Topnotch Energy Solutions is a NOAR-registered institutional consultant and CERC Category-IV advisory
-              firm headquartered in Ghaziabad, Uttar Pradesh. Since 2015, we have been enabling industrial consumers
-              across 14 Indian states to reduce their power cost by 18%–42% through IEX/PXIL algorithmic trading,
-              Group Captive renewable procurement, and end-to-end SLDC/RLDC Open Access execution.
+            
+            <p className="text-slate-200 text-sm sm:text-base leading-relaxed font-sans max-w-2xl">
+              Topnotch Energy Solutions is a NOAR-registered institutional consultant and CERC Category-IV power advisory firm. Since 2015, we have enabled heavy manufacturing and commercial power consumers across 14 Indian states to reduce landed electricity costs by 18%–42% through IEX/PXIL exchange trading, Group Captive solar-wind procurement, and end-to-end SLDC/RLDC Open Access execution.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+
+            <div className="pt-4 flex flex-wrap items-center gap-4">
               <Link
                 href="/contact"
-                className="px-5 py-3 rounded-xl bg-grid-emerald-500 hover:bg-grid-emerald-400 text-grid-navy-950 font-bold font-mono text-sm transition-all shadow-lg shadow-grid-emerald-500/20"
+                className="px-8 py-4 rounded-full bg-[#F8BC26] hover:bg-[#eab308] text-[#1C2C34] font-bold text-xs uppercase tracking-wider transition-all shadow-xl active:scale-95 flex items-center space-x-2"
               >
-                Schedule a Tariff Audit
+                <span>Schedule a Confidential Audit</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/tools/open-access-calculator"
-                className="px-5 py-3 rounded-xl border border-grid-slate-700 bg-grid-navy-900 hover:bg-grid-navy-800 text-white font-mono text-sm font-bold transition-colors"
+                className="px-6 py-4 rounded-full border border-white/30 bg-white/10 hover:bg-white/20 text-white font-mono text-xs font-bold transition-colors"
               >
-                Plant ROI Calculator
+                Calculate Factory ROI
               </Link>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Key Metrics */}
-      <section className="py-14 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            { value: "₹185 Cr+", label: "Total Savings Facilitated", sub: "Across 110+ active clients" },
-            { value: "14", label: "States Operational Coverage", sub: "SLDC/RLDC standing clearances" },
-            { value: "40+", label: "ABT 0.2s SEM Installations", sub: "CEA-standard Special Energy Meters" },
-            { value: "10 Years", label: "Continuous Operations", sub: "Since 2015, Ghaziabad, UP" },
-          ].map((m) => (
-            <div key={m.label} className="bg-grid-navy-900 border border-grid-slate-800 rounded-2xl p-5">
-              <div className="text-2xl sm:text-3xl font-extrabold text-grid-emerald-400 font-mono tabular-nums">
-                {m.value}
-              </div>
-              <div className="text-white font-bold text-sm mt-1">{m.label}</div>
-              <div className="text-grid-slate-500 text-[11px] font-mono mt-0.5">{m.sub}</div>
-            </div>
-          ))}
+        {/* Waaree Fluid Wave Divider: Dark Hero into Ghost Slate Metrics */}
+        <div className="absolute bottom-0 inset-x-0 pointer-events-none">
+          <PageDivider type="layered-wave" fillColor="#F9FAFB" position="bottom" height={55} />
         </div>
       </section>
 
-      {/* Mission & Philosophy */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-start">
-          <div>
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-grid-cyan-400">
-              Our Mission
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2 leading-tight">
-              Making India&apos;s Power Markets Work for Heavy Industry
-            </h2>
-            <p className="text-grid-slate-300 text-sm leading-relaxed mt-4">
-              The Indian power ecosystem — with its 96 time-blocks, IEX/PXIL market mechanisms, Deviation Settlement
-              Mechanism (DSM) under CERC regulations, and complex Open Access framework governed by Sections 38–42 of
-              the Electricity Act 2003 — demands specialist expertise that most industrial enterprises do not have in-house.
-            </p>
-            <p className="text-grid-slate-300 text-sm leading-relaxed mt-3">
-              Topnotch Energy Solutions bridges this gap. We act as the in-house power procurement desk for our clients:
-              executing 96-block DAM, GDAM, and RTM bids on IEX and PXIL, negotiating bilateral PPAs and banking
-              contracts, filing SLDC standing clearance applications, managing ABT metering infrastructure, and
-              continuously optimising the blended procurement tariff against the prevailing DISCOM retail tariff schedule.
-            </p>
-            <div className="mt-6 space-y-3">
-              {[
-                "CERC (Power Market) Regulations 2021 – full compliance advisory",
-                "Electricity Act 2003 Sections 38–42 – Open Access & captive rights",
-                "Ministry of Power Green Energy Open Access Rules, 2022",
-                "CEA (Installation & Operation of Meters) Amendment Regulations 2019",
-                "CERC (Deviation Settlement Mechanism) Regulations 2022",
-              ].map((item) => (
-                <div key={item} className="flex items-start space-x-2 text-xs text-grid-slate-300">
-                  <CheckCircle className="w-4 h-4 text-grid-emerald-400 flex-shrink-0 mt-0.5" />
-                  <span>{item}</span>
-                </div>
-              ))}
+      {/* =========================================================================
+          KEY METRICS BAND
+         ========================================================================= */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#F9FAFB] border-b border-slate-200">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm">
+            <div className="text-3xl sm:text-4xl font-black text-emerald-700 font-mono">
+              <AnimatedCounter value={185} prefix="₹" suffix=" Cr+" />
             </div>
+            <div className="text-[#1C2C34] font-bold text-sm mt-1.5">Landed Cost Savings</div>
+            <div className="text-slate-500 text-xs font-mono mt-0.5">Across 110+ manufacturing clients</div>
           </div>
 
-          <div className="space-y-5">
-            <div className="bg-grid-navy-900 border border-grid-slate-800 rounded-2xl p-6">
-              <h3 className="text-white font-bold text-sm mb-3 flex items-center space-x-2">
-                <BarChart3 className="w-4 h-4 text-grid-cyan-400" />
-                <span>Why IEX Over DISCOM for Industrial Consumers?</span>
-              </h3>
-              <p className="text-grid-slate-400 text-xs leading-relaxed">
-                Industrial DISCOM tariffs across UP, Haryana, and Rajasthan averaged ₹8.20–₹9.80/kWh in FY 2024-25
-                (including fixed charges, fuel surcharge, and wheeling). IEX DAM Solar Hour slots (Blocks 25–64, 06:15
-                to 16:00 IST) cleared at ₹2.85–₹3.40/kWh in the same period — a direct 58%–65% tariff reduction on
-                replacement units, before accounting for wheeling charges and CSS.
-              </p>
+          <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm">
+            <div className="text-3xl sm:text-4xl font-black text-[#1C2C34] font-mono">
+              <AnimatedCounter value={14} suffix=" States" />
             </div>
-            <div className="bg-grid-navy-900 border border-grid-slate-800 rounded-2xl p-6">
-              <h3 className="text-white font-bold text-sm mb-3 flex items-center space-x-2">
-                <TrendingUp className="w-4 h-4 text-grid-amber-400" />
-                <span>Group Captive vs. Third-Party Open Access</span>
-              </h3>
-              <p className="text-grid-slate-400 text-xs leading-relaxed">
-                Under Section 9 of the Electricity Act, Group Captive plants (minimum 26% equity by captive user group,
-                51% consumption by members) are fully exempt from Cross-Subsidy Surcharge (CSS) and Additional Surcharge
-                (AS) — the two largest cost components that make Third-Party Open Access economics marginal for most
-                states. A 6 MW Group Captive Solar farm delivering power at ₹3.85/kWh all-in (including wheeling at
-                33kV) versus a DISCOM rate of ₹8.50/kWh yields a landed saving of ₹4.65/kWh.
-              </p>
+            <div className="text-[#1C2C34] font-bold text-sm mt-1.5">SLDC Regulatory Coverage</div>
+            <div className="text-slate-500 text-xs font-mono mt-0.5">Standing clearances &amp; GNA network</div>
+          </div>
+
+          <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm">
+            <div className="text-3xl sm:text-4xl font-black text-emerald-700 font-mono">
+              <AnimatedCounter value={40} suffix="+" />
             </div>
+            <div className="text-[#1C2C34] font-bold text-sm mt-1.5">ABT 0.2s SEM Bays</div>
+            <div className="text-slate-500 text-xs font-mono mt-0.5">Installed with AMR SCADA modems</div>
+          </div>
+
+          <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm">
+            <div className="text-3xl sm:text-4xl font-black text-amber-600 font-mono">
+              <AnimatedCounter value={380} suffix="+ MW" />
+            </div>
+            <div className="text-[#1C2C34] font-bold text-sm mt-1.5">Open Access Portfolio</div>
+            <div className="text-slate-500 text-xs font-mono mt-0.5">Active schedule management</div>
           </div>
         </div>
       </section>
 
-      {/* Leadership Team */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-grid-emerald-400">
-              Leadership Team
+      {/* =========================================================================
+          STATUTORY ACCREDITATIONS & REGULATORY STANDING (ANIMATED SHOWCASE)
+         ========================================================================= */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-200 bg-white relative overflow-hidden">
+        <CornerIndustrialWatermark type="substation" position="top-right" size={320} opacity={0.06} />
+        <CornerIndustrialWatermark type="transmission-tower" position="bottom-left" size={300} opacity={0.06} />
+        <div className="max-w-7xl mx-auto relative z-10 space-y-12">
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <span className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#D97706]">
+              Regulatory Credentials
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
-              Specialists in Indian Power Markets
+            <h2 className="text-2xl sm:text-4xl font-black text-[#1C2C34] tracking-tight">
+              Institutional Licences &amp; Regulatory Standing
             </h2>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans">
+              Our certifications from the Ministry of Power, CERC, and CEA guarantee compliance with every statutory rule.
+            </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {LEADERSHIP.map((leader) => (
+
+          <AccreditationsShowcase />
+        </div>
+      </section>
+
+      {/* =========================================================================
+          LEADERSHIP TEAM
+         ========================================================================= */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#F9FAFB] border-b border-slate-200 relative overflow-hidden">
+        <CornerIndustrialWatermark type="windmills" position="top-right" size={300} opacity={0.05} />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+            <span className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#D97706]">
+              Subject Matter Experts
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black text-[#1C2C34] tracking-tight">
+              Power Trading Floor Leadership
+            </h2>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans">
+              Experienced market dispatchers, certified energy auditors, and regulatory liaisons managing industrial portfolios.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {LEADERSHIP.map((leader, idx) => (
               <div
-                key={leader.name}
-                className="bg-grid-navy-900 border border-grid-slate-800 rounded-2xl p-6 hover:border-grid-slate-700 transition-colors"
+                key={idx}
+                className="bg-white rounded-3xl border border-slate-200/90 p-8 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6"
               >
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-grid-emerald-500/20 to-grid-cyan-600/20 border border-grid-emerald-500/30 flex items-center justify-center mb-4">
-                  <Users className="w-6 h-6 text-grid-emerald-400" />
-                </div>
-                <h3 className="text-white font-extrabold text-sm">{leader.name}</h3>
-                <p className="text-grid-cyan-400 font-mono text-[11px] mt-0.5">{leader.role}</p>
-                <p className="text-grid-slate-500 font-mono text-[10px] mt-0.5">{leader.credentials}</p>
-                <p className="text-grid-slate-300 text-xs leading-relaxed mt-3">{leader.bio}</p>
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {leader.expertise.map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-2 py-0.5 rounded-md bg-grid-navy-800 border border-grid-slate-700 text-grid-slate-400 font-mono text-[10px]"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline / Milestones */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-grid-amber-400">
-              Corporate Timeline
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">10 Years of Power Market Leadership</h2>
-          </div>
-          <div className="relative pl-8 border-l border-grid-slate-800 space-y-6">
-            {MILESTONES.map((m) => (
-              <div key={m.year} className="relative">
-                <div className="absolute -left-[37px] w-6 h-6 rounded-full bg-grid-navy-900 border-2 border-grid-emerald-500 flex items-center justify-center">
-                  <div className="w-2 h-2 rounded-full bg-grid-emerald-400" />
-                </div>
-                <div className="flex items-start gap-4">
-                  <span className="text-grid-emerald-400 font-mono font-extrabold text-sm tabular-nums w-12 flex-shrink-0">
-                    {m.year}
-                  </span>
-                  <p className="text-grid-slate-300 text-sm leading-relaxed">{m.event}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Accreditations */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-grid-cyan-400">
-              Accreditations &amp; Registrations
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">Regulatory Standing</h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {ACCREDITATIONS.map((acc) => {
-              const Icon = acc.icon;
-              return (
-                <div
-                  key={acc.label}
-                  className="bg-grid-navy-900 border border-grid-slate-800 rounded-2xl p-5 flex items-start space-x-4 hover:border-grid-slate-700 transition-colors"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-grid-navy-800 border border-grid-slate-700 flex items-center justify-center flex-shrink-0">
-                    <Icon className={`w-5 h-5 ${acc.color}`} />
+                <div className="space-y-4">
+                  <div className="w-14 h-14 rounded-2xl bg-[#1C2C34] text-[#F8BC26] flex items-center justify-center font-black text-xl font-mono shadow-md">
+                    {leader.name.split(" ")[1]?.charAt(0) || "T"}
                   </div>
+
                   <div>
-                    <div className="text-white font-bold text-sm">{acc.label}</div>
-                    <div className="text-grid-slate-400 text-xs font-mono mt-0.5">{acc.detail}</div>
+                    <h3 className="text-xl font-bold text-[#1C2C34] tracking-tight">{leader.name}</h3>
+                    <div className="text-xs font-mono text-[#D97706] font-bold mt-0.5">{leader.role}</div>
+                    <div className="text-[11px] font-mono text-slate-400 mt-1">{leader.credentials}</div>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
+                    {leader.bio}
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-slate-100 space-y-1.5">
+                  <span className="text-[10px] font-mono uppercase text-slate-400 font-bold block">
+                    Core Specializations:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {leader.expertise.map((exp, eIdx) => (
+                      <span
+                        key={eIdx}
+                        className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200"
+                      >
+                        {exp}
+                      </span>
+                    ))}
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* State Coverage */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-grid-emerald-400">
-              Geographic Coverage
+      {/* =========================================================================
+          INSTITUTIONAL TIMELINE / MILESTONES
+         ========================================================================= */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white border-b border-slate-200">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+            <span className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#D97706]">
+              A Decade of Impact
             </span>
-            <h2 className="text-2xl font-extrabold text-white mt-2">14-State SLDC/RLDC Operational Network</h2>
-            <p className="text-grid-slate-400 text-sm font-mono mt-2">
-              Standing clearances and registered clients across Northern, Western &amp; Southern regions
-            </p>
+            <h2 className="text-2xl sm:text-4xl font-black text-[#1C2C34] tracking-tight">
+              Company Milestones &amp; Evolution
+            </h2>
           </div>
-          <div className="flex flex-wrap gap-2 justify-center">
+
+          <div className="space-y-6">
+            {MILESTONES.map((m, idx) => (
+              <div
+                key={idx}
+                className="flex items-start space-x-6 p-6 rounded-3xl bg-[#F9FAFB] border border-slate-200/90 shadow-2xs"
+              >
+                <div className="w-16 h-16 rounded-2xl bg-[#1C2C34] text-[#F8BC26] flex items-center justify-center font-black text-sm font-mono flex-shrink-0 shadow-md">
+                  {m.year}
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-base font-bold text-[#1C2C34]">{m.title}</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">{m.event}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          24x7 NOC DISPATCH FLOOR & TRADING OPERATIONS (HALF-MERGING IMAGE ON WHITE)
+         ========================================================================= */}
+      <SplitImageMergeSection
+        badgeText="Ghaziabad NOC Operations Floor"
+        badgeIcon={Zap}
+        title={
+          <>
+            Direct Access to India&apos;s <span className="text-[#D97706]">Power Trading Floor</span>
+          </>
+        }
+        description="Our central NOC and power bidding desk in Ghaziabad monitors real-time 15-minute grid frequency dynamics, IEX/PXIL Day-Ahead and Real-Time Market order books, and SLDC scheduling telemetry 24 hours a day, 365 days a year."
+        bullets={[
+          "Live 96-Block Algorithmic Bidding Optimization",
+          "Automated DSM Deviation Settlement Protection",
+          "Direct Hotline to Senior Licensed Power Traders",
+          "Daily SLDC Scheduling & Reconciliation Audits",
+        ]}
+        imageUrl="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80"
+        imageAlt="Modern high-tech financial operations and power trading floor"
+        primaryCta={{
+          label: "Call 24x7 NOC Trading Floor",
+          href: `tel:${BRAND.contacts.phonePrimary}`,
+          icon: PhoneCall,
+        }}
+        secondaryCta={{
+          label: "View Live Market Intelligence",
+          href: "/market-intelligence",
+          icon: BarChart3,
+        }}
+        stats={[
+          { value: "24x7", label: "NOC Floor", sublabel: "Continuous Bidding" },
+          { value: "48 Windows", label: "RTM Auctions", sublabel: "Monitored Daily" },
+          { value: "50.0 Hz", label: "Frequency Band", sublabel: "Grid Synchronized" },
+        ]}
+      />
+
+      {/* =========================================================================
+          PAN-INDIA COVERAGE STATES
+         ========================================================================= */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#F9FAFB] border-b border-slate-200">
+        <div className="max-w-7xl mx-auto text-center space-y-6">
+          <span className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#D97706]">
+            Pan-India Standing Clearances
+          </span>
+          <h2 className="text-2xl sm:text-4xl font-black text-[#1C2C34] tracking-tight">
+            14 Industrial States Under Active Management
+          </h2>
+          <div className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto pt-4">
             {COVERAGE_STATES.map((state) => (
               <span
                 key={state}
-                className="px-3 py-1.5 rounded-lg bg-grid-navy-900 border border-grid-slate-800 text-grid-slate-300 font-mono text-xs hover:border-grid-emerald-500/40 hover:text-white transition-colors"
+                className="px-4 py-2 rounded-2xl bg-white border border-slate-200 shadow-2xs font-mono text-xs font-bold text-slate-800"
               >
-                {state}
+                📍 {state}
               </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* HQ & Contact */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10">
-          <div>
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-grid-cyan-400">
-              Registered Office
-            </span>
-            <h2 className="text-2xl font-extrabold text-white mt-2">Headquartered in Ghaziabad, UP</h2>
-            <p className="text-grid-slate-400 text-sm font-mono mt-3">
-              Topnotch Energy Solutions operates from its registered office in Ghaziabad, with proximity to SLDC
-              (Uttar Pradesh) in Lucknow and RLDC (Northern Region) in New Delhi — enabling fast-turnaround
-              regulatory coordination.
-            </p>
-            <div className="mt-6 space-y-3">
-              <div className="flex items-start space-x-3 text-sm">
-                <MapPin className="w-5 h-5 text-grid-cyan-400 flex-shrink-0 mt-0.5" />
-                <span className="text-grid-slate-300 font-mono text-xs">
-                  {BRAND.headquarters.fullAddress}
-                </span>
-              </div>
-              <div className="flex items-center space-x-3 text-sm">
-                <Phone className="w-5 h-5 text-grid-emerald-400 flex-shrink-0" />
-                <div className="font-mono text-xs">
-                  <a href={`tel:${BRAND.contacts.phonePrimary}`} className="text-white hover:text-grid-emerald-400 transition-colors block">
-                    {BRAND.contacts.phonePrimary}
-                  </a>
-                  <a href={`tel:${BRAND.contacts.phoneSecondary}`} className="text-grid-slate-400 hover:text-grid-emerald-400 transition-colors block">
-                    {BRAND.contacts.phoneSecondary}
-                  </a>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3 text-sm">
-                <Mail className="w-5 h-5 text-grid-amber-400 flex-shrink-0" />
-                <a href={`mailto:${BRAND.contacts.emailGeneral}`} className="text-grid-slate-300 hover:text-white font-mono text-xs transition-colors">
-                  {BRAND.contacts.emailGeneral}
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="bg-grid-navy-900 border border-grid-slate-800 rounded-2xl p-6">
-            <h3 className="text-white font-extrabold text-base mb-4">24×7 Bidding Desk Access</h3>
-            <p className="text-grid-slate-400 text-xs font-mono leading-relaxed mb-6">
-              India&apos;s electricity markets operate in real-time. Our 24×7 NOC (Network Operations Center) monitors
-              ABT meter telemetry, IEX RTM block windows, and SLDC scheduling in continuous shifts — ensuring your
-              industrial plant is never exposed to an avoidable DSM penalty or missed a low-priced RTM arbitrage window.
-            </p>
-            <div className="space-y-2">
-              <Link
-                href="/contact"
-                className="block w-full py-3 rounded-xl bg-grid-emerald-500 hover:bg-grid-emerald-400 text-grid-navy-950 font-bold font-mono text-sm transition-all text-center shadow-lg shadow-grid-emerald-500/20"
-              >
-                Schedule a Tariff Audit
-              </Link>
-              <a
-                href={BRAND.contacts.whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full py-3 rounded-xl border border-grid-slate-700 bg-grid-navy-800 hover:bg-grid-navy-700 text-white font-mono text-sm font-bold transition-colors text-center"
-              >
-                WhatsApp 24×7 Desk
-              </a>
-            </div>
+      {/* Waaree Fluid Wave Divider: Ghost Slate into Dark Navy Pre-Footer */}
+      <PageDivider type="layered-wave" fillColor="#0F172A" bgColor="#F9FAFB" position="bottom" height={60} />
+
+      {/* =========================================================================
+          PRE-FOOTER CTA
+         ========================================================================= */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#0F172A] text-white">
+        <div className="max-w-3xl mx-auto text-center space-y-4">
+          <span className="text-xs font-mono uppercase tracking-[0.25em] font-bold text-[#F8BC26]">
+            Confidential Consultation
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+            Speak Directly with Our Power Trading Desk
+          </h2>
+          <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto leading-relaxed font-sans">
+            Connect directly with our senior energy trading floor in Ghaziabad or schedule an initial 15-minute consultation.
+          </p>
+          <div className="pt-6 flex flex-wrap gap-4 justify-center">
+            <Link
+              href="/contact"
+              className="px-8 py-4 rounded-full bg-[#F8BC26] hover:bg-[#e6ab1e] text-[#1C2C34] font-bold text-xs uppercase tracking-wider transition-all shadow-xl active:scale-95 flex items-center space-x-2"
+            >
+              <span>Schedule Strategic Consultation →</span>
+            </Link>
+            <a
+              href={`tel:${BRAND.contacts.phonePrimary}`}
+              className="px-6 py-4 rounded-full border border-slate-600 hover:border-white text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center space-x-2"
+            >
+              <PhoneCall className="w-4 h-4 text-[#F8BC26]" />
+              <span>Call 24x7 NOC Floor</span>
+            </a>
           </div>
         </div>
       </section>
+
     </main>
   );
 }

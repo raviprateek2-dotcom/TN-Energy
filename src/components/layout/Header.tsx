@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   Zap,
@@ -9,7 +10,6 @@ import {
   Sun,
   ShieldCheck,
   Calculator,
-  Briefcase,
   ChevronDown,
   PhoneCall,
   Menu,
@@ -19,9 +19,34 @@ import {
   Layers,
   ArrowRight,
   ExternalLink,
+  Phone,
+  MessageSquare,
+  Sparkles,
 } from "lucide-react";
 import { BRAND } from "@/lib/constants/brand";
 import { CommandPalette } from "@/components/layout/CommandPalette";
+
+function getIstTimeBlock() {
+  const now = new Date();
+  const utcMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+  const istMinutes = (utcMinutes + 330) % 1440;
+  const block = Math.floor(istMinutes / 15) + 1;
+
+  const startHour = Math.floor((block - 1) / 4);
+  const startMin = ((block - 1) % 4) * 15;
+  const endHour = Math.floor(block / 4);
+  const endMin = (block % 4) * 15;
+
+  const pad = (n: number) => n.toString().padStart(2, "0");
+  const timeWindow = `${pad(startHour)}:${pad(startMin)}–${pad(endHour)}:${pad(endMin)} IST`;
+
+  let session = "Base Load";
+  if (block >= 25 && block <= 64) session = "Solar GDAM Generation";
+  else if (block >= 73 && block <= 90) session = "Evening Peak (ToD Active)";
+  else if (block >= 91 || block <= 24) session = "Night Off-Peak Valley";
+
+  return { block, timeWindow, session };
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -29,7 +54,27 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
 
-  // Close mega menu when clicking outside
+  // Real-time IST 15-minute time-block state
+  const [timeBlock, setTimeBlock] = useState({
+    block: 37,
+    timeWindow: "09:00–09:15 IST",
+    session: "Solar GDAM Generation",
+  });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTimeBlock(getIstTimeBlock());
+    }, 0);
+    const interval = setInterval(() => {
+      setTimeBlock(getIstTimeBlock());
+    }, 30000);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Close mega menu on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (navRef.current && !navRef.current.contains(event.target as Node)) {
@@ -40,115 +85,214 @@ export function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Close on route change
+  // Close menus on route change
   useEffect(() => {
-    setActiveMegaMenu(null);
-    setMobileMenuOpen(false);
+    const timer = setTimeout(() => {
+      setActiveMegaMenu(null);
+      setMobileMenuOpen(false);
+    }, 0);
+    return () => clearTimeout(timer);
   }, [pathname]);
 
   const toggleMegaMenu = (menu: string) => {
     setActiveMegaMenu(activeMegaMenu === menu ? null : menu);
   };
 
+  // Dedicated B2B Portal has its own cockpit navigation shell
+  if (pathname?.startsWith("/portal")) {
+    return null;
+  }
+
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-grid-navy-950/90 border-b border-grid-slate-800 transition-colors">
+    <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-xl border-b border-slate-200/70 shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all">
+      {/* =========================================================================
+          TOP UTILITY & REAL-TIME DISPATCH TELEMETRY STRIP
+         ========================================================================= */}
+      <div className="bg-slate-50/90 border-b border-slate-100 py-1.5 px-4 sm:px-6 lg:px-8 text-xs font-mono text-slate-600">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          {/* Left: 24x7 NOC Hotline & Accreditation */}
+          <div className="flex items-center space-x-3 truncate">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex-shrink-0">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] mr-1.5 animate-pulse" />
+              <span>NOC DESK 24x7</span>
+            </span>
+            <a
+              href={`tel:${BRAND.contacts.phonePrimary}`}
+              className="flex items-center hover:text-[#1C2C34] transition-colors font-mono tabular-nums font-semibold flex-shrink-0 text-slate-700"
+              title="Direct line to 24x7 Bidding Floor"
+            >
+              <Phone className="w-3 h-3 mr-1 text-[#D97706]" />
+              <span>Hotline: {BRAND.contacts.phonePrimary}</span>
+            </a>
+            <span className="hidden md:inline text-slate-300">|</span>
+            <span className="hidden md:inline text-slate-500 text-[11px] truncate">
+              CERC Category-IV Regulated • POSOCO / NOAR Institutional Standing
+            </span>
+          </div>
+
+          {/* Right: Live 15-Minute Settlement Block & WhatsApp */}
+          <div className="flex items-center space-x-3 ml-auto text-[11px] flex-shrink-0">
+            <div className="hidden sm:flex items-center space-x-1.5 bg-white px-3 py-0.5 rounded-full border border-slate-200 shadow-2xs">
+              <span className="text-slate-400 font-mono">IST Settlement:</span>
+              <span className="font-bold text-[#1C2C34]">Block #{timeBlock.block}</span>
+              <span className="text-slate-400 font-mono">({timeBlock.timeWindow})</span>
+              <span className="text-emerald-700 font-bold font-mono">• 50.012 Hz</span>
+            </div>
+
+            <a
+              href={BRAND.contacts.whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-[#15803D] font-bold border border-emerald-200/70 transition-colors"
+            >
+              <MessageSquare className="w-3 h-3 text-[#25D366]" />
+              <span>WhatsApp Desk</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* =========================================================================
+          MAIN NAVIGATION BAR (WAAREE-GRADE MODERN ARCHITECTURE)
+         ========================================================================= */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={navRef}>
-        <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="flex items-center justify-between h-20">
           
-          {/* Brand Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-grid-emerald-500 via-grid-cyan-600 to-grid-navy-800 p-0.5 shadow-lg group-hover:scale-105 transition-transform">
-              <div className="w-full h-full bg-grid-navy-950 rounded-[7px] flex items-center justify-center">
-                <Zap className="w-5 h-5 text-grid-emerald-400 group-hover:text-grid-cyan-300 transition-colors" />
-              </div>
+          {/* Brand Logo & Precision Mark */}
+          <Link href="/" className="flex items-center space-x-3 group flex-shrink-0 mr-4">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#F8BC26] to-[#E5A812] flex items-center justify-center text-[#1C2C34] shadow-[0_4px_16px_rgba(248,188,38,0.35)] group-hover:scale-105 transition-transform duration-200 flex-shrink-0">
+              <Zap className="w-5 h-5 fill-current stroke-[2.5]" />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-base sm:text-lg tracking-tight text-white flex items-center font-sans">
-                Topnotch <span className="text-grid-emerald-400 ml-1">Energy</span>
+              <span className="font-black text-xl sm:text-2xl tracking-tight text-[#1C2C34] flex items-center leading-none">
+                TOPNOTCH <span className="text-[#D97706] ml-1.5">ENERGY</span>
               </span>
-              <span className="text-[10px] uppercase font-mono tracking-wider text-grid-slate-400 -mt-1 hidden sm:block">
-                Power Trading & Open Access Platform
+              <span className="text-[9px] uppercase font-mono tracking-[0.22em] text-slate-400 mt-1 font-semibold hidden sm:block">
+                Enterprise Power Trading &amp; Open Access
               </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
-            
+          {/* Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-1.5">
             {/* Solutions Mega-Menu */}
             <div className="relative">
               <button
                 onClick={() => toggleMegaMenu("solutions")}
-                className={`flex items-center px-3 py-2 text-xs xl:text-sm font-semibold rounded-md transition-colors ${
+                className={`flex items-center px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all ${
                   activeMegaMenu === "solutions"
-                    ? "text-grid-emerald-400 bg-grid-navy-900"
-                    : "text-grid-slate-300 hover:text-white hover:bg-grid-navy-900/60"
+                    ? "text-[#1C2C34] bg-slate-100 font-bold"
+                    : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
                 }`}
               >
                 <span>Solutions</span>
-                <ChevronDown className={`w-3.5 h-3.5 ml-1 transition-transform ${activeMegaMenu === "solutions" ? "rotate-180" : ""}`} />
+                <ChevronDown
+                  className={`w-3.5 h-3.5 ml-1 transition-transform ${
+                    activeMegaMenu === "solutions" ? "rotate-180" : ""
+                  }`}
+                />
               </button>
 
               {activeMegaMenu === "solutions" && (
-                <div className="absolute left-0 mt-2 w-[580px] bg-grid-navy-900/98 backdrop-blur-xl border border-grid-slate-700 rounded-xl p-5 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                  <div className="grid grid-cols-2 gap-4">
-                    <Link
-                      href="/solutions/power-trading-bilateral-contracts"
-                      className="p-3 rounded-lg hover:bg-grid-navy-800/80 transition-colors border border-transparent hover:border-grid-slate-700 group"
-                    >
-                      <div className="flex items-center space-x-2 text-grid-emerald-400 font-bold text-xs uppercase font-mono">
-                        <TrendingUp className="w-4 h-4" />
-                        <span>Power Trading & Bourses</span>
-                      </div>
-                      <p className="text-xs text-grid-slate-300 mt-1">
-                        IEX, PXIL, HPX 24x7 desk across DAM, GDAM, and RTM with automated clearing.
-                      </p>
-                    </Link>
+                <div className="absolute left-0 mt-3 w-[760px] bg-white border border-slate-200/90 rounded-3xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.12)] z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <div className="grid grid-cols-12 gap-6">
+                    {/* Left 4 Solution Links (7 cols) */}
+                    <div className="col-span-7 grid grid-cols-1 gap-1.5">
+                      <Link
+                        href="/solutions/power-trading-bilateral-contracts"
+                        className="p-3 rounded-2xl hover:bg-amber-50/70 transition-all border border-transparent hover:border-amber-200 group"
+                      >
+                        <div className="flex items-center space-x-2 text-[#1C2C34] font-bold text-xs uppercase font-mono">
+                          <TrendingUp className="w-3.5 h-3.5 text-[#D97706]" />
+                          <span>Power Trading &amp; Bilateral Bourses</span>
+                        </div>
+                        <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                          Automated 96-block DAM, GDAM &amp; RTM exchange bidding.
+                        </p>
+                      </Link>
 
-                    <Link
-                      href="/solutions/open-access-execution-regulatory"
-                      className="p-3 rounded-lg hover:bg-grid-navy-800/80 transition-colors border border-transparent hover:border-grid-slate-700 group"
-                    >
-                      <div className="flex items-center space-x-2 text-grid-cyan-400 font-bold text-xs uppercase font-mono">
-                        <Layers className="w-4 h-4" />
-                        <span>Open Access Advisory</span>
-                      </div>
-                      <p className="text-xs text-grid-slate-300 mt-1">
-                        Group Captive (26:51 SPV), Third-Party Bilateral PPAs, and MoP GEOA 100 kW clearances.
-                      </p>
-                    </Link>
+                      <Link
+                        href="/solutions/open-access-execution-regulatory"
+                        className="p-3 rounded-2xl hover:bg-emerald-50/70 transition-all border border-transparent hover:border-emerald-200 group"
+                      >
+                        <div className="flex items-center space-x-2 text-[#1C2C34] font-bold text-xs uppercase font-mono">
+                          <Zap className="w-3.5 h-3.5 text-[#059669]" />
+                          <span>Group Captive Open Access</span>
+                        </div>
+                        <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                          Section 42 SPV equity with 100% waiver on CSS &amp; AS.
+                        </p>
+                      </Link>
 
-                    <Link
-                      href="/solutions/abt-metering-telemetry-infrastructure"
-                      className="p-3 rounded-lg hover:bg-grid-navy-800/80 transition-colors border border-transparent hover:border-grid-slate-700 group"
-                    >
-                      <div className="flex items-center space-x-2 text-grid-amber-400 font-bold text-xs uppercase font-mono">
-                        <Cpu className="w-4 h-4" />
-                        <span>ABT 0.2s SEM & Telemetry</span>
-                      </div>
-                      <p className="text-xs text-grid-slate-300 mt-1">
-                        CEA-compliant Main/Check meters, NABL calibration, and SLDC SCADA integration.
-                      </p>
-                    </Link>
+                      <Link
+                        href="/solutions/abt-metering-telemetry-infrastructure"
+                        className="p-3 rounded-2xl hover:bg-purple-50/70 transition-all border border-transparent hover:border-purple-200 group"
+                      >
+                        <div className="flex items-center space-x-2 text-[#1C2C34] font-bold text-xs uppercase font-mono">
+                          <Cpu className="w-3.5 h-3.5 text-[#7C3AED]" />
+                          <span>ABT 0.2s SEM Metering &amp; AMR</span>
+                        </div>
+                        <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                          Turnkey CEA Class 0.2s meters &amp; SLDC SCADA telemetry.
+                        </p>
+                      </Link>
 
-                    <Link
-                      href="/solutions/energy-cost-optimization-bill-audits"
-                      className="p-3 rounded-lg hover:bg-grid-navy-800/80 transition-colors border border-transparent hover:border-grid-slate-700 group"
-                    >
-                      <div className="flex items-center space-x-2 text-grid-emerald-300 font-bold text-xs uppercase font-mono">
-                        <Calculator className="w-4 h-4" />
-                        <span>BEE Grade-A Energy Audits</span>
+                      <Link
+                        href="/solutions/energy-cost-optimization-bill-audits"
+                        className="p-3 rounded-2xl hover:bg-blue-50/70 transition-all border border-transparent hover:border-blue-200 group"
+                      >
+                        <div className="flex items-center space-x-2 text-[#1C2C34] font-bold text-xs uppercase font-mono">
+                          <Calculator className="w-3.5 h-3.5 text-[#0284C7]" />
+                          <span>HT Energy Bill Audits &amp; DSM</span>
+                        </div>
+                        <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                          Power factor 0.999 tuning &amp; Contract Demand optimization.
+                        </p>
+                      </Link>
+                    </div>
+
+                    {/* Right Visual Image Card (5 cols) */}
+                    <div className="col-span-5 relative rounded-2xl overflow-hidden bg-slate-900 p-5 flex flex-col justify-between text-white shadow-lg">
+                      <Image
+                        src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=600&q=80"
+                        alt="Utility scale solar power plant"
+                        fill
+                        sizes="260px"
+                        className="object-cover object-center opacity-40"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1D] via-[#0A0F1D]/75 to-transparent" />
+                      
+                      <div className="relative z-10 space-y-2">
+                        <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-[#F8BC26] bg-[#F8BC26]/20 px-2.5 py-0.5 rounded-full inline-block border border-[#F8BC26]/30">
+                          14 States Licensed
+                        </span>
+                        <h4 className="text-sm font-bold tracking-tight text-white leading-snug">
+                          Sub-₹4.50/kWh Industrial Power
+                        </h4>
+                        <p className="text-[11px] text-slate-300 leading-relaxed font-sans">
+                          Structured Group Captive hybrid PPAs delivering 18%–42% bill reductions.
+                        </p>
                       </div>
-                      <p className="text-xs text-grid-slate-300 mt-1">
-                        Power factor 0.999 tuning, Contract Demand rationalization, and ToD peak shifting.
-                      </p>
-                    </Link>
+
+                      <div className="relative z-10 pt-4 border-t border-white/20">
+                        <Link
+                          href="/procurement-dossier"
+                          className="text-xs font-mono font-bold text-[#F8BC26] hover:text-white flex items-center space-x-1.5 transition-colors"
+                        >
+                          <span>Empanelment Dossier</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-grid-slate-800 flex justify-between items-center text-xs">
-                    <span className="text-grid-slate-400">Looking for custom utility-scale wheeling?</span>
-                    <Link href="/solutions/renewable-energy-sustainability" className="text-grid-cyan-400 hover:underline flex items-center font-medium">
-                      <span>View All 5 Enterprise Modules</span>
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center text-xs">
+                    <span className="text-slate-500 font-mono text-[11px]">Need turnkey utility-scale hybrid advisory?</span>
+                    <Link
+                      href="/solutions/renewable-energy-sustainability"
+                      className="text-[#1C2C34] hover:text-[#D97706] flex items-center font-bold text-xs"
+                    >
+                      <span>Explore Renewable Energy &amp; BESS</span>
                       <ArrowRight className="w-3 h-3 ml-1" />
                     </Link>
                   </div>
@@ -156,148 +300,205 @@ export function Header() {
               )}
             </div>
 
-            {/* Solar Systems Mega-Menu */}
+            {/* Solar & BESS Mega-Menu */}
             <div className="relative">
               <button
                 onClick={() => toggleMegaMenu("solar")}
-                className={`flex items-center px-3 py-2 text-xs xl:text-sm font-semibold rounded-md transition-colors ${
+                className={`flex items-center px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all ${
                   activeMegaMenu === "solar"
-                    ? "text-grid-emerald-400 bg-grid-navy-900"
-                    : "text-grid-slate-300 hover:text-white hover:bg-grid-navy-900/60"
+                    ? "text-[#1C2C34] bg-slate-100 font-bold"
+                    : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
                 }`}
               >
-                <span>Solar & BESS</span>
-                <ChevronDown className={`w-3.5 h-3.5 ml-1 transition-transform ${activeMegaMenu === "solar" ? "rotate-180" : ""}`} />
+                <span>Solar &amp; BESS</span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 ml-1 transition-transform ${
+                    activeMegaMenu === "solar" ? "rotate-180" : ""
+                  }`}
+                />
               </button>
 
               {activeMegaMenu === "solar" && (
-                <div className="absolute left-0 mt-2 w-[480px] bg-grid-navy-900/98 backdrop-blur-xl border border-grid-slate-700 rounded-xl p-5 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                  <div className="space-y-3">
-                    <Link
-                      href="/solutions/renewable-energy-sustainability#rooftop-solar"
-                      className="block p-3 rounded-lg hover:bg-grid-navy-800/80 transition-colors border border-transparent hover:border-grid-slate-700"
-                    >
-                      <div className="flex items-center text-grid-amber-400 font-bold text-xs uppercase font-mono">
-                        <Sun className="w-4 h-4 mr-2" />
-                        <span>Industrial PEB Shed Rooftop Solar (TOPCon Bifacial)</span>
-                      </div>
-                      <p className="text-xs text-grid-slate-300 mt-1">
-                        High-efficiency on-site generation at ₹1.55/kWh LCOE with zero transmission losses.
-                      </p>
-                    </Link>
+                <div className="absolute left-0 mt-3 w-[680px] bg-white border border-slate-200/90 rounded-3xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.12)] z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <div className="grid grid-cols-12 gap-6">
+                    {/* Left 3 items (7 cols) */}
+                    <div className="col-span-7 space-y-1.5">
+                      <Link
+                        href="/solutions/renewable-energy-sustainability#rooftop-solar"
+                        className="block p-3 rounded-2xl hover:bg-amber-50/70 transition-all border border-transparent hover:border-amber-200"
+                      >
+                        <div className="flex items-center text-[#1C2C34] font-bold text-xs uppercase font-mono">
+                          <Sun className="w-3.5 h-3.5 mr-1.5 text-[#D97706]" />
+                          <span>PEB Shed Rooftop Solar EPC</span>
+                        </div>
+                        <p className="text-[11px] text-slate-600 mt-0.5">
+                          High-efficiency TOPCon bifacial modules at ₹1.55/kWh benchmark LCOE.
+                        </p>
+                      </Link>
 
-                    <Link
-                      href="/solutions/renewable-energy-sustainability#group-captive"
-                      className="block p-3 rounded-lg hover:bg-grid-navy-800/80 transition-colors border border-transparent hover:border-grid-slate-700"
-                    >
-                      <div className="flex items-center text-grid-emerald-400 font-bold text-xs uppercase font-mono">
-                        <Zap className="w-4 h-4 mr-2" />
-                        <span>Offsite Group Captive Solar & Wind Hybrid</span>
-                      </div>
-                      <p className="text-xs text-grid-slate-300 mt-1">
-                        26% SPV equity model eliminating 100% of Cross-Subsidy and Additional Surcharges.
-                      </p>
-                    </Link>
+                      <Link
+                        href="/solutions/renewable-energy-sustainability#group-captive"
+                        className="block p-3 rounded-2xl hover:bg-emerald-50/70 transition-all border border-transparent hover:border-emerald-200"
+                      >
+                        <div className="flex items-center text-[#1C2C34] font-bold text-xs uppercase font-mono">
+                          <Zap className="w-3.5 h-3.5 mr-1.5 text-[#059669]" />
+                          <span>Group Captive Solar &amp; Wind</span>
+                        </div>
+                        <p className="text-[11px] text-slate-600 mt-0.5">
+                          26% SPV equity model eliminating 100% of Cross-Subsidy surcharges.
+                        </p>
+                      </Link>
 
-                    <Link
-                      href="/solutions/renewable-energy-sustainability#bess"
-                      className="block p-3 rounded-lg hover:bg-grid-navy-800/80 transition-colors border border-transparent hover:border-grid-slate-700"
-                    >
-                      <div className="flex items-center text-grid-cyan-400 font-bold text-xs uppercase font-mono">
-                        <BatteryCharging className="w-4 h-4 mr-2" />
-                        <span>Battery Energy Storage Systems (BESS)</span>
+                      <Link
+                        href="/solutions/renewable-energy-sustainability#bess"
+                        className="block p-3 rounded-2xl hover:bg-cyan-50/70 transition-all border border-transparent hover:border-cyan-200"
+                      >
+                        <div className="flex items-center text-[#1C2C34] font-bold text-xs uppercase font-mono">
+                          <BatteryCharging className="w-3.5 h-3.5 mr-1.5 text-[#0891B2]" />
+                          <span>Battery Energy Storage (BESS)</span>
+                        </div>
+                        <p className="text-[11px] text-slate-600 mt-0.5">
+                          Containerized LFP storage for Time-of-Day (ToD) peak tariff arbitrage.
+                        </p>
+                      </Link>
+                    </div>
+
+                    {/* Right Visual Image Card (5 cols) */}
+                    <div className="col-span-5 relative rounded-2xl overflow-hidden bg-slate-900 p-5 flex flex-col justify-between text-white shadow-lg">
+                      <Image
+                        src="https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=600&q=80"
+                        alt="Industrial factory rooftop solar installation"
+                        fill
+                        sizes="240px"
+                        className="object-cover object-center opacity-40"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1D] via-[#0A0F1D]/75 to-transparent" />
+                      
+                      <div className="relative z-10 space-y-2">
+                        <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-[#10B981] bg-[#10B981]/20 px-2.5 py-0.5 rounded-full inline-block border border-[#10B981]/30">
+                          ₹1.55/kWh LCOE
+                        </span>
+                        <h4 className="text-sm font-bold tracking-tight text-white leading-snug">
+                          Zero Transmission Losses
+                        </h4>
+                        <p className="text-[11px] text-slate-300 leading-relaxed font-sans">
+                          OPEX/RESCO and CAPEX models with 25-year performance warranties.
+                        </p>
                       </div>
-                      <p className="text-xs text-grid-slate-300 mt-1">
-                        Containerized LFP storage for Time-of-Day (ToD) peak tariff arbitrage and backup.
-                      </p>
-                    </Link>
+
+                      <div className="relative z-10 pt-4 border-t border-white/20">
+                        <Link
+                          href="/tools/open-access-calculator"
+                          className="text-xs font-mono font-bold text-[#F8BC26] hover:text-white flex items-center space-x-1.5 transition-colors"
+                        >
+                          <span>Calculate Solar ROI</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Market Intelligence */}
+            {/* Market Intelligence with Pulsing Live Pill */}
             <Link
               href="/market-intelligence"
-              className={`px-3 py-2 text-xs xl:text-sm font-semibold rounded-md transition-colors ${
+              className={`flex items-center px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all relative ${
                 pathname === "/market-intelligence"
-                  ? "text-grid-emerald-400 bg-grid-navy-900"
-                  : "text-grid-slate-300 hover:text-white hover:bg-grid-navy-900/60"
+                  ? "text-[#1C2C34] bg-slate-100 font-bold"
+                  : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
               }`}
             >
-              Market Intelligence
+              <span>Market Intel</span>
+              <span className="ml-1.5 px-1.5 py-0.2 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-mono font-bold flex items-center">
+                <span className="w-1 h-1 rounded-full bg-emerald-500 mr-1 animate-pulse" />
+                LIVE
+              </span>
             </Link>
 
-            {/* Calculators */}
-            <Link
-              href="/tools/open-access-calculator"
-              className={`px-3 py-2 text-xs xl:text-sm font-semibold rounded-md transition-colors ${
-                pathname === "/tools/open-access-calculator"
-                  ? "text-grid-emerald-400 bg-grid-navy-900"
-                  : "text-grid-slate-300 hover:text-white hover:bg-grid-navy-900/60"
-              }`}
-            >
-              ROI Calculators
-            </Link>
-
-            {/* Case Studies */}
+            {/* Industrial Case Studies */}
             <Link
               href="/case-studies"
-              className={`px-3 py-2 text-xs xl:text-sm font-semibold rounded-md transition-colors ${
+              className={`px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all ${
                 pathname === "/case-studies"
-                  ? "text-grid-emerald-400 bg-grid-navy-900"
-                  : "text-grid-slate-300 hover:text-white hover:bg-grid-navy-900/60"
+                  ? "text-[#1C2C34] bg-slate-100 font-bold"
+                  : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
               }`}
             >
-              Case Studies
+              <span>Case Studies</span>
             </Link>
 
-            {/* Statutory Compliance */}
+            {/* ROI Calculators */}
             <Link
-              href="/statutory-compliance"
-              className={`px-3 py-2 text-xs xl:text-sm font-semibold rounded-md transition-colors ${
-                pathname === "/statutory-compliance"
-                  ? "text-grid-emerald-400 bg-grid-navy-900"
-                  : "text-grid-slate-300 hover:text-white hover:bg-grid-navy-900/60"
+              href="/tools/open-access-calculator"
+              className={`px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all ${
+                pathname === "/tools/open-access-calculator"
+                  ? "text-[#1C2C34] bg-slate-100 font-bold"
+                  : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
               }`}
             >
-              Compliance
+              <span>Tariff Simulator</span>
+            </Link>
+
+            {/* State Policy Comparator */}
+            <Link
+              href="/tools/compare-states"
+              className={`px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all ${
+                pathname === "/tools/compare-states"
+                  ? "text-[#1C2C34] bg-slate-100 font-bold"
+                  : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
+              }`}
+            >
+              <span>State Policies</span>
+            </Link>
+
+            {/* Due Diligence Dossier */}
+            <Link
+              href="/procurement-dossier"
+              className={`px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all ${
+                pathname === "/procurement-dossier"
+                  ? "text-[#1C2C34] bg-slate-100 font-bold"
+                  : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
+              }`}
+            >
+              <span>Diligence Hub</span>
             </Link>
           </nav>
 
-          {/* Desktop Right CTAs */}
-          <div className="hidden lg:flex items-center space-x-3">
-            {/* Quick Command Palette Trigger (Cmd+K / Ctrl+K) */}
+          {/* Right Action Cluster */}
+          <div className="hidden lg:flex items-center space-x-2.5 flex-shrink-0">
             <CommandPalette />
 
             <Link
               href="/tools/open-access-calculator"
-              className="px-4 py-2 text-xs font-bold font-mono rounded-lg bg-grid-emerald-500 hover:bg-grid-emerald-400 text-grid-navy-950 shadow-md shadow-grid-emerald-500/20 transition-all flex items-center space-x-1.5"
+              className="px-5 py-2.5 text-xs font-bold rounded-full bg-gradient-to-r from-[#F8BC26] to-[#E5A812] hover:from-[#eab308] hover:to-[#ca8a04] text-[#1C2C34] shadow-[0_4px_16px_rgba(248,188,38,0.3)] hover:shadow-[0_6px_20px_rgba(248,188,38,0.4)] transition-all duration-200 flex items-center space-x-1.5 flex-shrink-0 active:scale-95"
             >
               <Calculator className="w-3.5 h-3.5" />
               <span>Calculate Savings</span>
+              <ArrowRight className="w-3 h-3 ml-0.5" />
             </Link>
 
             <Link
               href="/portal/dashboard"
-              className="px-3.5 py-2 text-xs font-bold font-mono rounded-lg border border-grid-slate-700 bg-grid-navy-900 hover:bg-grid-navy-800 text-white transition-colors flex items-center space-x-1.5"
+              className="hidden xl:flex px-4 py-2 text-xs font-bold rounded-full border border-slate-300 bg-white hover:bg-slate-50 text-[#1C2C34] transition-colors items-center space-x-1.5 shadow-2xs flex-shrink-0"
             >
               <span>Client Portal</span>
-              <ExternalLink className="w-3 h-3 text-grid-slate-400" />
+              <ExternalLink className="w-3 h-3 text-slate-400" />
             </Link>
           </div>
 
-          {/* Mobile Hamburger Button */}
+          {/* Mobile Action & Hamburger */}
           <div className="flex lg:hidden items-center space-x-2">
             <Link
               href="/tools/open-access-calculator"
-              className="px-2.5 py-1.5 text-[11px] font-bold font-mono rounded bg-grid-emerald-500 text-grid-navy-950"
+              className="px-3 py-1.5 text-xs font-bold rounded-full bg-[#F8BC26] text-[#1C2C34] shadow-2xs"
             >
               Calc ROI
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-grid-slate-400 hover:text-white hover:bg-grid-navy-900 rounded-lg"
+              className="p-2 text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100 rounded-xl transition-colors"
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -306,62 +507,78 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Top Navigation Drawer (fallback for desktop full menu) */}
+      {/* Mobile Dropdown Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-grid-slate-800 bg-grid-navy-950 p-4 space-y-3 animate-in slide-in-from-top duration-200">
+        <div className="lg:hidden border-b border-slate-200 bg-white p-5 space-y-2 animate-in slide-in-from-top-2 duration-150 shadow-xl max-h-[80vh] overflow-y-auto">
+          <div className="text-[10px] uppercase font-mono font-bold text-slate-400 pb-1">
+            Solutions &amp; Advisory
+          </div>
           <Link
             href="/solutions/power-trading-bilateral-contracts"
-            className="block text-sm font-medium text-white hover:text-grid-emerald-400 py-1.5 border-b border-grid-slate-900"
+            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
           >
-            ⚡ Power Trading & Bilateral Bourses
+            ⚡ Power Trading &amp; Bilateral Bourses
           </Link>
           <Link
             href="/solutions/open-access-execution-regulatory"
-            className="block text-sm font-medium text-white hover:text-grid-emerald-400 py-1.5 border-b border-grid-slate-900"
+            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
           >
-            🏢 Open Access & Group Captive SPV
+            🏢 Open Access &amp; Group Captive SPV
           </Link>
           <Link
             href="/solutions/renewable-energy-sustainability"
-            className="block text-sm font-medium text-white hover:text-grid-emerald-400 py-1.5 border-b border-grid-slate-900"
+            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
           >
-            ☀️ Onsite Rooftop Solar & BESS
+            ☀️ Onsite Rooftop Solar &amp; BESS
           </Link>
           <Link
             href="/market-intelligence"
-            className="block text-sm font-medium text-white hover:text-grid-emerald-400 py-1.5 border-b border-grid-slate-900"
+            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
           >
-            📊 Live 96-Block IEX Terminal
+            📊 Live 96-Block IEX Terminal (LIVE)
+          </Link>
+          <Link
+            href="/case-studies"
+            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
+          >
+            📈 Industrial Case Studies &amp; Audits
           </Link>
           <Link
             href="/tools/open-access-calculator"
-            className="block text-sm font-medium text-white hover:text-grid-emerald-400 py-1.5 border-b border-grid-slate-900"
+            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
           >
             🧮 Rooftop vs Open Access Calculator
           </Link>
           <Link
-            href="/case-studies"
-            className="block text-sm font-medium text-white hover:text-grid-emerald-400 py-1.5 border-b border-grid-slate-900"
+            href="/tools/compare-states"
+            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
           >
-            📈 Industrial Case Studies (DS Group, Steel Mills)
+            ⚖️ Multi-State Policy Comparator
+          </Link>
+          <Link
+            href="/procurement-dossier"
+            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
+          >
+            🛡️ Vendor Empanelment Dossier
           </Link>
           <Link
             href="/statutory-compliance"
-            className="block text-sm font-medium text-white hover:text-grid-emerald-400 py-1.5 border-b border-grid-slate-900"
+            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
           >
-            📜 Statutory Regulations & SLDC NOCs
+            📜 Statutory Regulations &amp; SLDC NOCs
           </Link>
-          <div className="pt-2 flex flex-col space-y-2">
+
+          <div className="pt-3 flex flex-col space-y-2">
             <a
               href={`tel:${BRAND.contacts.phonePrimary}`}
-              className="w-full text-center py-2 text-xs font-mono font-bold rounded bg-grid-slate-800 text-white flex items-center justify-center space-x-2"
+              className="w-full text-center py-2.5 text-xs font-bold rounded-full bg-slate-100 text-[#1C2C34] flex items-center justify-center space-x-2"
             >
-              <PhoneCall className="w-3.5 h-3.5 text-grid-cyan-400" />
+              <PhoneCall className="w-3.5 h-3.5 text-[#D97706]" />
               <span>Call 24x7 Bidding Desk</span>
             </a>
             <Link
               href="/portal/dashboard"
-              className="w-full text-center py-2 text-xs font-mono font-bold rounded bg-grid-emerald-500 text-grid-navy-950"
+              className="w-full text-center py-2.5 text-xs font-bold rounded-full bg-[#1C2C34] text-white"
             >
               Open Client Portal
             </Link>

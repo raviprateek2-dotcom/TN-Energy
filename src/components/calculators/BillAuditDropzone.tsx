@@ -6,7 +6,7 @@ import {
   UploadCloud,
   FileText,
   AlertCircle,
-  CheckCircle,
+  CheckCircle2,
   Zap,
   TrendingDown,
   Gauge,
@@ -15,7 +15,12 @@ import {
   Loader2,
   FileSpreadsheet,
   Calculator,
+  Lock,
+  Printer,
+  Sparkles,
 } from "lucide-react";
+import { BilateralNdaModal, NdaExecutionData } from "@/components/legal/BilateralNdaModal";
+import { BoardroomDossierModal } from "@/components/reports/BoardroomDossierModal";
 
 interface BillAuditDiagnostic {
   clientProfile: string;
@@ -80,70 +85,102 @@ const SAMPLE_BILLS: Record<string, BillAuditDiagnostic> = {
         severity: "opportunity",
       },
     ],
-    totalMonthlyLeakageInr: 1472000, // ₹14.72 Lakhs/mo
+    totalMonthlyLeakageInr: 1472000,
     recommendedProcurementMix: [
-      { source: "Group Captive Solar Farm", capacity: "6.0 MW", monthlySavingsInr: 2160000 },
-      { source: "IEX DAM Solar Hours", capacity: "2.0 MW", monthlySavingsInr: 680000 },
-      { source: "Automatic Power Factor (APFC) Tuning", capacity: "0.995 PF", monthlySavingsInr: 285000 },
+      { source: "Group Captive Solar SPV", capacity: "6.5 MWp", monthlySavingsInr: 3250000 },
+      { source: "IEX DAM Solar Hours (Slot 25-64)", capacity: "2.0 MW", monthlySavingsInr: 880000 },
+      { source: "APFC Capacitor Bank Retrofit", capacity: "2,400 kVAR", monthlySavingsInr: 285000 },
     ],
   },
   textile: {
-    clientProfile: "Synthetic Spinning & Weaving Mill",
+    clientProfile: "Automated Synthetic Textile & Weaving Park",
     state: "Gujarat",
     discom: "Dakshin Gujarat Vij Company Ltd (DGVCL)",
     voltageKv: "66 kV",
     contractDemandKva: 12000,
-    recordedMaxDemandKva: 11100,
-    billingDemandKva: 11100,
-    monthlyBilledKvah: 4950000,
-    monthlyBillAmountInr: 39105000, // ₹3.91 Cr
-    powerFactor: 0.978,
-    fuelSurchargeInr: 2970000,
-    todPeakUnitsKwh: 1188000,
-    todPeakSurchargeInr: 1782000,
+    recordedMaxDemandKva: 10800,
+    billingDemandKva: 10800,
+    monthlyBilledKvah: 4600000,
+    monthlyBillAmountInr: 39100000, // ₹3.91 Cr
+    powerFactor: 0.982,
+    fuelSurchargeInr: 2760000,
+    todPeakUnitsKwh: 1150000,
+    todPeakSurchargeInr: 2070000,
     findings: [
       {
-        title: "High Fuel Price & Power Purchase Cost (FPPPA)",
-        description: "FPPPA at ₹2.60/kWh accounts for 32.8% of the total monthly bill. Unhedged against international coal and gas price swings.",
-        potentialSavingsInrMonthly: 1850000,
+        title: "FPPPA Fuel Price Pass-Through Surcharge",
+        description: "High GUVNL FPPPA rate of ₹3.05/kWh added across all 46 Lakh units billed.",
+        potentialSavingsInrMonthly: 2760000,
         severity: "critical",
       },
       {
-        title: "Wind-Solar Hybrid Open Access Eligibility",
-        description: "Continuous 24x7 baseload with high PLF makes this plant an ideal candidate for offsite Wind-Solar Hybrid under GERC Open Access framework.",
-        potentialSavingsInrMonthly: 3120000,
+        title: "Absence of Interstate Renewable Open Access",
+        description: "100% reliant on DGVCL grid power; zero utilization of Gujarat's favorable Wind-Solar Hybrid captive policy.",
+        potentialSavingsInrMonthly: 4140000,
         severity: "opportunity",
       },
     ],
-    totalMonthlyLeakageInr: 4970000,
+    totalMonthlyLeakageInr: 6900000,
     recommendedProcurementMix: [
-      { source: "Offsite Wind-Solar Hybrid PPA", capacity: "10.0 MW", monthlySavingsInr: 3120000 },
-      { source: "Onsite Rooftop Solar (PEB Sheds)", capacity: "2.5 MWp", monthlySavingsInr: 580000 },
+      { source: "Wind-Solar Hybrid Captive PPA", capacity: "14.0 MW", monthlySavingsInr: 4140000 },
+      { source: "IEX RTM Dynamic Balancing Desk", capacity: "3.0 MW", monthlySavingsInr: 1380000 },
     ],
   },
 };
 
 export function BillAuditDropzone() {
-  const [activeDiagnostic, setActiveDiagnostic] = useState<BillAuditDiagnostic | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  const [activeDiagnostic, setActiveDiagnostic] = useState<BillAuditDiagnostic | null>(null);
 
-  const simulateAnalysis = (billKey: string, fileName?: string) => {
+  // NDA State & Modal
+  const [ndaExecution, setNdaExecution] = useState<NdaExecutionData | null>(null);
+  const [isNdaModalOpen, setIsNdaModalOpen] = useState(false);
+  const [pendingAnalysis, setPendingAnalysis] = useState<{
+    type: "steel" | "textile";
+    fileName: string;
+  } | null>(null);
+
+  // Boardroom Dossier Modal
+  const [isDossierOpen, setIsDossierOpen] = useState(false);
+
+  const triggerAnalysis = (type: "steel" | "textile", fileName: string) => {
+    if (!ndaExecution) {
+      // Prompt bilateral NDA click-through before unlocking confidential audit
+      setPendingAnalysis({ type, fileName });
+      setIsNdaModalOpen(true);
+      return;
+    }
+
     setAnalyzing(true);
-    setUploadedFileName(fileName || null);
+    setUploadedFileName(fileName);
     setTimeout(() => {
-      setActiveDiagnostic(SAMPLE_BILLS[billKey] || SAMPLE_BILLS.steel);
+      setActiveDiagnostic(SAMPLE_BILLS[type]);
       setAnalyzing(false);
     }, 1200);
+  };
+
+  const handleNdaAccepted = (data: NdaExecutionData) => {
+    setNdaExecution(data);
+    setIsNdaModalOpen(false);
+    if (pendingAnalysis) {
+      setAnalyzing(true);
+      setUploadedFileName(pendingAnalysis.fileName);
+      setTimeout(() => {
+        setActiveDiagnostic(SAMPLE_BILLS[pendingAnalysis.type]);
+        setAnalyzing(false);
+        setPendingAnalysis(null);
+      }, 1200);
+    }
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
     const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      simulateAnalysis("steel", files[0].name);
+    if (files && files[0]) {
+      triggerAnalysis("steel", files[0].name);
     }
   };
 
@@ -166,37 +203,70 @@ export function BillAuditDropzone() {
     }
   };
 
+  const effectiveDiscomRate = activeDiagnostic
+    ? activeDiagnostic.monthlyBillAmountInr / activeDiagnostic.monthlyBilledKvah
+    : 8.3;
+
   return (
-    <div className="bg-grid-navy-950 border border-grid-slate-800 rounded-2xl p-6 shadow-2xl">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-grid-slate-800">
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+      {/* Top Banner */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
         <div>
           <div className="flex items-center space-x-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-grid-emerald-400" />
-            <h3 className="text-base sm:text-lg font-bold text-white font-sans">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
+            <h3 className="text-lg sm:text-xl font-black text-[#1C2C34]">
               Confidential HT Industrial Electricity Bill Diagnostic
             </h3>
           </div>
-          <p className="text-xs text-grid-slate-400 font-mono mt-0.5">
-            Automated Discom Tariff &amp; kVAh Power Factor Audit Engine (BEE Standards)
+          <p className="text-xs sm:text-sm text-slate-500 font-mono mt-1">
+            Automated DISCOM Tariff &amp; kVAh Power Factor Audit Engine (BEE Standards)
           </p>
         </div>
 
         {/* Demo Bill Selector */}
         <div className="flex items-center space-x-2">
-          <span className="text-[11px] font-mono text-grid-slate-500 hidden sm:inline">Try Demo Bill:</span>
+          <span className="text-xs font-mono text-slate-500 hidden sm:inline">Try Demo Bill:</span>
           <button
-            onClick={() => simulateAnalysis("steel", "UP_Steel_Mill_33kV_PVVNL_Bill.pdf")}
-            className="px-3 py-1.5 rounded-lg bg-grid-navy-900 border border-grid-slate-700 hover:border-grid-emerald-500/50 text-grid-slate-300 font-mono text-xs font-bold transition-all"
+            onClick={() => triggerAnalysis("steel", "UP_Steel_Mill_33kV_PVVNL_Bill.pdf")}
+            className="px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 font-mono text-xs font-bold transition-all shadow-2xs"
           >
             UP 8.5 MVA Steel
           </button>
           <button
-            onClick={() => simulateAnalysis("textile", "Gujarat_Textile_66kV_DGVCL_Bill.pdf")}
-            className="px-3 py-1.5 rounded-lg bg-grid-navy-900 border border-grid-slate-700 hover:border-grid-cyan-500/50 text-grid-slate-300 font-mono text-xs font-bold transition-all"
+            onClick={() => triggerAnalysis("textile", "Gujarat_Textile_66kV_DGVCL_Bill.pdf")}
+            className="px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 font-mono text-xs font-bold transition-all shadow-2xs"
           >
             Gujarat 12 MVA Textile
           </button>
         </div>
+      </div>
+
+      {/* NDA Banner Status */}
+      <div className="mt-4 py-2.5 px-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs font-mono">
+        <div className="flex items-center space-x-2">
+          <Shield className={`w-4 h-4 ${ndaExecution ? "text-emerald-600" : "text-amber-600"}`} />
+          {ndaExecution ? (
+            <span className="text-emerald-800 font-semibold">
+              Bilateral NDA Executed: {ndaExecution.certificateId} ({ndaExecution.companyName})
+            </span>
+          ) : (
+            <span className="text-slate-600">
+              Institutional Bilateral NDA &amp; Data Custody Gateway Active
+            </span>
+          )}
+        </div>
+        {!ndaExecution ? (
+          <button
+            onClick={() => setIsNdaModalOpen(true)}
+            className="text-amber-800 hover:text-amber-900 font-bold underline cursor-pointer"
+          >
+            Review &amp; Execute NDA →
+          </button>
+        ) : (
+          <span className="text-emerald-700 text-[11px] font-bold">
+            Data Custody Sealed (Sec 43A IT Act)
+          </span>
+        )}
       </div>
 
       {/* Dropzone Area */}
@@ -210,36 +280,36 @@ export function BillAuditDropzone() {
           onDrop={handleDrop}
           className={`mt-6 border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center transition-all ${
             isDragging
-              ? "border-grid-emerald-400 bg-grid-emerald-500/10"
-              : "border-grid-slate-800 bg-grid-navy-900/40 hover:border-grid-slate-700"
+              ? "border-emerald-500 bg-emerald-50/50"
+              : "border-slate-300 bg-slate-50/60 hover:border-slate-400"
           }`}
         >
           {analyzing ? (
             <div className="py-8 flex flex-col items-center justify-center space-y-3">
-              <Loader2 className="w-10 h-10 text-grid-emerald-400 animate-spin" />
-              <div className="text-white font-bold font-mono text-sm">
+              <Loader2 className="w-10 h-10 text-emerald-600 animate-spin" />
+              <div className="text-slate-900 font-bold font-mono text-sm">
                 Parsing HT Tariff Parameters...
               </div>
-              <p className="text-xs font-mono text-grid-slate-500">
-                Auditing Contract Demand, kVAh Power Factor, ToD Peak Slots, and Discom Surcharges
+              <p className="text-xs font-mono text-slate-500">
+                Auditing Contract Demand, kVAh Power Factor, ToD Peak Slots, and DISCOM Surcharges
               </p>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-grid-navy-900 border border-grid-slate-700 flex items-center justify-center text-grid-emerald-400">
+              <div className="w-14 h-14 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-emerald-700 shadow-sm">
                 <UploadCloud className="w-7 h-7" />
               </div>
               <div>
-                <h4 className="text-white font-bold text-sm sm:text-base">
-                  Drag &amp; drop your monthly Discom HT/EHT electricity bill
+                <h4 className="text-[#1C2C34] font-black text-base sm:text-lg">
+                  Drag &amp; drop your monthly DISCOM HT/EHT electricity bill
                 </h4>
-                <p className="text-xs text-grid-slate-400 font-mono mt-1">
+                <p className="text-xs text-slate-500 font-mono mt-1">
                   Supports PDF, Scanned Bills, Excel (.xlsx), or CSV from any Indian State Utility
                 </p>
               </div>
-              <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] font-mono text-grid-slate-500">
+              <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-mono text-slate-500">
                 <span className="flex items-center space-x-1">
-                  <Shield className="w-3.5 h-3.5 text-grid-emerald-400" />
+                  <Shield className="w-3.5 h-3.5 text-emerald-600" />
                   <span>100% Confidential (NDA Grounded)</span>
                 </span>
                 <span>•</span>
@@ -248,7 +318,7 @@ export function BillAuditDropzone() {
                 <span>Zero Obligation Diagnostic</span>
               </div>
               <div className="pt-2">
-                <label className="cursor-pointer inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-grid-emerald-500 hover:bg-grid-emerald-400 text-grid-navy-950 font-bold font-mono text-xs transition-all shadow-lg shadow-grid-emerald-500/20">
+                <label className="cursor-pointer inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-[#F8BC26] hover:bg-[#e6ab1e] text-[#1C2C34] font-bold font-mono text-xs transition-all shadow-sm">
                   <FileSpreadsheet className="w-4 h-4" />
                   <span>Upload Electricity Bill</span>
                   <input
@@ -257,7 +327,7 @@ export function BillAuditDropzone() {
                     className="hidden"
                     onChange={(e) => {
                       if (e.target.files && e.target.files[0]) {
-                        simulateAnalysis("steel", e.target.files[0].name);
+                        triggerAnalysis("steel", e.target.files[0].name);
                       }
                     }}
                   />
@@ -272,33 +342,33 @@ export function BillAuditDropzone() {
       {activeDiagnostic && !analyzing && (
         <div className="mt-6 space-y-6">
           {/* Top Banner */}
-          <div className="bg-gradient-to-r from-grid-emerald-500/10 via-grid-navy-900 to-grid-navy-900 border border-grid-emerald-500/30 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <div className="flex items-center space-x-2 text-[11px] font-mono text-grid-emerald-400 uppercase tracking-widest font-bold">
-                <CheckCircle className="w-4 h-4" />
+              <div className="flex items-center space-x-2 text-xs font-mono text-emerald-800 uppercase tracking-wider font-bold">
+                <CheckCircle2 className="w-4 h-4" />
                 <span>Preliminary Bill Diagnostic Complete</span>
                 {uploadedFileName && (
-                  <span className="text-grid-slate-400">({uploadedFileName})</span>
+                  <span className="text-slate-500">({uploadedFileName})</span>
                 )}
               </div>
-              <h4 className="text-lg font-bold text-white mt-1">
+              <h4 className="text-lg font-black text-[#1C2C34] mt-1.5">
                 {activeDiagnostic.clientProfile} • {activeDiagnostic.state}
               </h4>
-              <p className="text-xs font-mono text-grid-slate-400 mt-0.5">
+              <p className="text-xs font-mono text-slate-600 mt-0.5">
                 {activeDiagnostic.discom} ({activeDiagnostic.voltageKv})
               </p>
             </div>
 
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-4">
               <div className="text-right">
-                <div className="text-[10px] font-mono text-grid-slate-500 uppercase">Identified Leakage</div>
-                <div className="text-xl font-extrabold text-red-400 font-mono tabular-nums">
-                  ₹{(activeDiagnostic.totalMonthlyLeakageInr / 100000).toFixed(2)} Lakhs/mo
+                <div className="text-[10px] font-mono text-slate-500 uppercase">Identified Monthly Leakage</div>
+                <div className="text-2xl font-black text-red-600 font-mono tabular-nums">
+                  ₹{(activeDiagnostic.totalMonthlyLeakageInr / 100000).toFixed(2)} L/mo
                 </div>
               </div>
               <button
                 onClick={() => setActiveDiagnostic(null)}
-                className="px-3 py-1.5 rounded-lg border border-grid-slate-700 bg-grid-navy-900 hover:bg-grid-navy-800 text-grid-slate-300 font-mono text-xs transition-colors"
+                className="px-3.5 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-mono text-xs font-bold transition-colors shadow-2xs"
               >
                 Upload Another
               </button>
@@ -307,79 +377,79 @@ export function BillAuditDropzone() {
 
           {/* Key Parameters 4-Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
-            <div className="bg-grid-navy-900 border border-grid-slate-800 rounded-xl p-3">
-              <span className="text-[10px] text-grid-slate-500 uppercase block">Sanctioned vs Recorded MD</span>
-              <span className="text-sm font-bold text-white tabular-nums block mt-1">
+            <div className="bg-[#F9FAFB] border border-slate-200 rounded-xl p-3.5">
+              <span className="text-[10px] text-slate-500 uppercase block font-semibold">Sanctioned vs Recorded MD</span>
+              <span className="text-sm font-bold text-slate-900 tabular-nums block mt-1">
                 {activeDiagnostic.recordedMaxDemandKva} / {activeDiagnostic.contractDemandKva} kVA
               </span>
-              <span className="text-[10px] text-grid-amber-400 block mt-0.5">
+              <span className="text-[10px] text-amber-800 block mt-0.5">
                 Billed at {activeDiagnostic.billingDemandKva} kVA min
               </span>
             </div>
 
-            <div className="bg-grid-navy-900 border border-grid-slate-800 rounded-xl p-3">
-              <span className="text-[10px] text-grid-slate-500 uppercase block">Operating Power Factor</span>
-              <span className="text-sm font-bold text-white tabular-nums block mt-1">
+            <div className="bg-[#F9FAFB] border border-slate-200 rounded-xl p-3.5">
+              <span className="text-[10px] text-slate-500 uppercase block font-semibold">Operating Power Factor</span>
+              <span className="text-sm font-bold text-slate-900 tabular-nums block mt-1">
                 {activeDiagnostic.powerFactor.toFixed(3)} Lag
               </span>
-              <span className={`text-[10px] block mt-0.5 ${activeDiagnostic.powerFactor < 0.95 ? "text-red-400" : "text-grid-emerald-400"}`}>
+              <span className={`text-[10px] block mt-0.5 font-bold ${activeDiagnostic.powerFactor < 0.95 ? "text-red-600" : "text-emerald-700"}`}>
                 {activeDiagnostic.powerFactor < 0.95 ? "Penalty Slab Active" : "Incentive Eligible"}
               </span>
             </div>
 
-            <div className="bg-grid-navy-900 border border-grid-slate-800 rounded-xl p-3">
-              <span className="text-[10px] text-grid-slate-500 uppercase block">Monthly Total Bill</span>
-              <span className="text-sm font-bold text-white tabular-nums block mt-1">
+            <div className="bg-[#F9FAFB] border border-slate-200 rounded-xl p-3.5">
+              <span className="text-[10px] text-slate-500 uppercase block font-semibold">Monthly Total Bill</span>
+              <span className="text-sm font-bold text-slate-900 tabular-nums block mt-1">
                 ₹{(activeDiagnostic.monthlyBillAmountInr / 10000000).toFixed(2)} Cr
               </span>
-              <span className="text-[10px] text-grid-slate-500 block mt-0.5">
-                Effective: ₹{(activeDiagnostic.monthlyBillAmountInr / activeDiagnostic.monthlyBilledKvah).toFixed(2)}/kVAh
+              <span className="text-[10px] text-slate-500 block mt-0.5">
+                Effective: ₹{effectiveDiscomRate.toFixed(2)}/kVAh
               </span>
             </div>
 
-            <div className="bg-grid-navy-900 border border-grid-slate-800 rounded-xl p-3">
-              <span className="text-[10px] text-grid-slate-500 uppercase block">ToD Peak Surcharge Units</span>
-              <span className="text-sm font-bold text-white tabular-nums block mt-1">
+            <div className="bg-[#F9FAFB] border border-slate-200 rounded-xl p-3.5">
+              <span className="text-[10px] text-slate-500 uppercase block font-semibold">ToD Peak Surcharge Units</span>
+              <span className="text-sm font-bold text-slate-900 tabular-nums block mt-1">
                 {(activeDiagnostic.todPeakUnitsKwh / 100000).toFixed(2)} L kWh
               </span>
-              <span className="text-[10px] text-purple-400 block mt-0.5">
+              <span className="text-[10px] text-slate-700 block mt-0.5 font-bold">
                 ₹{(activeDiagnostic.todPeakSurchargeInr / 100000).toFixed(2)} L Surcharge
               </span>
             </div>
           </div>
 
           {/* Audit Findings */}
-          <div className="bg-grid-navy-900/60 border border-grid-slate-800 rounded-2xl p-5">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-grid-slate-400 font-mono mb-4 flex items-center space-x-2">
-              <AlertCircle className="w-4 h-4 text-grid-amber-400" />
+          <div className="bg-white border border-slate-200 rounded-2xl p-6">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 font-mono mb-4 flex items-center space-x-2">
+              <AlertCircle className="w-4 h-4 text-amber-600" />
               <span>Identified Cost Leakages &amp; Statutory Non-Optimizations</span>
             </h4>
             <div className="space-y-3">
               {activeDiagnostic.findings.map((f, i) => (
                 <div
                   key={i}
-                  className="bg-grid-navy-950 border border-grid-slate-800 rounded-xl p-4 flex flex-col sm:flex-row sm:items-start justify-between gap-3 text-xs font-mono"
+                  className="bg-[#F9FAFB] border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-start justify-between gap-3 text-xs font-mono"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center space-x-2">
                       <span
-                        className={`w-2 h-2 rounded-full ${
+                        className={`w-2.5 h-2.5 rounded-full ${
                           f.severity === "critical"
-                            ? "bg-red-400"
+                            ? "bg-red-500"
                             : f.severity === "warning"
-                            ? "bg-grid-amber-400"
-                            : "bg-grid-cyan-400"
+                            ? "bg-amber-500"
+                            : "bg-emerald-500"
                         }`}
                       />
-                      <span className="text-white font-bold">{f.title}</span>
+                      <span className="text-slate-900 font-bold">{f.title}</span>
                     </div>
-                    <p className="text-grid-slate-400 text-[11px] leading-relaxed pl-4">
+                    <p className="text-slate-600 text-xs leading-relaxed pl-4">
                       {f.description}
                     </p>
                   </div>
                   <div className="sm:text-right flex-shrink-0 pl-4 sm:pl-0">
-                    <span className="text-[10px] text-grid-slate-500 uppercase block">Potential Recovery</span>
-                    <span className="text-grid-emerald-400 font-bold text-sm tabular-nums">
+                    <span className="text-[10px] text-slate-400 uppercase block">Potential Recovery</span>
+                    <span className="text-emerald-700 font-bold text-sm tabular-nums">
                       +₹{(f.potentialSavingsInrMonthly / 100000).toFixed(2)} L/mo
                     </span>
                   </div>
@@ -389,36 +459,84 @@ export function BillAuditDropzone() {
           </div>
 
           {/* Recommended Roadmap & Action */}
-          <div className="bg-grid-navy-900/60 border border-grid-slate-800 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="space-y-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-grid-emerald-400 font-mono">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800 font-mono">
                 Topnotch Turnkey Remediation Package
               </h4>
-              <p className="text-xs font-mono text-grid-slate-300 max-w-xl">
-                Our BEE Certified Energy Auditors and CERC Power Trading Desk can implement APFC capacitor banks,
+              <p className="text-xs sm:text-sm font-mono text-slate-700 max-w-xl leading-relaxed">
+                Our BEE Certified Energy Auditors and CERC Power Trading Desk can install APFC capacitor banks,
                 initiate SLDC Standing Clearance for IEX/Captive procurement, and optimize your contract demand
                 within 30 to 45 business days.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row items-center gap-3 flex-shrink-0">
+            <div className="flex flex-col sm:flex-row items-center gap-3 flex-shrink-0 w-full sm:w-auto">
+              <button
+                onClick={() => setIsDossierOpen(true)}
+                className="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold font-mono text-xs transition-all shadow-sm flex items-center justify-center space-x-2"
+                title="Generate board-ready A4 executive summary"
+              >
+                <Printer className="w-4 h-4 text-[#F8BC26]" />
+                <span>Boardroom PDF Dossier</span>
+              </button>
               <button
                 onClick={handleExportToSimulator}
-                className="w-full sm:w-auto px-5 py-3 rounded-xl bg-grid-cyan-500 hover:bg-grid-cyan-400 text-grid-navy-950 font-bold font-mono text-xs transition-all shadow-lg shadow-grid-cyan-500/20 flex items-center justify-center space-x-2"
+                className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#F8BC26] hover:bg-[#e6ab1e] text-[#1C2C34] font-bold font-mono text-xs transition-all shadow-sm flex items-center justify-center space-x-2"
                 title="Populate Open Access simulator with this plant's telemetry"
               >
                 <Calculator className="w-4 h-4" />
                 <span>Import into Simulator →</span>
               </button>
-              <Link
-                href="/contact"
-                className="w-full sm:w-auto px-5 py-3 rounded-xl bg-grid-emerald-500 hover:bg-grid-emerald-400 text-grid-navy-950 font-bold font-mono text-xs transition-all shadow-lg shadow-grid-emerald-500/20 flex items-center justify-center space-x-2"
-              >
-                <span>Schedule Tariff Audit</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
             </div>
           </div>
         </div>
+      )}
+
+      {/* NDA Modal Gateway */}
+      <BilateralNdaModal
+        isOpen={isNdaModalOpen}
+        onClose={() => {
+          setIsNdaModalOpen(false);
+          setPendingAnalysis(null);
+        }}
+        onAccept={handleNdaAccepted}
+        defaultCompany={
+          pendingAnalysis?.type === "steel"
+            ? "Heavy Steel Rolling Mill"
+            : pendingAnalysis?.type === "textile"
+            ? "Synthetic Textile Park"
+            : ""
+        }
+      />
+
+      {/* Boardroom Dossier Modal */}
+      {activeDiagnostic && (
+        <BoardroomDossierModal
+          isOpen={isDossierOpen}
+          onClose={() => setIsDossierOpen(false)}
+          data={{
+            clientCompany: ndaExecution?.companyName || activeDiagnostic.clientProfile,
+            stateName: activeDiagnostic.state,
+            discomName: activeDiagnostic.discom,
+            voltageLevel: activeDiagnostic.voltageKv,
+            contractDemandKva: activeDiagnostic.contractDemandKva,
+            monthlyConsumptionKwh: activeDiagnostic.monthlyBilledKvah,
+            currentDiscomTariff: effectiveDiscomRate,
+            projectedLandedTariff: 4.85,
+            monthlySavingsInr: activeDiagnostic.totalMonthlyLeakageInr + 1500000,
+            annualSavingsInr: (activeDiagnostic.totalMonthlyLeakageInr + 1500000) * 12,
+            model: "group-captive",
+            powerSource: "solar-wind-hybrid",
+            costBreakdown: {
+              generationCost: 3.45,
+              transmissionCharge: 0.35,
+              wheelingCharge: 0.45,
+              crossSubsidySurcharge: 0,
+              additionalSurcharge: 0,
+              sldcAndScheduling: 0.04,
+            },
+          }}
+        />
       )}
     </div>
   );

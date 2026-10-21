@@ -2,12 +2,11 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { BRAND } from "@/lib/constants/brand";
-import { AccessibilityToolbar } from "@/components/layout/AccessibilityToolbar";
-import { LiveTickerBar } from "@/components/layout/LiveTickerBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { WhatsAppFloatingDesk } from "@/components/layout/WhatsAppFloatingDesk";
+import { SkipToContent } from "@/components/layout/SkipToContent";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,8 +20,14 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const SITE_URL = "https://topnotchenergy.in";
+
 export const metadata: Metadata = {
-  title: `${BRAND.companyName} | Enterprise Power Trading, Open Access Advisory & Solar Decarbonization`,
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${BRAND.companyName} | Enterprise Power Trading, Open Access Advisory & Solar Decarbonization`,
+    template: `%s | ${BRAND.companyName}`,
+  },
   description:
     "Topnotch Energy Solutions is India's premier B2B power trading advisory, Group Captive Open Access consultant, and industrial rooftop solar platform. Managing 96-time block IEX/PXIL bidding, CEA 0.2s ABT metering, and delivering 18%–42% industrial tariff reductions across 14 states.",
   keywords: [
@@ -38,30 +43,21 @@ export const metadata: Metadata = {
     "Cross-Subsidy Surcharge Exemption",
     "Power Trading Ghaziabad Uttar Pradesh",
   ],
-  authors: [{ name: BRAND.companyName, url: "https://energysolutions.co.in" }],
+  authors: [{ name: BRAND.companyName, url: SITE_URL }],
   creator: BRAND.companyName,
   publisher: BRAND.legalName,
-  metadataBase: new URL("https://energysolutions.co.in"),
   alternates: {
-    canonical: "https://energysolutions.co.in",
+    canonical: SITE_URL,
   },
   manifest: "/manifest.json",
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://energysolutions.co.in",
+    url: SITE_URL,
     siteName: BRAND.companyName,
-    title: `${BRAND.companyName} | Enterprise Power Trading, Open Access Advisory & Solar Decarbonization`,
+    title: `${BRAND.companyName} | Enterprise Power Trading & Open Access Advisory`,
     description:
       "Topnotch Energy Solutions is India's premier B2B power trading advisory, Group Captive Open Access consultant, and industrial rooftop solar platform. Managing 96-time block IEX/PXIL bidding, CEA 0.2s ABT metering, and delivering 18%–42% industrial tariff reductions across 14 states.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: `${BRAND.companyName} - India's Premier B2B Power Trading & Open Access Advisory`,
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -88,11 +84,11 @@ const jsonLdData = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://energysolutions.co.in/#organization",
-      name: "Topnotch Energy Solutions",
+      "@id": `${SITE_URL}/#organization`,
+      name: BRAND.companyName,
       legalName: BRAND.legalName,
-      url: "https://energysolutions.co.in",
-      logo: "https://energysolutions.co.in/icon-512.png",
+      url: SITE_URL,
+      logo: `${SITE_URL}/assets/logo/header_logo.png`,
       address: {
         "@type": "PostalAddress",
         streetAddress: "UG-5, First Floor, Parsvnath Regalia",
@@ -117,16 +113,15 @@ const jsonLdData = {
         },
       ],
       sameAs: [
-        "https://www.linkedin.com/company/topnotch-energy-solutions",
-        "https://twitter.com/topnotchenergy",
+        "https://www.linkedin.com/company/top-notch-energy-solutions/",
       ],
     },
     {
       "@type": "Service",
-      "@id": "https://energysolutions.co.in/#power-trading-service",
+      "@id": `${SITE_URL}/#power-trading-service`,
       name: "IEX Power Trading & Open Access Bidding Desk",
       provider: {
-        "@id": "https://energysolutions.co.in/#organization",
+        "@id": `${SITE_URL}/#organization`,
       },
       serviceType: "Power Exchange Bidding & Portfolio Optimization",
       areaServed: "IN",
@@ -135,10 +130,10 @@ const jsonLdData = {
     },
     {
       "@type": "FinancialProduct",
-      "@id": "https://energysolutions.co.in/#group-captive-spv",
+      "@id": `${SITE_URL}/#group-captive-spv`,
       name: "Group Captive Solar SPV & Open Access Tariff Optimization",
       provider: {
-        "@id": "https://energysolutions.co.in/#organization",
+        "@id": `${SITE_URL}/#organization`,
       },
       description:
         "Statutory Section 42 Group Captive model (26% equity, 51% consumption) delivering 100% waiver of Cross-Subsidy Surcharge (CSS) and Additional Surcharge across 14 industrial states.",
@@ -154,7 +149,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${jetbrainsMono.variable} dark antialiased`}
+      className={`${inter.variable} ${jetbrainsMono.variable} antialiased scroll-smooth`}
     >
       <head>
         <script
@@ -162,18 +157,17 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-grid-navy-950 text-white font-sans overflow-x-hidden">
-        {/* Global Utility & Accessibility Strip */}
-        <AccessibilityToolbar />
+      <body className="min-h-screen flex flex-col bg-white text-[#1C2C34] font-sans overflow-x-hidden selection:bg-[#F8BC26]/30 selection:text-[#1C2C34]">
+        {/* WCAG Skip Link */}
+        <SkipToContent />
 
-        {/* Live Market Ticker */}
-        <LiveTickerBar />
-
-        {/* MegaMenu Desktop Header */}
+        {/* Unified Enterprise Header with Live 96-Block Telemetry */}
         <Header />
 
         {/* Page Content: pb-20 on mobile prevents bottom nav overlap */}
-        <main className="flex-1 pb-20 md:pb-0">{children}</main>
+        <main id="main-content" className="flex-1 pb-20 md:pb-0">
+          {children}
+        </main>
 
         {/* Global Enterprise Footer */}
         <Footer />

@@ -63,9 +63,12 @@ export function CommandPalette() {
   // Focus input when modal opens
   useEffect(() => {
     if (isOpen) {
-      setQuery("");
-      setSelectedIndex(0);
-      setTimeout(() => inputRef.current?.focus(), 50);
+      const timer = setTimeout(() => {
+        setQuery("");
+        setSelectedIndex(0);
+        inputRef.current?.focus();
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
@@ -337,7 +340,7 @@ export function CommandPalette() {
   const selectItem = (item: SearchItem) => {
     setIsOpen(false);
     if (item.href.startsWith("tel:")) {
-      window.location.href = item.href;
+      window.location.assign(item.href);
     } else {
       router.push(item.href);
     }
@@ -347,13 +350,13 @@ export function CommandPalette() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="hidden md:flex items-center space-x-2 px-2.5 py-1.5 rounded-lg border border-grid-slate-800 bg-grid-navy-900/80 hover:bg-grid-navy-800/80 hover:border-grid-slate-700 text-grid-slate-400 hover:text-white transition-all text-xs font-mono group"
+        className="hidden md:flex items-center space-x-2 px-3 py-2 rounded-full border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 text-slate-500 hover:text-slate-800 transition-all text-xs font-mono group shadow-2xs"
         title="Open Command Palette (Cmd+K or Ctrl+K)"
       >
-        <Search className="w-3.5 h-3.5 text-grid-cyan-400 group-hover:scale-110 transition-transform" />
-        <span className="hidden xl:inline text-grid-slate-400">Search states, solutions, tariffs...</span>
-        <span className="xl:hidden text-grid-slate-400">Search...</span>
-        <kbd className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] bg-grid-navy-950 border border-grid-slate-700 text-grid-slate-400 font-sans shadow-sm">
+        <Search className="w-3.5 h-3.5 text-amber-600 group-hover:scale-110 transition-transform" />
+        <span className="hidden xl:inline text-slate-600">Search states, tariffs, bourses...</span>
+        <span className="xl:hidden text-slate-600">Search...</span>
+        <kbd className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] bg-white border border-slate-200 text-slate-500 font-sans shadow-2xs">
           ⌘K
         </kbd>
       </button>

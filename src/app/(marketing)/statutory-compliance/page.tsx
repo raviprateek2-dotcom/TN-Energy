@@ -1,6 +1,9 @@
 import React from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
+import { PageDivider } from "@/components/ui/PageDivider";
+import { SplitImageMergeSection } from "@/components/ui/SplitImageMergeSection";
 import {
   Shield,
   FileText,
@@ -8,8 +11,10 @@ import {
   BookOpen,
   Scale,
   Zap,
-  Globe,
+  Globe2,
   ChevronRight,
+  CheckCircle2,
+  AlertTriangle,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -21,7 +26,7 @@ export const metadata: Metadata = {
 interface ComplianceDoc {
   category: string;
   icon: React.ElementType;
-  accentColor: string;
+  badgeColor: string;
   regulations: {
     title: string;
     authority: string;
@@ -37,7 +42,7 @@ const COMPLIANCE_DOCS: ComplianceDoc[] = [
   {
     category: "Power Market & Exchange Trading",
     icon: Zap,
-    accentColor: "text-grid-cyan-400",
+    badgeColor: "bg-blue-50 text-blue-800 border-blue-200",
     regulations: [
       {
         title: "CERC (Power Market) Regulations, 2021",
@@ -87,8 +92,8 @@ const COMPLIANCE_DOCS: ComplianceDoc[] = [
   },
   {
     category: "Open Access & Captive Generation",
-    icon: Globe,
-    accentColor: "text-grid-emerald-400",
+    icon: Globe2,
+    badgeColor: "bg-emerald-50 text-emerald-800 border-emerald-200",
     regulations: [
       {
         title: "Electricity Act, 2003 – Sections 38–42 (Open Access Rights)",
@@ -140,7 +145,7 @@ const COMPLIANCE_DOCS: ComplianceDoc[] = [
   {
     category: "Metering & Telemetry Standards",
     icon: Shield,
-    accentColor: "text-purple-400",
+    badgeColor: "bg-purple-50 text-purple-800 border-purple-200",
     regulations: [
       {
         title: "CEA (Installation and Operation of Meters) Amendment Regulations, 2019",
@@ -177,7 +182,7 @@ const COMPLIANCE_DOCS: ComplianceDoc[] = [
   {
     category: "Renewable Energy & REC Framework",
     icon: BookOpen,
-    accentColor: "text-grid-amber-400",
+    badgeColor: "bg-amber-50 text-amber-800 border-amber-200",
     regulations: [
       {
         title: "CERC (Terms and Conditions for Renewable Energy Certificates) Regulations, 2022",
@@ -214,7 +219,7 @@ const COMPLIANCE_DOCS: ComplianceDoc[] = [
   {
     category: "Tariff & Distribution Regulations",
     icon: Scale,
-    accentColor: "text-grid-red-400",
+    badgeColor: "bg-slate-100 text-slate-800 border-slate-300",
     regulations: [
       {
         title: "UPERC Tariff Order (Uttar Pradesh Electricity Regulatory Commission)",
@@ -237,33 +242,64 @@ const COMPLIANCE_DOCS: ComplianceDoc[] = [
 
 export default function StatutoryCompliancePage() {
   return (
-    <main className="min-h-screen bg-grid-navy-950 text-white">
-      {/* Hero */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800 overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto">
-          <div className="max-w-3xl">
-            <span className="inline-block px-3 py-1 rounded-full bg-grid-amber-500/10 border border-grid-amber-500/30 text-grid-amber-400 text-[11px] font-mono font-bold uppercase tracking-widest mb-4">
-              Statutory Compliance
-            </span>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight">
+    <main className="min-h-screen bg-white text-slate-800">
+      {/* Hero with Cinematic Photographic Backdrop */}
+      <section className="relative min-h-[45vh] flex items-center justify-center overflow-hidden bg-[#0A0F1D] py-20 px-4 sm:px-6 lg:px-8 text-white">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2000&q=80"
+            alt="Indian Electricity Regulatory Framework and Statutory Architecture"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center opacity-30 scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1D]/95 via-[#0A0F1D]/85 to-[#0A0F1D]/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1D] via-transparent to-transparent" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto w-full">
+          <div className="max-w-3xl space-y-4">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-mono font-bold uppercase tracking-wider">
+              <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+              <span>Statutory Compliance Architecture</span>
+            </div>
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
               Indian Electricity{" "}
-              <span className="text-grid-amber-400">Regulatory</span> Framework
+              <span className="text-[#F8BC26]">
+                Regulatory Framework
+              </span>
             </h1>
-            <p className="mt-4 text-grid-slate-300 text-base leading-relaxed max-w-2xl">
+            <p className="text-slate-200 text-sm sm:text-base leading-relaxed font-sans max-w-2xl">
               Comprehensive reference to CERC, SERC, CEA, BEE, and Ministry of Power regulations governing power
               trading, Open Access, Group Captive generation, ABT metering, REC trading, and energy efficiency
               compliance for Indian industrial consumers.
             </p>
-            <p className="mt-3 text-grid-slate-500 text-xs font-mono">
-              Last reviewed: October 2025 | Regulatory positions are subject to CERC/SERC order revisions
-            </p>
+            <div className="pt-2 flex flex-wrap gap-4 text-xs font-mono text-slate-300">
+              <span className="flex items-center space-x-1.5">
+                <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+                <span>Audited for FY 2024–25</span>
+              </span>
+              <span className="flex items-center space-x-1.5">
+                <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+                <span>Gazette Notifications Verified</span>
+              </span>
+              <span className="flex items-center space-x-1.5">
+                <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+                <span>CERC / SERC / CEA Harmonized</span>
+              </span>
+            </div>
           </div>
+        </div>
+
+        {/* Waaree Fluid Wave Divider: Dark Hero into Ghost Slate Navigation */}
+        <div className="absolute bottom-0 inset-x-0 pointer-events-none">
+          <PageDivider type="layered-wave" fillColor="#F9FAFB" position="bottom" height={55} />
         </div>
       </section>
 
       {/* Quick Navigation */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 border-b border-grid-slate-800 bg-grid-navy-900/50">
+      <section className="py-6 px-4 sm:px-6 lg:px-8 border-b border-slate-200 bg-[#F9FAFB] sticky top-0 z-20 backdrop-blur-md">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-wrap gap-2">
             {COMPLIANCE_DOCS.map((cat) => {
@@ -272,9 +308,9 @@ export default function StatutoryCompliancePage() {
                 <a
                   key={cat.category}
                   href={`#${cat.category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-                  className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-grid-navy-900 border border-grid-slate-800 hover:border-grid-slate-600 text-[11px] font-mono font-bold transition-colors ${cat.accentColor}`}
+                  className="flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-emerald-500 hover:text-emerald-700 text-xs font-mono font-bold transition-all shadow-2xs"
                 >
-                  <Icon className="w-3 h-3" />
+                  <Icon className="w-3.5 h-3.5 text-emerald-600" />
                   <span>{cat.category}</span>
                 </a>
               );
@@ -284,74 +320,74 @@ export default function StatutoryCompliancePage() {
       </section>
 
       {/* Regulation Categories */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
         {COMPLIANCE_DOCS.map((cat) => {
           const Icon = cat.icon;
           const anchorId = cat.category.toLowerCase().replace(/[^a-z0-9]+/g, "-");
           return (
-            <section key={cat.category} id={anchorId}>
-              <div className="flex items-center space-x-3 mb-8 border-b border-grid-slate-800 pb-4">
-                <div className={`w-9 h-9 rounded-xl bg-grid-navy-900 border border-grid-slate-700 flex items-center justify-center`}>
-                  <Icon className={`w-5 h-5 ${cat.accentColor}`} />
+            <section key={cat.category} id={anchorId} className="scroll-mt-24">
+              <div className="flex items-center space-x-3 mb-8 border-b border-slate-200 pb-4">
+                <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-[#1C2C34]">
+                  <Icon className="w-5 h-5 text-emerald-700" />
                 </div>
-                <h2 className="text-xl font-extrabold text-white">{cat.category}</h2>
+                <h2 className="text-xl sm:text-2xl font-black text-[#1C2C34]">{cat.category}</h2>
               </div>
 
               <div className="space-y-6">
                 {cat.regulations.map((reg) => (
                   <div
                     key={reg.title}
-                    className="bg-grid-navy-900 border border-grid-slate-800 rounded-2xl overflow-hidden hover:border-grid-slate-700 transition-colors"
+                    className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                   >
                     {/* Header */}
-                    <div className="p-6 border-b border-grid-slate-800/80">
+                    <div className="p-6 border-b border-slate-100 bg-slate-50/50">
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div>
-                          <div className="flex items-center space-x-2 mb-1">
-                            <span className={`text-[10px] font-mono font-bold uppercase tracking-widest ${cat.accentColor}`}>
+                          <div className="flex items-center space-x-2 mb-1.5">
+                            <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${cat.badgeColor}`}>
                               {reg.authority}
                             </span>
-                            <span className="text-grid-slate-600 text-[10px] font-mono">• {reg.year}</span>
+                            <span className="text-slate-500 text-xs font-mono">• {reg.year}</span>
                           </div>
-                          <h3 className="text-white font-extrabold text-sm sm:text-base">{reg.title}</h3>
+                          <h3 className="text-base sm:text-lg font-black text-[#1C2C34]">{reg.title}</h3>
                         </div>
                         {reg.url && (
                           <a
                             href={reg.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center space-x-1 text-grid-slate-500 hover:text-white text-[11px] font-mono transition-colors flex-shrink-0"
+                            className="flex items-center space-x-1 text-slate-500 hover:text-emerald-700 text-xs font-mono transition-colors flex-shrink-0"
                           >
                             <span>Official Source</span>
-                            <ExternalLink className="w-3 h-3" />
+                            <ExternalLink className="w-3.5 h-3.5" />
                           </a>
                         )}
                       </div>
-                      <p className="text-grid-slate-300 text-xs leading-relaxed mt-3">{reg.description}</p>
+                      <p className="text-slate-600 text-xs sm:text-sm leading-relaxed mt-3">{reg.description}</p>
                     </div>
 
                     {/* Body */}
                     <div className="p-6 grid sm:grid-cols-2 gap-6">
                       <div>
-                        <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-grid-slate-500 mb-2.5 flex items-center space-x-1.5">
-                          <FileText className="w-3 h-3" />
+                        <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center space-x-1.5">
+                          <FileText className="w-3.5 h-3.5 text-emerald-600" />
                           <span>Key Provisions</span>
                         </div>
-                        <div className="space-y-1.5">
+                        <div className="space-y-2">
                           {reg.keyProvisions.map((provision) => (
-                            <div key={provision} className="flex items-start space-x-2 text-xs">
-                              <ChevronRight className={`w-3 h-3 flex-shrink-0 mt-0.5 ${cat.accentColor}`} />
-                              <span className="text-grid-slate-300">{provision}</span>
+                            <div key={provision} className="flex items-start space-x-2 text-xs text-slate-700">
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                              <span>{provision}</span>
                             </div>
                           ))}
                         </div>
                       </div>
                       <div>
-                        <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-grid-slate-500 mb-2.5 flex items-center space-x-1.5">
-                          <Shield className="w-3 h-3" />
+                        <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center space-x-1.5">
+                          <Shield className="w-3.5 h-3.5 text-amber-600" />
                           <span>Topnotch Relevance</span>
                         </div>
-                        <div className={`text-xs leading-relaxed font-mono p-3 rounded-xl bg-grid-navy-800 border border-grid-slate-700 ${cat.accentColor}`}>
+                        <div className="text-xs leading-relaxed font-mono p-4 rounded-xl bg-slate-50 border border-slate-200 text-slate-800">
                           {reg.relevance}
                         </div>
                       </div>
@@ -364,37 +400,70 @@ export default function StatutoryCompliancePage() {
         })}
       </div>
 
-      {/* Disclaimer */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 border-t border-grid-slate-800">
+      {/* =========================================================================
+          WAAREE-GRADE EXECUTIVE STATUTORY CONSULTATION SECTION (HALF-MERGING IMAGE ON WHITE)
+         ========================================================================= */}
+      <SplitImageMergeSection
+        badgeText="Sovereign Regulatory Advisory"
+        title={
+          <>
+            Need Formal Statutory <span className="text-[#D97706]">Regulatory Advisory</span> for Your Plant?
+          </>
+        }
+        description="Our in-house CERC Category-IV advisors and BEE Accredited Energy Auditors formulate binding regulatory risk dossiers, SLDC NOC clearance roadmaps, and Electricity Act Section 42 Group Captive compliance verifications for high-tension manufacturing plants."
+        bullets={[
+          "Electricity Act 2003 Rule 3 Statutory Audits",
+          "Inter-State GNA / T-GNA RLDC Filings",
+          "State DISCOM Cross-Subsidy Surcharge Exemptions",
+          "15-Minute ABT Metering & DSM Penalty Audits",
+        ]}
+        imageUrl="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1600&q=80"
+        imageAlt="High-voltage power transmission lines and grid substation infrastructure"
+        primaryCta={{
+          label: "Consult Regulatory Advisory Team",
+          href: "/contact?intent=statutory-advisory",
+        }}
+        secondaryCta={{
+          label: "Download Empanelment Dossier",
+          href: "/procurement-dossier",
+        }}
+        stats={[
+          { value: "100%", label: "Legal Exemption", sublabel: "CSS & AS under Sec 42" },
+          { value: "14 States", label: "Pan-India Standing", sublabel: "Active SLDC Clearances" },
+        ]}
+      />
+
+      {/* Legal Disclaimer */}
+      <section className="py-14 px-4 sm:px-6 lg:px-8 border-t border-slate-200 bg-slate-50">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-grid-navy-900 border border-grid-slate-700 rounded-2xl p-6">
-            <h3 className="text-white font-bold text-sm mb-3 flex items-center space-x-2">
-              <Shield className="w-4 h-4 text-grid-amber-400" />
-              <span>Legal Disclaimer</span>
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+            <h3 className="text-[#1C2C34] font-black text-base mb-3 flex items-center space-x-2">
+              <Shield className="w-5 h-5 text-emerald-700" />
+              <span>Legal Disclaimer &amp; Regulatory Jurisdiction</span>
             </h3>
-            <p className="text-grid-slate-400 text-xs leading-relaxed font-mono">
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-mono">
               The regulatory summaries on this page are compiled for informational purposes by Topnotch Energy Solutions
               and do not constitute legal advice. Indian electricity regulations, CERC orders, and SERC tariff structures
-              are subject to frequent amendments. Clients should obtain jurisdiction-specific legal opinions before
+              are subject to periodic amendments. Clients should obtain jurisdiction-specific legal opinions before
               implementing Open Access or captive generation transactions. Topnotch Energy Solutions holds NOAR
-              Institutional Consultant registration and CERC Category-IV advisory accreditation but does not represent
-              any regulatory authority.
+              Institutional Consultant registration and CERC Category-IV advisory accreditation but operates independently
+              from any statutory commission.
             </p>
-            <div className="mt-4 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-4">
               <Link
                 href="/contact"
-                className="px-4 py-2.5 rounded-xl bg-grid-emerald-500 hover:bg-grid-emerald-400 text-grid-navy-950 font-bold font-mono text-xs transition-all"
+                className="px-5 py-2.5 rounded-xl bg-[#F8BC26] hover:bg-[#e6ab1e] text-[#1C2C34] font-bold text-xs transition-all shadow-sm"
               >
-                Speak to Our Compliance Team
+                Consult Our Regulatory Team
               </Link>
               <a
                 href="https://www.cercind.gov.in"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2.5 rounded-xl border border-grid-slate-700 bg-grid-navy-800 hover:bg-grid-navy-700 text-grid-slate-300 font-mono text-xs font-bold transition-colors flex items-center space-x-1.5"
+                className="px-5 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-mono text-xs font-semibold transition-colors flex items-center space-x-1.5 shadow-2xs"
               >
-                <span>CERC Official Website</span>
-                <ExternalLink className="w-3 h-3" />
+                <span>CERC Official Portal</span>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
               </a>
             </div>
           </div>
