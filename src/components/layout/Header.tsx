@@ -24,7 +24,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import { BRAND } from "@/lib/constants/brand";
-import { CommandPalette } from "@/components/layout/CommandPalette";
 
 function getIstTimeBlock() {
   const now = new Date();
@@ -411,8 +410,8 @@ export function Header() {
               }`}
             >
               <span>Market Intel</span>
-              <span className="ml-1.5 px-1.5 py-0.2 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-mono font-bold flex items-center">
-                <span className="w-1 h-1 rounded-full bg-emerald-500 mr-1 animate-pulse" />
+              <span className="ml-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-mono font-bold flex items-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse" />
                 LIVE
               </span>
             </Link>
@@ -466,9 +465,15 @@ export function Header() {
             </Link>
           </nav>
 
-          {/* Right Action Cluster */}
-          <div className="hidden lg:flex items-center space-x-2.5 flex-shrink-0">
-            <CommandPalette />
+          {/* Right Action Cluster: Cleanly Arranged CTAs (Search Bar Removed) */}
+          <div className="hidden lg:flex items-center space-x-3 flex-shrink-0">
+            <Link
+              href="/portal/dashboard"
+              className="px-4 py-2.5 text-xs font-bold rounded-full border border-slate-300 hover:border-slate-800 bg-white hover:bg-slate-50 text-[#1C2C34] transition-all flex items-center space-x-1.5 shadow-2xs flex-shrink-0 active:scale-95"
+            >
+              <span>Client Portal</span>
+              <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+            </Link>
 
             <Link
               href="/tools/open-access-calculator"
@@ -476,15 +481,7 @@ export function Header() {
             >
               <Calculator className="w-3.5 h-3.5" />
               <span>Calculate Savings</span>
-              <ArrowRight className="w-3 h-3 ml-0.5" />
-            </Link>
-
-            <Link
-              href="/portal/dashboard"
-              className="hidden xl:flex px-4 py-2 text-xs font-bold rounded-full border border-slate-300 bg-white hover:bg-slate-50 text-[#1C2C34] transition-colors items-center space-x-1.5 shadow-2xs flex-shrink-0"
-            >
-              <span>Client Portal</span>
-              <ExternalLink className="w-3 h-3 text-slate-400" />
+              <ArrowRight className="w-3.5 h-3.5 ml-0.5" />
             </Link>
           </div>
 

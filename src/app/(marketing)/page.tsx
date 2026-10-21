@@ -100,9 +100,9 @@ export default function MarketingHomePage() {
 
                 <Link
                   href="/market-intelligence"
-                  className="px-6 py-4 rounded-full text-slate-300 hover:text-white text-sm font-semibold transition-colors flex items-center justify-center space-x-1.5"
+                  className="px-7 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/30 hover:border-emerald-400/60 backdrop-blur-md text-sm font-bold transition-all duration-200 flex items-center justify-center space-x-2 shadow-sm active:scale-95 group"
                 >
-                  <BarChart3 className="w-4 h-4 text-emerald-400" />
+                  <BarChart3 className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
                   <span>Live 96-Block Intel →</span>
                 </Link>
               </div>

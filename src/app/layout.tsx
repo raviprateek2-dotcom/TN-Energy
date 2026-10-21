@@ -8,6 +8,7 @@ import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { WhatsAppFloatingDesk } from "@/components/layout/WhatsAppFloatingDesk";
 import { SkipToContent } from "@/components/layout/SkipToContent";
 import { TradingHotkeyModal } from "@/components/layout/TradingHotkeyModal";
+import { CommandPalette } from "@/components/layout/CommandPalette";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -181,6 +182,9 @@ export default function RootLayout({
 
         {/* Global Trading Hotkeys HUD */}
         <TradingHotkeyModal />
+
+        {/* Global Keyboard Command Palette (Cmd+K listener) */}
+        <CommandPalette headless />
       </body>
     </html>
   );

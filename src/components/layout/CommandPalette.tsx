@@ -33,7 +33,11 @@ interface SearchItem {
   keywords: string[];
 }
 
-export function CommandPalette() {
+interface CommandPaletteProps {
+  headless?: boolean;
+}
+
+export function CommandPalette({ headless = false }: CommandPaletteProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -347,6 +351,7 @@ export function CommandPalette() {
   };
 
   if (!isOpen) {
+    if (headless) return null;
     return (
       <button
         onClick={() => setIsOpen(true)}
