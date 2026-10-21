@@ -10,6 +10,8 @@ import { StateTariffMatrix } from "@/components/market/StateTariffMatrix";
 import { PageDivider } from "@/components/ui/PageDivider";
 import { CornerIndustrialWatermark } from "@/components/ui/CornerIndustrialWatermark";
 import { SplitImageMergeSection } from "@/components/ui/SplitImageMergeSection";
+import { AmbientSpotlightCard } from "@/components/ui/AmbientSpotlightCard";
+import { SubstationBayExplorer } from "@/components/market/SubstationBayExplorer";
 import { BRAND } from "@/lib/constants/brand";
 
 export const metadata: Metadata = {
@@ -131,18 +133,30 @@ export default function OpenAccessCalculatorPage() {
                 desc: "Blended rate across rooftop, captive, exchange, and residual DISCOM drawl. Net savings = (DISCOM rate − Blended rate) × Annual consumption.",
               },
             ].map((item) => (
-              <div
+              <AmbientSpotlightCard
                 key={item.step}
-                className="bg-white border border-slate-200/90 rounded-3xl p-6 shadow-sm hover:shadow-lg transition-all"
+                className="p-6 shadow-sm hover:shadow-xl transition-all"
+                spotlightColor="rgba(248, 188, 38, 0.18)"
+                borderColor="rgba(248, 188, 38, 0.35)"
               >
-                <div className="text-3xl font-black font-mono text-[#F8BC26] mb-3">
+                <div className="text-3xl font-black font-mono text-[#D97706] mb-3">
                   {item.step}
                 </div>
                 <h3 className="text-[#1C2C34] font-bold text-base">{item.title}</h3>
                 <p className="text-slate-600 text-xs sm:text-sm leading-relaxed mt-2 font-sans">{item.desc}</p>
-              </div>
+              </AmbientSpotlightCard>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          33 kV SUBSTATION & TELEMETRY BAY EXPLORER (GRID INTERCONNECTION STANDARDS)
+         ========================================================================= */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-200 bg-white relative overflow-hidden">
+        <CornerIndustrialWatermark type="substation" position="top-right" opacity={0.06} />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <SubstationBayExplorer />
         </div>
       </section>
 

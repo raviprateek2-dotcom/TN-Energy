@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { WhatsAppFloatingDesk } from "@/components/layout/WhatsAppFloatingDesk";
 import { SkipToContent } from "@/components/layout/SkipToContent";
+import { TradingHotkeyModal } from "@/components/layout/TradingHotkeyModal";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -177,6 +178,9 @@ export default function RootLayout({
 
         {/* 24x7 WhatsApp Desk Floating Action Button */}
         <WhatsAppFloatingDesk />
+
+        {/* Global Trading Hotkeys HUD */}
+        <TradingHotkeyModal />
       </body>
     </html>
   );

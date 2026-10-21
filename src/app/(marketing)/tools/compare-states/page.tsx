@@ -6,6 +6,7 @@ import { StatePolicyComparator } from "@/components/market/StatePolicyComparator
 import { PageDivider } from "@/components/ui/PageDivider";
 import { CornerIndustrialWatermark } from "@/components/ui/CornerIndustrialWatermark";
 import { SplitImageMergeSection } from "@/components/ui/SplitImageMergeSection";
+import { AmbientSpotlightCard } from "@/components/ui/AmbientSpotlightCard";
 import { Scale, ArrowRight, ShieldCheck, Info, PhoneCall } from "lucide-react";
 import { BRAND } from "@/lib/constants/brand";
 
@@ -74,28 +75,34 @@ export default function CompareStatesPage() {
       </section>
 
       {/* =========================================================================
-          REGULATORY CONTEXT NOTE
+          REGULATORY CONTEXT NOTE (WITH AMBIENT SPOTLIGHT CARD)
          ========================================================================= */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white border-b border-slate-200 relative overflow-hidden">
         <CornerIndustrialWatermark type="substation" position="bottom-left" opacity={0.06} />
-        <div className="max-w-4xl mx-auto bg-slate-50 border border-slate-200 rounded-3xl p-8 sm:p-10 shadow-xs relative z-10">
-          <div className="flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-wider text-emerald-700 mb-2">
-            <Info className="w-4 h-4 text-emerald-600" />
-            <span>Statutory Interpretation Note</span>
-          </div>
-          <h2 className="text-xl sm:text-2xl font-black text-[#1C2C34] mb-3">
-            Why Multi-State Portfolios Require Tailored Procurement Mixes
-          </h2>
-          <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans mb-3">
-            In states like <strong>Gujarat</strong>, high industrial grid tariffs combined with monthly banking make
-            Wind-Solar Hybrid captive PPAs highly profitable. In <strong>Uttar Pradesh</strong>, solar-hour IEX exchange
-            procurement delivers steep discounts against PVVNL/PUVVNL rates, while Group Captive structures provide 100%
-            waiver from the ₹1.85/kWh CSS.
-          </p>
-          <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans">
-            Topnotch Energy Solutions structures custom cross-state procurement portfolios for multi-locational manufacturers,
-            optimizing scheduling and standing clearances across individual SLDCs.
-          </p>
+        <div className="max-w-4xl mx-auto relative z-10">
+          <AmbientSpotlightCard
+            className="p-8 sm:p-10 shadow-md bg-slate-50/80 backdrop-blur-sm"
+            spotlightColor="rgba(4, 120, 87, 0.12)"
+            borderColor="rgba(4, 120, 87, 0.3)"
+          >
+            <div className="flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-wider text-emerald-800 mb-2">
+              <Info className="w-4 h-4 text-emerald-700" />
+              <span>Statutory Interpretation Note</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-[#1C2C34] mb-3">
+              Why Multi-State Portfolios Require Tailored Procurement Mixes
+            </h2>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans mb-3">
+              In states like <strong>Gujarat</strong>, high industrial grid tariffs combined with monthly banking make
+              Wind-Solar Hybrid captive PPAs highly profitable. In <strong>Uttar Pradesh</strong>, solar-hour IEX exchange
+              procurement delivers steep discounts against PVVNL/PUVVNL rates, while Group Captive structures provide 100%
+              waiver from the ₹1.85/kWh CSS.
+            </p>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans">
+              Topnotch Energy Solutions structures custom cross-state procurement portfolios for multi-locational manufacturers,
+              optimizing scheduling and standing clearances across individual SLDCs.
+            </p>
+          </AmbientSpotlightCard>
         </div>
       </section>
 

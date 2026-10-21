@@ -30,6 +30,7 @@ import { PageDivider } from "@/components/ui/PageDivider";
 import { CornerIndustrialWatermark } from "@/components/ui/CornerIndustrialWatermark";
 import { SolutionSavingsWaterfall } from "@/components/market/SolutionSavingsWaterfall";
 import { SplitImageMergeSection } from "@/components/ui/SplitImageMergeSection";
+import { SubstationBayExplorer } from "@/components/market/SubstationBayExplorer";
 
 const SOLUTION_HERO_PHOTOS: Record<string, string> = {
   "power-trading-bilateral-contracts": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2000&q=80",
@@ -243,6 +244,18 @@ export default async function SolutionPage({
 
         </div>
       </section>
+
+      {/* =========================================================================
+          33 kV SUBSTATION & TELEMETRY BAY EXPLORER (FOR ABT INFRASTRUCTURE)
+         ========================================================================= */}
+      {slug === "abt-metering-telemetry-infrastructure" && (
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#F9FAFB] border-b border-slate-200 relative overflow-hidden">
+          <CornerIndustrialWatermark type="substation" position="top-right" opacity={0.06} />
+          <div className="max-w-7xl mx-auto relative z-10">
+            <SubstationBayExplorer />
+          </div>
+        </section>
+      )}
 
       {/* =========================================================================
           STATUTORY LANDED COST WATERFALL ECONOMICS
