@@ -14,27 +14,27 @@ interface HeroSlide {
 const HERO_SLIDES: HeroSlide[] = [
   {
     url: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=2000&q=80",
-    alt: "Utility-scale industrial solar farm and transmission infrastructure",
-    caption: "Utility Solar & Inter-State Transmission Grid",
+    alt: "Utility-scale industrial solar photovoltaic park with high-voltage grid substation",
+    caption: "Utility Solar & 400 kV Inter-State Transmission Grid",
     telemetryTag: "ISTS 400 kV Grid",
   },
   {
+    url: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2000&q=80",
+    alt: "Industrial wind turbine array standing tall over vibrant green fields",
+    caption: "Megawatt Wind-Solar Hybrid Group Captive Parks",
+    telemetryTag: "WSH Zero-CSS Assets",
+  },
+  {
     url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2000&q=80",
-    alt: "National power grid dispatch control room telemetry monitors",
-    caption: "National Grid Dispatch & Real-Time SCADA Floor",
+    alt: "National energy dispatch control room 24x7 telemetry desk",
+    caption: "24x7 Real-Time Bourse Dispatch & SCADA Floor",
     telemetryTag: "15-Min Bourse Desk",
   },
   {
     url: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=2000&q=80",
-    alt: "High-voltage transmission pylon corridor under ambient dusk lighting",
-    caption: "Heavy Industrial High-Tension Transmission Corridors",
+    alt: "Heavy industrial high-voltage transmission pylon corridor at dusk",
+    caption: "High-Tension Heavy Industrial Open Access Corridors",
     telemetryTag: "66 kV / 132 kV Bay",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2000&q=80",
-    alt: "Industrial wind turbine array along coastal manufacturing belt",
-    caption: "Megawatt Wind-Solar Hybrid Group Captive Parks",
-    telemetryTag: "WSH Zero-CSS Assets",
   },
   {
     url: "https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=2000&q=80",
@@ -44,9 +44,33 @@ const HERO_SLIDES: HeroSlide[] = [
   },
   {
     url: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=2000&q=80",
-    alt: "Heavy step-down power substation transformers and switchyard",
+    alt: "Step-down power substation transformers, switchgear, and telemetry bays",
     caption: "Turnkey CEA Class 0.2s ABT Metering Bays",
     telemetryTag: "NABL Calibrated",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=2000&q=80",
+    alt: "Wind turbine cluster standing tall across vibrant green agricultural landscape",
+    caption: "Commercial & Industrial Wind Power Captive Assets",
+    telemetryTag: "Zero CSS & AS",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1584267385494-9fdd9a71ad75?auto=format&fit=crop&w=2000&q=80",
+    alt: "Electric power transmission towers and high voltage lines against blue sky",
+    caption: "Inter-State Open Access Power Transmission Corridors",
+    telemetryTag: "NOAR Auto-Clearance",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=2000&q=80",
+    alt: "High-tech industrial energy control center and algorithmic dispatch workstation",
+    caption: "Algorithmic 96-Block DSM Scheduling & Bidding",
+    telemetryTag: "Grid-India Sync",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2000&q=80",
+    alt: "Industrial manufacturing plant automation with clean energy integration",
+    caption: "Continuous Heavy Industrial Power Decarbonization",
+    telemetryTag: "ISO 50001 EnMS",
   },
 ];
 
@@ -74,14 +98,14 @@ export function HeroBackgroundCarousel() {
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-      {/* 6 Seamless Cross-Fading Images */}
+      {/* 10 Seamless Cross-Fading Images with High Visual Clarity */}
       {HERO_SLIDES.map((slide, idx) => {
         const isActive = idx === currentIndex;
         return (
           <div
             key={slide.url}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              isActive ? "opacity-35" : "opacity-0"
+              isActive ? "opacity-75 sm:opacity-80" : "opacity-0"
             }`}
           >
             <Image
@@ -98,15 +122,15 @@ export function HeroBackgroundCarousel() {
         );
       })}
 
-      {/* Deep Blue Corporate Gradient Overlays for Maximum Contrast & Authority */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0B132B]/95 via-[#0F172A]/85 to-[#0F172A]/70" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-black/40" />
+      {/* Directional Contrast Gradient: Left-Heavy to Protect Typography While Letting Industrial Imagery Shine */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0B132B]/92 via-[#0B132B]/55 to-transparent z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0B132B] via-transparent to-black/30 z-[1]" />
 
       {/* Ambient Gold Radial Flare */}
-      <div className="absolute -top-24 right-1/4 w-96 h-96 bg-[#F8BC26]/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-24 right-1/4 w-96 h-96 bg-[#F8BC26]/15 rounded-full blur-3xl pointer-events-none z-[1]" />
 
       {/* Interactive Floating Carousel Control Pill (Bottom Right) */}
-      <div className="absolute bottom-24 right-4 sm:right-8 z-30 pointer-events-auto flex items-center space-x-3 bg-black/40 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 text-white text-xs font-mono shadow-xl">
+      <div className="absolute bottom-20 right-4 sm:right-8 z-30 pointer-events-auto flex items-center space-x-2.5 sm:space-x-3 bg-black/60 backdrop-blur-md border border-white/20 rounded-full px-3.5 sm:px-4 py-2 text-white text-xs font-mono shadow-2xl">
         {/* Play/Pause Button */}
         <button
           type="button"
@@ -119,15 +143,32 @@ export function HeroBackgroundCarousel() {
         </button>
 
         {/* Current Tag & Counter */}
-        <div className="hidden sm:flex items-center space-x-2">
+        <div className="hidden md:flex items-center space-x-2">
           <span className="text-[10px] uppercase font-bold text-[#F8BC26]">
             {HERO_SLIDES[currentIndex].telemetryTag}
           </span>
           <span className="text-white/40">|</span>
         </div>
 
+        {/* 10-Dot Quick Navigator */}
+        <div className="hidden sm:flex items-center space-x-1">
+          {HERO_SLIDES.map((_, dotIdx) => (
+            <button
+              key={dotIdx}
+              type="button"
+              onClick={() => setCurrentIndex(dotIdx)}
+              aria-label={`Jump to slide ${dotIdx + 1}`}
+              className={`transition-all duration-200 rounded-full ${
+                dotIdx === currentIndex
+                  ? "w-4 h-1.5 bg-[#F8BC26]"
+                  : "w-1.5 h-1.5 bg-white/40 hover:bg-white/80"
+              }`}
+            />
+          ))}
+        </div>
+
         <span className="text-slate-200 text-[11px] font-bold">
-          0{currentIndex + 1} / 0{HERO_SLIDES.length}
+          {String(currentIndex + 1).padStart(2, "0")} / {String(HERO_SLIDES.length).padStart(2, "0")}
         </span>
 
         {/* Navigation Arrows */}
@@ -155,13 +196,24 @@ export function HeroBackgroundCarousel() {
       <div className="absolute bottom-0 inset-x-0 h-1 bg-white/10 z-20">
         <div
           key={currentIndex}
-          className="h-full bg-gradient-to-r from-[#F8BC26] to-[#10B981] animate-in"
+          className="h-full bg-gradient-to-r from-[#F8BC26] to-[#10B981]"
           style={{
             animation: isPlaying ? `heroProgress ${SLIDE_DURATION_MS}ms linear forwards` : "none",
             width: isPlaying ? "100%" : "0%",
           }}
         />
       </div>
+
+      <style jsx>{`
+        @keyframes heroProgress {
+          0% {
+            width: 0%;
+          }
+          100% {
+            width: 100%;
+          }
+        }
+      `}</style>
     </div>
   );
 }

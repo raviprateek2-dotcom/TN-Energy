@@ -7,6 +7,7 @@ import { OpenAccessSimulator } from "@/components/calculators/OpenAccessSimulato
 import { BillAuditDropzone } from "@/components/calculators/BillAuditDropzone";
 import { AlgorithmicDispatchVisualizer } from "@/components/calculators/AlgorithmicDispatchVisualizer";
 import { StateTariffMatrix } from "@/components/market/StateTariffMatrix";
+import { TariffSensitivityMatrix } from "@/components/calculators/TariffSensitivityMatrix";
 import { PageDivider } from "@/components/ui/PageDivider";
 import { CornerIndustrialWatermark } from "@/components/ui/CornerIndustrialWatermark";
 import { SplitImageMergeSection } from "@/components/ui/SplitImageMergeSection";
@@ -176,6 +177,28 @@ export default function OpenAccessCalculatorPage() {
         <CornerIndustrialWatermark type="windmills" position="top-right" opacity={0.05} />
         <div className="max-w-7xl mx-auto relative z-10">
           <StateTariffMatrix />
+        </div>
+      </section>
+
+      {/* =========================================================================
+          DYNAMIC TARIFF SENSITIVITY & INFLATION MATRIX
+         ========================================================================= */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-200 bg-white relative overflow-hidden">
+        <CornerIndustrialWatermark type="transmission-tower" position="bottom-left" opacity={0.06} />
+        <div className="max-w-7xl mx-auto relative z-10 space-y-8">
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <span className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#D97706]">
+              Long-Term Inflation Hedging
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black text-[#1C2C34] tracking-tight">
+              Dynamic Tariff Sensitivity &amp; Escalation Matrix
+            </h2>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans">
+              Model compounding DISCOM tariff escalations over 25 years against locked Group Captive PPA tariffs to quantify long-term balance sheet protection.
+            </p>
+          </div>
+
+          <TariffSensitivityMatrix />
         </div>
       </section>
 

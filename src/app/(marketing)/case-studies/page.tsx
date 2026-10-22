@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BarChart3, TrendingDown, Leaf, Factory, Download, CheckCircle2, ShieldCheck } from "lucide-react";
 import { IndustrialCaseStudiesFilter } from "@/components/market/IndustrialCaseStudiesFilter";
+import { BillComparisonSlider } from "@/components/case-studies/BillComparisonSlider";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { PageDivider } from "@/components/ui/PageDivider";
 import { SplitImageMergeSection } from "@/components/ui/SplitImageMergeSection";
@@ -105,6 +106,27 @@ export default function CaseStudiesPage() {
         {/* Waaree Fluid Wave Divider: Merging Dark Hero into Ghost Slate Content */}
         <div className="absolute bottom-0 inset-x-0 pointer-events-none">
           <PageDivider type="layered-wave" fillColor="#F9FAFB" position="bottom" height={55} />
+        </div>
+      </section>
+
+      {/* =========================================================================
+          INTERACTIVE BEFORE / AFTER POWER BILL COMPARISON SLIDER
+         ========================================================================= */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white border-b border-slate-200 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <span className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#D97706]">
+              Visual Surcharge Diff &amp; Landed Rate
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black text-[#1C2C34] tracking-tight">
+              Interactive Before &amp; After Bill Comparison
+            </h2>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans">
+              Compare actual utility tariffs against Topnotch Group Captive and Exchange hybrid structures. Zero Cross-Subsidy Surcharges (CSS), zero Additional Surcharges (AS), and immediate bottom-line EBITDA lift.
+            </p>
+          </div>
+
+          <BillComparisonSlider />
         </div>
       </section>
 

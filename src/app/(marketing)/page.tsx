@@ -65,7 +65,7 @@ export default function MarketingHomePage() {
 
             {/* Main Inspiring Headline */}
             <ScrollFadeIn delay={0.2}>
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.12]">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.12] drop-shadow-md">
                 Pioneering India&apos;s Industrial{" "}
                 <span className="text-[#F8BC26]">Clean Energy</span> &amp; Power Trading Revolution
               </h1>
@@ -73,7 +73,7 @@ export default function MarketingHomePage() {
 
             {/* Executive Subheadline */}
             <ScrollFadeIn delay={0.3}>
-              <p className="text-base sm:text-lg text-slate-200 leading-relaxed font-normal max-w-2xl">
+              <p className="text-base sm:text-lg text-slate-100 leading-relaxed font-normal max-w-2xl drop-shadow-sm">
                 Transforming multi-crore factory electricity bills away from expensive DISCOM tariffs (₹7.50–₹11.00/kWh) into <strong className="text-white font-semibold">18%–42% recurring annual savings</strong> through Group Captive solar/wind hybrids and automated Day-Ahead bourse trading across 14 states.
               </p>
             </ScrollFadeIn>
@@ -647,8 +647,10 @@ export default function MarketingHomePage() {
               Operating under sovereign inter-state power trading licenses, automated National Open Access Registry (NOAR) connectivity, and Bureau of Energy Efficiency Grade-A accredited engineering audits.
             </p>
           </div>
+        </div>
 
-          {/* Large Animated Accreditation Badges Component */}
+        {/* Full-Width Single-Line Continuous Rightward Moving Marquee Ticker */}
+        <div className="w-full mt-8 relative z-10">
           <AccreditationsShowcase />
         </div>
       </section>

@@ -223,7 +223,7 @@ export default function AboutPage() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-200 bg-white relative overflow-hidden">
         <CornerIndustrialWatermark type="substation" position="top-right" size={320} opacity={0.06} />
         <CornerIndustrialWatermark type="transmission-tower" position="bottom-left" size={300} opacity={0.06} />
-        <div className="max-w-7xl mx-auto relative z-10 space-y-12">
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <span className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#D97706]">
               Regulatory Credentials
@@ -235,7 +235,10 @@ export default function AboutPage() {
               Our certifications from the Ministry of Power, CERC, and CEA guarantee compliance with every statutory rule.
             </p>
           </div>
+        </div>
 
+        {/* Full-Width Single-Line Continuous Rightward Moving Marquee Ticker */}
+        <div className="w-full mt-10 relative z-10">
           <AccreditationsShowcase />
         </div>
       </section>

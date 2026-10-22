@@ -55,11 +55,11 @@ export function Footer() {
          ========================================================================= */}
       <section className="relative bg-white text-[#1C2C34] py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden border-t border-slate-200">
         
-        {/* Right Half: High-Resolution Industrial Solar & Wind Array Merging into White */}
+        {/* Right Half: High-Resolution Lush Green Fields with Tall Wind Turbines & Solar Merging into White */}
         <div className="absolute right-0 top-0 bottom-0 w-full lg:w-3/5 pointer-events-none select-none overflow-hidden z-0">
           <Image
-            src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=1600&q=80"
-            alt="Utility-scale industrial solar arrays and clean energy transmission"
+            src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1600&q=80"
+            alt="Lush green fields with majestic wind turbines and solar generation standing tall in the background"
             fill
             sizes="(max-width: 1024px) 100vw, 60vw"
             className="object-cover object-center lg:object-right opacity-90"
@@ -173,17 +173,19 @@ export function Footer() {
         {/* Fine Industrial Architectural Grid Telemetry Background with Radial Fade */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#33415518_1px,transparent_1px),linear-gradient(to_bottom,#33415518_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_50%,#000_80%,transparent_100%)] pointer-events-none" />
 
-        {/* Cinematic Industrial Photography Background Overlay */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Cinematic Green Fields with Solar & Wind Turbines Standing Tall Background Overlay */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <Image
-            src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=2000&q=80"
-            alt="Industrial power infrastructure background"
+            src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2000&q=80"
+            alt="Lush green fields with tall wind turbines and clean energy generation standing tall in the background"
             fill
             sizes="100vw"
-            className="object-cover object-bottom opacity-[0.14]"
+            className="object-cover object-bottom opacity-40 sm:opacity-45 scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#060913] via-[#060913]/95 to-[#060913]/85" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#060913]/90 via-transparent to-[#060913]/90" />
+          {/* Multi-Stop Seamless Gradient Masks: Preserves Vibrant Green Fields & Tall Wind Turbines with 100% WCAG Text Contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#060913] via-[#060913]/85 to-[#060913]/70" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#060913]/95 via-[#060913]/60 to-[#060913]/90" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_40%,rgba(16,185,129,0.08),transparent_70%)]" />
         </div>
 
         {/* Top Edge Ambient Horizon Beam */}

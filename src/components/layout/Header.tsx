@@ -22,8 +22,11 @@ import {
   Phone,
   MessageSquare,
   Sparkles,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 import { BRAND } from "@/lib/constants/brand";
+import { toggleAudio, getAudioState, playBreakerClick } from "@/lib/audio/switch-audio";
 
 function getIstTimeBlock() {
   const now = new Date();
@@ -59,6 +62,32 @@ export function Header() {
     timeWindow: "09:00–09:15 IST",
     session: "Solar GDAM Generation",
   });
+  const [audioEnabled, setAudioEnabled] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("tn_audio_fx");
+      if (saved === "true") {
+        toggleAudio(true);
+        const timer = setTimeout(() => {
+          setAudioEnabled(true);
+        }, 0);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
+
+  const handleToggleAudio = () => {
+    const nextState = !audioEnabled;
+    toggleAudio(nextState);
+    setAudioEnabled(nextState);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("tn_audio_fx", String(nextState));
+    }
+    if (nextState) {
+      playBreakerClick();
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -147,6 +176,21 @@ export function Header() {
               <MessageSquare className="w-3 h-3 text-[#25D366]" />
               <span>WhatsApp Desk</span>
             </a>
+
+            {/* Audio Feedback Toggle */}
+            <button
+              type="button"
+              onClick={handleToggleAudio}
+              className={`p-1 rounded-full transition-colors ${
+                audioEnabled
+                  ? "text-emerald-700 bg-emerald-100/70"
+                  : "text-slate-400 hover:text-slate-700 hover:bg-slate-200/50"
+              }`}
+              title={audioEnabled ? "Synthetic FX audio enabled (Click to mute)" : "Synthetic FX audio muted (Click to enable)"}
+              aria-label={audioEnabled ? "Mute audio" : "Enable audio"}
+            >
+              {audioEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+            </button>
           </div>
         </div>
       </div>

@@ -107,16 +107,25 @@ const ACCREDITATIONS: Accreditation[] = [
 ];
 
 export function AccreditationsShowcase() {
+  // Duplicate badges list to ensure an infinite, seamless continuous single-line loop
+  const duplicatedBadges = [...ACCREDITATIONS, ...ACCREDITATIONS];
+
   return (
-    <div className="w-full">
-      {/* Medium-Sized Balanced 3-Column Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-        {ACCREDITATIONS.map((badge) => {
+    <div className="relative w-full overflow-hidden py-4">
+      {/* Left Gradient Edge Mask for Smooth Entrance */}
+      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-white via-white/80 to-transparent z-10" />
+      
+      {/* Right Gradient Edge Mask for Smooth Exit */}
+      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-white via-white/80 to-transparent z-10" />
+
+      {/* Single Continuous Line Marquee Moving Rightwards */}
+      <div className="flex w-max animate-marquee-right hover:[animation-play-state:paused] space-x-5 sm:space-x-6 items-stretch py-2">
+        {duplicatedBadges.map((badge, idx) => {
           const Icon = badge.icon;
           return (
             <div
-              key={badge.id}
-              className={`group relative rounded-2xl p-5 sm:p-5.5 bg-white border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col justify-between overflow-hidden ${badge.glowColor}`}
+              key={`${badge.id}-${idx}`}
+              className={`w-[340px] sm:w-[390px] flex-shrink-0 group relative rounded-2xl p-5 sm:p-5.5 bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-200 hover:-translate-y-1 flex flex-col justify-between overflow-hidden ${badge.glowColor}`}
             >
               {/* Top Accent Gradient Shimmer */}
               <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-slate-300 to-transparent group-hover:via-[#F8BC26] transition-all duration-300" />
@@ -173,6 +182,20 @@ export function AccreditationsShowcase() {
           );
         })}
       </div>
+
+      <style jsx>{`
+        @keyframes marquee-right {
+          0% {
+            transform: translateX(-50%);
+          }
+          100% {
+            transform: translateX(0%);
+          }
+        }
+        .animate-marquee-right {
+          animation: marquee-right 36s linear infinite;
+        }
+      `}</style>
     </div>
   );
 }
