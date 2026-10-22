@@ -25,13 +25,14 @@ export interface MarqueeClient {
 // Vector SVG Corporate Brand Logos
 const ClientLogos = {
   JSW: (
-    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#0F2238] border border-blue-400/50 flex items-center justify-center p-2.5 sm:p-3 shadow-md flex-shrink-0 group-hover:scale-105 transition-transform">
+    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-[#0B192C] to-[#0F2238] border-2 border-blue-400/60 flex items-center justify-center p-3 sm:p-3.5 shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
         {/* Steel Ingot Arcs */}
-        <path d="M15 70 L35 25 L50 25 L30 70 Z" fill="#D71920" />
-        <path d="M40 70 L60 25 L75 25 L55 70 Z" fill="#0072CE" />
-        <path d="M65 70 L85 25 L100 25 L80 70 Z" fill="#FFFFFF" />
-        <text x="50%" y="94%" textAnchor="middle" fill="#FFFFFF" fontSize="20" fontWeight="900" fontFamily="sans-serif" letterSpacing="1">
+        <path d="M15 68 L36 22 L52 22 L31 68 Z" fill="#E11D24" />
+        <path d="M41 68 L62 22 L78 22 L57 68 Z" fill="#0072CE" />
+        <path d="M67 68 L88 22 L100 22 L83 68 Z" fill="#FFFFFF" />
+        <rect x="10" y="74" width="80" height="3" fill="#0072CE" rx="1.5" />
+        <text x="50%" y="94%" textAnchor="middle" fill="#FFFFFF" fontSize="20" fontWeight="900" fontFamily="system-ui, sans-serif" letterSpacing="2">
           JSW
         </text>
       </svg>
@@ -39,95 +40,121 @@ const ClientLogos = {
   ),
 
   DSGroup: (
-    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-emerald-950 border border-emerald-500/50 flex items-center justify-center p-2.5 sm:p-3 shadow-md flex-shrink-0 group-hover:scale-105 transition-transform">
+    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-[#062419] to-[#0A3D2C] border-2 border-emerald-400/60 flex items-center justify-center p-3 sm:p-3.5 shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-        <circle cx="50" cy="50" r="42" stroke="#10B981" strokeWidth="4" strokeDasharray="6 3" />
-        <path d="M50 18 L68 50 L50 82 L32 50 Z" fill="#F59E0B" />
-        <circle cx="50" cy="50" r="14" fill="#064E3B" />
-        <text x="50" y="56" textAnchor="middle" fill="#FFFFFF" fontSize="18" fontWeight="900" fontFamily="sans-serif">
+        <circle cx="50" cy="46" r="38" stroke="#10B981" strokeWidth="4" strokeDasharray="7 3.5" />
+        <path d="M50 14 L68 46 L50 78 L32 46 Z" fill="#F59E0B" />
+        <circle cx="50" cy="46" r="16" fill="#064E3B" stroke="#34D399" strokeWidth="2" />
+        <text x="50" y="52" textAnchor="middle" fill="#FFFFFF" fontSize="18" fontWeight="900" fontFamily="system-ui, sans-serif">
           DS
+        </text>
+        <text x="50%" y="93%" textAnchor="middle" fill="#A7F3D0" fontSize="11" fontWeight="800" fontFamily="system-ui, sans-serif" letterSpacing="1.5">
+          DS GROUP
         </text>
       </svg>
     </div>
   ),
 
   VarunBeverages: (
-    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-blue-950 border border-blue-500/50 flex items-center justify-center p-2.5 sm:p-3 shadow-md flex-shrink-0 group-hover:scale-105 transition-transform">
+    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-[#081C3D] to-[#0D2E68] border-2 border-blue-400/60 flex items-center justify-center p-3 sm:p-3.5 shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-        <circle cx="50" cy="50" r="42" fill="#004B93" />
-        <path d="M12 50 Q50 20 88 50 Q50 78 12 50 Z" fill="#E31B23" />
-        <path d="M20 50 Q50 32 80 50 Q50 66 20 50 Z" fill="#FFFFFF" />
-        <text x="50" y="56" textAnchor="middle" fill="#004B93" fontSize="16" fontWeight="900" fontFamily="sans-serif">
+        <circle cx="50" cy="45" r="38" fill="#004B93" stroke="#3B82F6" strokeWidth="2" />
+        <path d="M14 45 Q50 16 86 45 Q50 74 14 45 Z" fill="#E31B23" />
+        <path d="M22 45 Q50 28 78 45 Q50 62 22 45 Z" fill="#FFFFFF" />
+        <circle cx="50" cy="45" r="12" fill="#004B93" />
+        <text x="50" y="50" textAnchor="middle" fill="#FFFFFF" fontSize="13" fontWeight="900" fontFamily="system-ui, sans-serif" letterSpacing="1">
           VBL
+        </text>
+        <text x="50%" y="94%" textAnchor="middle" fill="#BFDBFE" fontSize="10" fontWeight="800" fontFamily="system-ui, sans-serif" letterSpacing="1">
+          VARUN BEV
         </text>
       </svg>
     </div>
   ),
 
   KandhariBeverages: (
-    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-rose-950 border border-rose-500/50 flex items-center justify-center p-2.5 sm:p-3 shadow-md flex-shrink-0 group-hover:scale-105 transition-transform">
+    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-[#2D0A14] to-[#4C0D1E] border-2 border-rose-400/60 flex items-center justify-center p-3 sm:p-3.5 shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-        <circle cx="50" cy="50" r="44" fill="#E11D48" />
-        <path d="M22 62 C38 48, 62 48, 78 62 C62 55, 38 55, 22 62 Z" fill="#FFFFFF" />
-        <path d="M24 38 C40 26, 60 26, 76 38 C60 32, 40 32, 24 38 Z" fill="#FFFFFF" />
-        <text x="50" y="54" textAnchor="middle" fill="#FFFFFF" fontSize="18" fontWeight="900" fontFamily="sans-serif">
+        <circle cx="50" cy="45" r="38" fill="#E11D48" stroke="#FDA4AF" strokeWidth="2" />
+        <path d="M18 56 C36 42, 64 42, 82 56 C64 48, 36 48, 18 56 Z" fill="#FFFFFF" />
+        <path d="M20 36 C38 24, 62 24, 80 36 C62 30, 38 30, 20 36 Z" fill="#FFFFFF" opacity="0.85" />
+        <text x="50" y="50" textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="900" fontFamily="system-ui, sans-serif" letterSpacing="1">
           KBL
+        </text>
+        <text x="50%" y="94%" textAnchor="middle" fill="#FECDD3" fontSize="10" fontWeight="800" fontFamily="system-ui, sans-serif" letterSpacing="1">
+          KANDHARI
         </text>
       </svg>
     </div>
   ),
 
   GujaratSynthetics: (
-    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-purple-950 border border-purple-500/50 flex items-center justify-center p-2.5 sm:p-3 shadow-md flex-shrink-0 group-hover:scale-105 transition-transform">
+    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-[#230C38] to-[#3B125E] border-2 border-purple-400/60 flex items-center justify-center p-3 sm:p-3.5 shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-        <rect x="15" y="15" width="70" height="70" rx="16" fill="#581C87" />
-        <path d="M28 35 H72 M28 50 H72 M28 65 H72" stroke="#F8BC26" strokeWidth="6" strokeLinecap="round" />
-        <path d="M35 28 V72 M50 28 V72 M65 28 V72" stroke="#FFFFFF" strokeWidth="4" strokeLinecap="round" opacity="0.8" />
+        <rect x="14" y="12" width="72" height="66" rx="16" fill="#581C87" stroke="#A855F7" strokeWidth="2" />
+        <path d="M26 30 H74 M26 45 H74 M26 60 H74" stroke="#F8BC26" strokeWidth="6" strokeLinecap="round" />
+        <path d="M34 22 V68 M50 22 V68 M66 22 V68" stroke="#FFFFFF" strokeWidth="4" strokeLinecap="round" opacity="0.85" />
+        <text x="50%" y="93%" textAnchor="middle" fill="#E9D5FF" fontSize="10" fontWeight="800" fontFamily="system-ui, sans-serif" letterSpacing="1">
+          GUJ SYNTHETICS
+        </text>
       </svg>
     </div>
   ),
 
   DCMShriram: (
-    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-cyan-950 border border-cyan-500/50 flex items-center justify-center p-2.5 sm:p-3 shadow-md flex-shrink-0 group-hover:scale-105 transition-transform">
+    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-[#06202A] to-[#0A384A] border-2 border-cyan-400/60 flex items-center justify-center p-3 sm:p-3.5 shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
         {/* Chemical Benzene / Crystal Lattice */}
-        <polygon points="50,15 80,32 80,68 50,85 20,68 20,32" stroke="#06B6D4" strokeWidth="5" fill="#083344" />
-        <circle cx="50" cy="50" r="14" fill="#38BDF8" />
-        <text x="50" y="55" textAnchor="middle" fill="#0A0F1D" fontSize="14" fontWeight="900" fontFamily="sans-serif">
+        <polygon points="50,10 82,28 82,64 50,82 18,64 18,28" stroke="#06B6D4" strokeWidth="5" fill="#083344" />
+        <polygon points="50,22 72,35 72,57 50,70 28,57 28,35" stroke="#38BDF8" strokeWidth="2" fill="none" opacity="0.6" />
+        <circle cx="50" cy="46" r="15" fill="#38BDF8" />
+        <text x="50" y="51" textAnchor="middle" fill="#0A0F1D" fontSize="13" fontWeight="900" fontFamily="system-ui, sans-serif" letterSpacing="0.5">
           DCM
+        </text>
+        <text x="50%" y="94%" textAnchor="middle" fill="#BAE6FD" fontSize="10" fontWeight="800" fontFamily="system-ui, sans-serif" letterSpacing="1">
+          DCM SHRIRAM
         </text>
       </svg>
     </div>
   ),
 
   GangaPaperMills: (
-    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-teal-950 border border-teal-500/50 flex items-center justify-center p-2.5 sm:p-3 shadow-md flex-shrink-0 group-hover:scale-105 transition-transform">
+    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-[#072522] to-[#0B423D] border-2 border-teal-400/60 flex items-center justify-center p-3 sm:p-3.5 shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-        <circle cx="50" cy="50" r="42" fill="#115E59" />
-        <path d="M28 68 C28 42, 50 30, 72 26 C68 48, 52 70, 28 68 Z" fill="#2DD4BF" />
-        <path d="M36 62 C36 46, 50 38, 64 34" stroke="#FFFFFF" strokeWidth="3" fill="none" />
+        <circle cx="50" cy="45" r="38" fill="#115E59" stroke="#2DD4BF" strokeWidth="2" />
+        <path d="M26 66 C26 38, 50 26, 74 22 C70 46, 52 70, 26 66 Z" fill="#2DD4BF" />
+        <path d="M35 60 C35 42, 50 34, 66 30" stroke="#FFFFFF" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+        <text x="50%" y="94%" textAnchor="middle" fill="#99F6E4" fontSize="10" fontWeight="800" fontFamily="system-ui, sans-serif" letterSpacing="1">
+          GANGA PAPER
+        </text>
       </svg>
     </div>
   ),
 
   RadicoKhaitan: (
-    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-indigo-950 border border-amber-500/50 flex items-center justify-center p-2.5 sm:p-3 shadow-md flex-shrink-0 group-hover:scale-105 transition-transform">
+    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-[#120F33] to-[#1F1B52] border-2 border-amber-400/60 flex items-center justify-center p-3 sm:p-3.5 shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-        <path d="M50 15 L78 30 V60 C78 76 50 88 50 88 C50 88 22 76 22 60 V30 Z" fill="#1E1B4B" stroke="#F59E0B" strokeWidth="4" />
-        <polygon points="50,34 54,44 64,44 56,50 59,60 50,54 41,60 44,50 36,44 46,44" fill="#F8BC26" />
-        <text x="50" y="74" textAnchor="middle" fill="#FDE68A" fontSize="13" fontWeight="800" fontFamily="sans-serif">
+        <path d="M50 10 L82 26 V58 C82 76 50 88 50 88 C50 88 18 76 18 58 V26 Z" fill="#1E1B4B" stroke="#F59E0B" strokeWidth="4" />
+        <polygon points="50,28 54,39 65,39 57,46 60,57 50,50 40,57 43,46 35,39 46,39" fill="#F8BC26" />
+        <text x="50" y="68" textAnchor="middle" fill="#FDE68A" fontSize="14" fontWeight="900" fontFamily="system-ui, sans-serif">
           RKL
+        </text>
+        <text x="50%" y="96%" textAnchor="middle" fill="#FDE68A" fontSize="9" fontWeight="800" fontFamily="system-ui, sans-serif" letterSpacing="1">
+          RADICO KHAITAN
         </text>
       </svg>
     </div>
   ),
 
   CenturyPly: (
-    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-amber-950 border border-amber-500/50 flex items-center justify-center p-2.5 sm:p-3 shadow-md flex-shrink-0 group-hover:scale-105 transition-transform">
+    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-[#2D1606] to-[#4A240A] border-2 border-amber-400/60 flex items-center justify-center p-3 sm:p-3.5 shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-        <rect x="18" y="20" width="64" height="60" rx="8" fill="#78350F" />
-        <path d="M24 35 H76 M24 50 H76 M24 65 H76" stroke="#FDE68A" strokeWidth="4" />
-        <path d="M48 20 V80" stroke="#B45309" strokeWidth="4" />
+        <rect x="14" y="12" width="72" height="66" rx="10" fill="#78350F" stroke="#F59E0B" strokeWidth="2" />
+        <path d="M22 28 H78 M22 45 H78 M22 62 H78" stroke="#FDE68A" strokeWidth="5" />
+        <path d="M50 12 V78" stroke="#D97706" strokeWidth="5" />
+        <text x="50%" y="93%" textAnchor="middle" fill="#FEF3C7" fontSize="10" fontWeight="800" fontFamily="system-ui, sans-serif" letterSpacing="1">
+          CENTURY PLY
+        </text>
       </svg>
     </div>
   ),
@@ -279,7 +306,7 @@ export function LogoMarquee({ clients = DEFAULT_CLIENTS }: { clients?: MarqueeCl
           <Link
             href="/case-studies"
             key={`${client.name}-${idx}`}
-            className={`group relative w-[380px] sm:w-[440px] rounded-3xl overflow-hidden border ${client.borderColor} ${client.cardBg} shadow-sm ${client.hoverShadow} transition-all duration-300 flex flex-col justify-between p-6 sm:p-7 flex-shrink-0`}
+            className={`group relative w-[420px] sm:w-[480px] rounded-3xl overflow-hidden border ${client.borderColor} ${client.cardBg} shadow-sm ${client.hoverShadow} transition-all duration-300 flex flex-col justify-between p-6 sm:p-7 flex-shrink-0`}
           >
             {/* Background Photographic Layer with Dual Gradient Mask */}
             <div className="absolute inset-0 z-0 overflow-hidden">
@@ -287,30 +314,41 @@ export function LogoMarquee({ clients = DEFAULT_CLIENTS }: { clients?: MarqueeCl
                 src={client.bgImage}
                 alt={`${client.name} industrial manufacturing facility`}
                 fill
-                sizes="440px"
+                sizes="480px"
                 className="object-cover object-center opacity-10 group-hover:opacity-25 group-hover:scale-108 transition-all duration-700 filter grayscale group-hover:grayscale-0"
               />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/85 via-white/75 to-transparent" />
             </div>
 
-            {/* Top Row: Authentic Brand Logo Mark + Status Badges */}
-            <div className="relative z-10 flex items-start justify-between gap-3">
-              <div className="flex items-center space-x-4">
-                {client.logo}
-                <div className="flex flex-col text-left">
-                  <h4 className="text-base sm:text-xl font-black text-[#1C2C34] tracking-tight group-hover:text-[#D97706] transition-colors leading-snug">
-                    {client.name}
-                  </h4>
-                  <span className="text-xs font-mono font-medium text-slate-500 mt-0.5">
-                    {client.category}
-                  </span>
-                </div>
-              </div>
-
-              <span className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold ${client.tagColor} border flex-shrink-0 shadow-2xs`}>
+            {/* Top Bar: Regional & Open Access Classification */}
+            <div className="relative z-10 flex items-center justify-between gap-2 mb-3.5">
+              <span className={`inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-bold ${client.tagColor} border shadow-2xs`}>
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span>{client.state}</span>
+                <span className="text-slate-400">|</span>
+                <span>{client.discom}</span>
               </span>
+
+              <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-800 font-extrabold bg-emerald-100/80 border border-emerald-300 px-2.5 py-0.5 rounded-full shadow-2xs">
+                Section 42 Captive
+              </span>
+            </div>
+
+            {/* Main Brand Row: Large Corporate Logo Mark + Name & Category */}
+            <div className="relative z-10 flex items-center space-x-5">
+              {client.logo}
+              <div className="flex flex-col text-left">
+                <h4 className="text-xl sm:text-2xl font-black text-[#1C2C34] tracking-tight group-hover:text-[#D97706] transition-colors leading-tight">
+                  {client.name}
+                </h4>
+                <span className="text-xs sm:text-sm font-mono font-semibold text-slate-500 mt-1">
+                  {client.category}
+                </span>
+                <div className="flex items-center space-x-1.5 text-xs font-mono font-bold text-emerald-800 mt-1">
+                  <Zap className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+                  <span>{client.demand}</span>
+                </div>
+              </div>
             </div>
 
             {/* Middle Row: Demand Dynamics & Landed Tariff Shift */}
