@@ -43,57 +43,49 @@ export function IndustrialDecarbonizationBarometer() {
   const coalAvoidedTonnes = Math.round(annualCo2AbatedTonnes * 0.62); // ~0.62T coal per T CO2
 
   return (
-    <div className="relative w-full rounded-3xl overflow-hidden bg-gradient-to-br from-[#0B132B] via-[#0A0F1D] to-[#131F3F] text-white border border-white/20 p-6 sm:p-10 lg:p-12 shadow-2xl">
-      {/* Merged Background Image: National Decarbonization & Grid Transmission Infrastructure */}
+    <div className="relative w-full rounded-3xl overflow-hidden bg-[#0A0F1D] text-white border border-white/25 p-6 sm:p-10 lg:p-12 shadow-2xl">
+      {/* Merged Background Image: High-Visibility Wind Turbines, Green Fields & National Grid */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
         <Image
-          src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=2000&q=80"
-          alt="National clean energy grid decarbonization infrastructure"
+          src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2000&q=80"
+          alt="National clean energy grid decarbonization with wind turbines and green fields"
           fill
+          priority
           sizes="(max-width: 1280px) 100vw, 1280px"
-          className="object-cover object-center opacity-30 lg:opacity-35 scale-105"
+          className="object-cover object-center lg:object-bottom opacity-75 sm:opacity-85 scale-105"
         />
-        {/* Multi-Directional Gradient Masks for High Contrast and Visual Depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0B132B]/95 via-[#0A0F1D]/80 to-[#131F3F]/85" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B132B] via-transparent to-[#0B132B]/75" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(16,185,129,0.15),transparent_70%)]" />
+        {/* Soft Contrast Gradient Masks: Keeps Green Landscape & Turbines Vividly Visible While Protecting Legibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1D] via-[#0A0F1D]/45 to-black/35" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1D]/80 via-transparent to-[#0A0F1D]/75" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(16,185,129,0.2),transparent_60%)]" />
       </div>
 
       {/* Ambient background glow orbs */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none z-0" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none z-0" />
-
-      {/* Grid Pattern Texture */}
-      <div
-        className="absolute inset-0 opacity-10 pointer-events-none z-0"
-        style={{
-          backgroundImage: "radial-gradient(#F8BC26 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-        }}
-      />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl pointer-events-none z-0" />
 
       <div className="relative z-10 max-w-7xl mx-auto space-y-10">
         
         {/* Module Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-white/10">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-white/20">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-950/80 backdrop-blur-md border border-emerald-400/40 text-emerald-300 text-xs font-mono font-bold uppercase tracking-wider shadow-lg">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>National Decarbonization &amp; Grid Barometer</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
+            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight drop-shadow-md">
               Instant Plant Tariff &amp; Carbon Abatement Gauge
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-100 font-sans leading-relaxed drop-shadow-sm max-w-xl">
               Drag your facility&apos;s contract demand and state DISCOM tariff to simulate annual financial savings and verified carbon offsets under a Section 42 Group Captive hybrid model.
             </p>
           </div>
 
-          <div className="flex items-center space-x-3 bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl flex-shrink-0">
+          <div className="flex items-center space-x-3 bg-black/60 backdrop-blur-md border border-white/20 px-4 py-2.5 rounded-2xl flex-shrink-0 shadow-lg">
             <Award className="w-5 h-5 text-[#F8BC26]" />
             <div className="text-left font-mono">
               <div className="text-xs font-bold text-white">CEA Grid Factor</div>
-              <div className="text-[10px] text-slate-400">0.716 kg CO₂ / kWh Landed</div>
+              <div className="text-[10px] text-slate-300">0.716 kg CO₂ / kWh Landed</div>
             </div>
           </div>
         </div>
@@ -102,14 +94,14 @@ export function IndustrialDecarbonizationBarometer() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Left Column: Sliders (5 cols) */}
-          <div className="lg:col-span-5 bg-white/[0.08] backdrop-blur-md border border-white/15 rounded-2xl p-6 sm:p-8 space-y-7 flex flex-col justify-between shadow-xl">
+          <div className="lg:col-span-5 bg-[#0B132B]/85 backdrop-blur-md border border-white/20 rounded-2xl p-6 sm:p-8 space-y-7 flex flex-col justify-between shadow-2xl">
             <div className="space-y-6">
               
               {/* Slider 1: Contract Demand */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-slate-300 font-semibold">Sanctioned Contract Demand:</span>
-                  <span className="text-sm font-bold text-[#F8BC26] bg-[#F8BC26]/10 px-2.5 py-0.5 rounded-full border border-[#F8BC26]/20">
+                  <span className="text-slate-200 font-semibold">Sanctioned Contract Demand:</span>
+                  <span className="text-sm font-bold text-[#F8BC26] bg-[#F8BC26]/20 px-2.5 py-0.5 rounded-full border border-[#F8BC26]/40">
                     {demandKva.toLocaleString("en-IN")} kVA
                   </span>
                 </div>
@@ -122,7 +114,7 @@ export function IndustrialDecarbonizationBarometer() {
                   onChange={(e) => setDemandKva(Number(e.target.value))}
                   className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#F8BC26]"
                 />
-                <div className="flex justify-between text-[10px] font-mono text-slate-400">
+                <div className="flex justify-between text-[10px] font-mono text-slate-300">
                   <span>500 kVA (SME)</span>
                   <span>10,000 kVA</span>
                   <span>25,000 kVA (Heavy HT)</span>
@@ -132,8 +124,8 @@ export function IndustrialDecarbonizationBarometer() {
               {/* Slider 2: DISCOM Retail Tariff */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-slate-300 font-semibold">Current State DISCOM Tariff:</span>
-                  <span className="text-sm font-bold text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-full border border-rose-500/20">
+                  <span className="text-slate-200 font-semibold">Current State DISCOM Tariff:</span>
+                  <span className="text-sm font-bold text-rose-300 bg-rose-500/20 px-2.5 py-0.5 rounded-full border border-rose-500/30">
                     ₹{discomTariff.toFixed(2)} / kWh
                   </span>
                 </div>
@@ -146,7 +138,7 @@ export function IndustrialDecarbonizationBarometer() {
                   onChange={(e) => setDiscomTariff(Number(e.target.value))}
                   className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-rose-500"
                 />
-                <div className="flex justify-between text-[10px] font-mono text-slate-400">
+                <div className="flex justify-between text-[10px] font-mono text-slate-300">
                   <span>₹7.50 (Base)</span>
                   <span>₹9.50</span>
                   <span>₹11.50 (High ToD)</span>
@@ -156,8 +148,8 @@ export function IndustrialDecarbonizationBarometer() {
             </div>
 
             {/* Target Landed Rate Callout */}
-            <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono">
-              <span className="text-slate-400">Topnotch Landed Rate:</span>
+            <div className="pt-4 border-t border-white/15 flex items-center justify-between text-xs font-mono">
+              <span className="text-slate-300">Topnotch Landed Rate:</span>
               <span className="font-extrabold text-emerald-400 text-sm">
                 ₹{landedTopnotchRate.toFixed(2)} / kWh (Fixed Hedge)
               </span>
@@ -168,7 +160,7 @@ export function IndustrialDecarbonizationBarometer() {
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
             
             {/* Card 1: Annual Financial Savings */}
-            <div className="bg-white/[0.08] backdrop-blur-md border border-white/15 rounded-2xl p-6 flex flex-col justify-between shadow-xl hover:border-[#F8BC26]/40 transition-colors">
+            <div className="bg-[#0B132B]/85 backdrop-blur-md border border-white/20 rounded-2xl p-6 flex flex-col justify-between shadow-2xl hover:border-[#F8BC26]/50 transition-colors">
               <div className="flex items-center space-x-2 text-xs font-mono text-[#F8BC26] font-bold">
                 <TrendingDown className="w-4 h-4" />
                 <span>Annual Landed Power Savings</span>
@@ -178,17 +170,17 @@ export function IndustrialDecarbonizationBarometer() {
                   ₹{annualSavingsCr.toFixed(2)}{" "}
                   <span className="text-lg text-emerald-400 font-sans font-bold">Cr/yr</span>
                 </div>
-                <span className="text-[11px] font-mono text-slate-400">
+                <span className="text-[11px] font-mono text-slate-300">
                   ≈ ₹{Math.round(monthlySavingsRupees / 100000).toLocaleString("en-IN")} Lakhs saved monthly
                 </span>
               </div>
-              <div className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20 inline-block">
+              <div className="text-[10px] font-mono text-emerald-300 bg-emerald-500/20 px-2 py-1 rounded border border-emerald-500/30 inline-block font-bold">
                 Zero CSS &amp; Additional Surcharge (Sec 42)
               </div>
             </div>
 
             {/* Card 2: Green Power Share Bar */}
-            <div className="bg-white/[0.08] backdrop-blur-md border border-white/15 rounded-2xl p-6 flex flex-col justify-between shadow-xl hover:border-emerald-500/40 transition-colors">
+            <div className="bg-[#0B132B]/85 backdrop-blur-md border border-white/20 rounded-2xl p-6 flex flex-col justify-between shadow-2xl hover:border-emerald-500/50 transition-colors">
               <div className="flex items-center space-x-2 text-xs font-mono text-emerald-400 font-bold">
                 <Zap className="w-4 h-4" />
                 <span>Green Energy Procurement Share</span>
@@ -196,16 +188,16 @@ export function IndustrialDecarbonizationBarometer() {
               <div className="my-3">
                 <div className="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight">
                   {greenEnergySharePercent}%{" "}
-                  <span className="text-base text-slate-400 font-sans font-normal">Renewable</span>
+                  <span className="text-base text-slate-300 font-sans font-normal">Renewable</span>
                 </div>
                 {/* Visual Progress Bar */}
-                <div className="w-full bg-slate-700/60 rounded-full h-2.5 mt-2 overflow-hidden flex">
+                <div className="w-full bg-slate-700/80 rounded-full h-2.5 mt-2 overflow-hidden flex">
                   <div className="bg-[#10B981] h-full" style={{ width: "55%" }} title="Group Captive Solar" />
                   <div className="bg-sky-400 h-full" style={{ width: "23%" }} title="Day-Ahead Wind/GDAM" />
                   <div className="bg-slate-500 h-full" style={{ width: "22%" }} title="DISCOM Grid Peak" />
                 </div>
               </div>
-              <div className="text-[10px] font-mono text-slate-400 flex justify-between">
+              <div className="text-[10px] font-mono text-slate-300 flex justify-between">
                 <span>55% Solar</span>
                 <span>23% Wind/GDAM</span>
                 <span>22% Grid</span>
@@ -213,7 +205,7 @@ export function IndustrialDecarbonizationBarometer() {
             </div>
 
             {/* Card 3: Annual CO2 Abated */}
-            <div className="bg-white/[0.08] backdrop-blur-md border border-white/15 rounded-2xl p-6 flex flex-col justify-between shadow-xl hover:border-emerald-500/40 transition-colors">
+            <div className="bg-[#0B132B]/85 backdrop-blur-md border border-white/20 rounded-2xl p-6 flex flex-col justify-between shadow-2xl hover:border-emerald-500/50 transition-colors">
               <div className="flex items-center space-x-2 text-xs font-mono text-emerald-400 font-bold">
                 <Leaf className="w-4 h-4" />
                 <span>Verified Carbon Abatement</span>
@@ -223,7 +215,7 @@ export function IndustrialDecarbonizationBarometer() {
                   {annualCo2AbatedTonnes.toLocaleString("en-IN")}{" "}
                   <span className="text-base text-emerald-400 font-sans font-bold">MT CO₂e/yr</span>
                 </div>
-                <span className="text-[11px] font-mono text-slate-400">
+                <span className="text-[11px] font-mono text-slate-300">
                   Direct BRSR &amp; ESG Scope-2 compliance
                 </span>
               </div>
@@ -233,7 +225,7 @@ export function IndustrialDecarbonizationBarometer() {
             </div>
 
             {/* Card 4: Coal Thermal Displacement */}
-            <div className="bg-white/[0.08] backdrop-blur-md border border-white/15 rounded-2xl p-6 flex flex-col justify-between shadow-xl hover:border-amber-500/40 transition-colors">
+            <div className="bg-[#0B132B]/85 backdrop-blur-md border border-white/20 rounded-2xl p-6 flex flex-col justify-between shadow-2xl hover:border-amber-500/50 transition-colors">
               <div className="flex items-center space-x-2 text-xs font-mono text-amber-400 font-bold">
                 <Flame className="w-4 h-4" />
                 <span>Fossil Coal Displaced</span>
@@ -243,11 +235,11 @@ export function IndustrialDecarbonizationBarometer() {
                   {coalAvoidedTonnes.toLocaleString("en-IN")}{" "}
                   <span className="text-base text-amber-300 font-sans font-bold">Tonnes/yr</span>
                 </div>
-                <span className="text-[11px] font-mono text-slate-400">
+                <span className="text-[11px] font-mono text-slate-300">
                   Thermal pithead generation offset
                 </span>
               </div>
-              <div className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-1 rounded border border-amber-500/20 inline-block">
+              <div className="text-[10px] font-mono text-amber-300 bg-amber-500/20 px-2 py-1 rounded border border-amber-500/30 inline-block font-bold">
                 Protects plant against future carbon surcharges
               </div>
             </div>

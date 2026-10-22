@@ -669,9 +669,9 @@ export default function MarketingHomePage() {
             alt="Industrial electrical infrastructure with ambient night lighting"
             fill
             sizes="100vw"
-            className="object-cover object-center opacity-25"
+            className="object-cover object-center opacity-40 sm:opacity-50"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0F172A] via-[#0F172A]/90 to-[#0F172A]/80" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0F172A]/85 via-[#0F172A]/60 to-[#0F172A]/75" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
