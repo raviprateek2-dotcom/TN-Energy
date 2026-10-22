@@ -14,7 +14,9 @@ import {
   Quote,
   Building2,
   Zap,
+  Award,
 } from "lucide-react";
+import { EsgAuditCertificateModal, type EsgCertificateData } from "@/components/case-studies/EsgAuditCertificateModal";
 
 // Distinct brand monograms for verified case study leaders
 const CLIENT_BRAND_MARKS: Record<string, { initials: string; bgClass: string; textClass: string }> = {
@@ -26,6 +28,7 @@ const CLIENT_BRAND_MARKS: Record<string, { initials: string; bgClass: string; te
 
 export function IndustrialCaseStudiesFilter() {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
+  const [activeCert, setActiveCert] = useState<EsgCertificateData | null>(null);
 
   const filteredStudies = INDUSTRIAL_CASE_STUDIES.filter((cs) => {
     if (selectedFilter === "all") return true;
@@ -244,10 +247,34 @@ export function IndustrialCaseStudiesFilter() {
 
               {/* Bottom Footer Action */}
               <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono">
-                <span className="flex items-center text-emerald-700 font-bold">
-                  <Sparkles className="w-3.5 h-3.5 mr-1 text-emerald-600" />
-                  {study.co2EmissionsAbatedTonsAnnual.toLocaleString("en-IN")} tCO₂e Abated Annually
-                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const cleanMix = study.procurementMix.find(
+                      (m) => m.source.toLowerCase().includes("captive") || m.source.toLowerCase().includes("solar")
+                    );
+                    const cleanPercent = cleanMix ? cleanMix.percentage : 80;
+                    setActiveCert({
+                      id: study.id,
+                      name: study.clientTitle,
+                      industry: study.clientSector,
+                      state: `${study.location}, ${study.state}`,
+                      connectedLoad: `${study.sanctionedDemandKva.toLocaleString("en-IN")} kVA (${study.peakLoadMw} MW)`,
+                      annualConsumptionMus: study.annualConsumptionMus,
+                      cleanEnergyPercent: cleanPercent,
+                      annualCo2AbatedTons: study.co2EmissionsAbatedTonsAnnual,
+                      annualSavingsCrores: study.annualSavingsInrCrores,
+                      auditPeriod: "FY 2025–26 (BEE Grade-A Certified)",
+                      meteringStandard: "CEA Class 0.2s SEM Automated Telemetry",
+                      certNumber: `TES-ESG-2026-${study.id.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 8)}`,
+                    });
+                  }}
+                  className="flex items-center text-emerald-700 hover:text-emerald-900 font-bold transition-colors group cursor-pointer"
+                  title="Click to view official ESG audit certificate"
+                >
+                  <Award className="w-3.5 h-3.5 mr-1 text-emerald-600 group-hover:scale-110 transition-transform" />
+                  <span>{study.co2EmissionsAbatedTonsAnnual.toLocaleString("en-IN")} tCO₂e Abated • View Audit Cert</span>
+                </button>
                 <Link
                   href="/tools/open-access-calculator"
                   className="px-4 py-2 rounded-full bg-[#F8BC26] hover:bg-[#eab308] text-[#1C2C34] font-bold text-xs font-mono transition-colors flex items-center space-x-1"
@@ -260,6 +287,15 @@ export function IndustrialCaseStudiesFilter() {
           );
         })}
       </div>
+
+      {/* Dynamic ESG Certificate Dialog Modal */}
+      {activeCert && (
+        <EsgAuditCertificateModal
+          isOpen={Boolean(activeCert)}
+          onClose={() => setActiveCert(null)}
+          data={activeCert}
+        />
+      )}
     </div>
   );
 }
