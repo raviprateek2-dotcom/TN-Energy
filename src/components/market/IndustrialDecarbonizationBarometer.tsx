@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Leaf,
   TrendingDown,
@@ -42,14 +43,29 @@ export function IndustrialDecarbonizationBarometer() {
   const coalAvoidedTonnes = Math.round(annualCo2AbatedTonnes * 0.62); // ~0.62T coal per T CO2
 
   return (
-    <div className="relative w-full rounded-3xl overflow-hidden bg-gradient-to-br from-[#0B132B] via-[#0A0F1D] to-[#131F3F] text-white border border-white/15 p-6 sm:p-10 lg:p-12 shadow-2xl">
+    <div className="relative w-full rounded-3xl overflow-hidden bg-gradient-to-br from-[#0B132B] via-[#0A0F1D] to-[#131F3F] text-white border border-white/20 p-6 sm:p-10 lg:p-12 shadow-2xl">
+      {/* Merged Background Image: National Decarbonization & Grid Transmission Infrastructure */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
+        <Image
+          src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=2000&q=80"
+          alt="National clean energy grid decarbonization infrastructure"
+          fill
+          sizes="(max-width: 1280px) 100vw, 1280px"
+          className="object-cover object-center opacity-30 lg:opacity-35 scale-105"
+        />
+        {/* Multi-Directional Gradient Masks for High Contrast and Visual Depth */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B132B]/95 via-[#0A0F1D]/80 to-[#131F3F]/85" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B132B] via-transparent to-[#0B132B]/75" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(16,185,129,0.15),transparent_70%)]" />
+      </div>
+
       {/* Ambient background glow orbs */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none z-0" />
 
       {/* Grid Pattern Texture */}
       <div
-        className="absolute inset-0 opacity-5 pointer-events-none"
+        className="absolute inset-0 opacity-10 pointer-events-none z-0"
         style={{
           backgroundImage: "radial-gradient(#F8BC26 1px, transparent 1px)",
           backgroundSize: "28px 28px",
@@ -86,7 +102,7 @@ export function IndustrialDecarbonizationBarometer() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Left Column: Sliders (5 cols) */}
-          <div className="lg:col-span-5 bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 space-y-7 flex flex-col justify-between">
+          <div className="lg:col-span-5 bg-white/[0.08] backdrop-blur-md border border-white/15 rounded-2xl p-6 sm:p-8 space-y-7 flex flex-col justify-between shadow-xl">
             <div className="space-y-6">
               
               {/* Slider 1: Contract Demand */}
@@ -152,7 +168,7 @@ export function IndustrialDecarbonizationBarometer() {
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
             
             {/* Card 1: Annual Financial Savings */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col justify-between shadow-lg hover:border-[#F8BC26]/40 transition-colors">
+            <div className="bg-white/[0.08] backdrop-blur-md border border-white/15 rounded-2xl p-6 flex flex-col justify-between shadow-xl hover:border-[#F8BC26]/40 transition-colors">
               <div className="flex items-center space-x-2 text-xs font-mono text-[#F8BC26] font-bold">
                 <TrendingDown className="w-4 h-4" />
                 <span>Annual Landed Power Savings</span>
@@ -172,7 +188,7 @@ export function IndustrialDecarbonizationBarometer() {
             </div>
 
             {/* Card 2: Green Power Share Bar */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col justify-between shadow-lg hover:border-emerald-500/40 transition-colors">
+            <div className="bg-white/[0.08] backdrop-blur-md border border-white/15 rounded-2xl p-6 flex flex-col justify-between shadow-xl hover:border-emerald-500/40 transition-colors">
               <div className="flex items-center space-x-2 text-xs font-mono text-emerald-400 font-bold">
                 <Zap className="w-4 h-4" />
                 <span>Green Energy Procurement Share</span>
@@ -197,7 +213,7 @@ export function IndustrialDecarbonizationBarometer() {
             </div>
 
             {/* Card 3: Annual CO2 Abated */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col justify-between shadow-lg hover:border-emerald-500/40 transition-colors">
+            <div className="bg-white/[0.08] backdrop-blur-md border border-white/15 rounded-2xl p-6 flex flex-col justify-between shadow-xl hover:border-emerald-500/40 transition-colors">
               <div className="flex items-center space-x-2 text-xs font-mono text-emerald-400 font-bold">
                 <Leaf className="w-4 h-4" />
                 <span>Verified Carbon Abatement</span>
@@ -217,7 +233,7 @@ export function IndustrialDecarbonizationBarometer() {
             </div>
 
             {/* Card 4: Coal Thermal Displacement */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col justify-between shadow-lg hover:border-amber-500/40 transition-colors">
+            <div className="bg-white/[0.08] backdrop-blur-md border border-white/15 rounded-2xl p-6 flex flex-col justify-between shadow-xl hover:border-amber-500/40 transition-colors">
               <div className="flex items-center space-x-2 text-xs font-mono text-amber-400 font-bold">
                 <Flame className="w-4 h-4" />
                 <span>Fossil Coal Displaced</span>
