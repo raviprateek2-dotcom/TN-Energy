@@ -202,7 +202,7 @@ export function Header() {
         <div className="flex items-center justify-between h-20">
           
           {/* Brand Logo & Precision Mark */}
-          <Link href="/" className="flex items-center space-x-3 group flex-shrink-0 mr-4">
+          <Link href="/" className="flex items-center space-x-3 group flex-shrink-0 mr-6 xl:mr-10">
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#F8BC26] to-[#E5A812] flex items-center justify-center text-[#1C2C34] shadow-[0_4px_16px_rgba(248,188,38,0.35)] group-hover:scale-105 transition-transform duration-200 flex-shrink-0">
               <Zap className="w-5 h-5 fill-current stroke-[2.5]" />
             </div>
@@ -216,8 +216,8 @@ export function Header() {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-1.5">
+          {/* Desktop Navigation Links - Generously Spaced With Breathing Room */}
+          <nav className="hidden lg:flex items-center space-x-1.5 xl:space-x-2.5">
             {/* Solutions Mega-Menu */}
             <div className="relative">
               <button
@@ -509,34 +509,8 @@ export function Header() {
             </Link>
           </nav>
 
-          {/* Right Action Cluster: Cleanly Arranged CTAs (Search Bar Removed) */}
-          <div className="hidden lg:flex items-center space-x-3 flex-shrink-0">
-            <Link
-              href="/portal/dashboard"
-              className="px-4 py-2.5 text-xs font-bold rounded-full border border-slate-300 hover:border-slate-800 bg-white hover:bg-slate-50 text-[#1C2C34] transition-all flex items-center space-x-1.5 shadow-2xs flex-shrink-0 active:scale-95"
-            >
-              <span>Client Portal</span>
-              <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
-            </Link>
-
-            <Link
-              href="/tools/open-access-calculator"
-              className="px-5 py-2.5 text-xs font-bold rounded-full bg-gradient-to-r from-[#F8BC26] to-[#E5A812] hover:from-[#eab308] hover:to-[#ca8a04] text-[#1C2C34] shadow-[0_4px_16px_rgba(248,188,38,0.3)] hover:shadow-[0_6px_20px_rgba(248,188,38,0.4)] transition-all duration-200 flex items-center space-x-1.5 flex-shrink-0 active:scale-95"
-            >
-              <Calculator className="w-3.5 h-3.5" />
-              <span>Calculate Savings</span>
-              <ArrowRight className="w-3.5 h-3.5 ml-0.5" />
-            </Link>
-          </div>
-
-          {/* Mobile Action & Hamburger */}
+          {/* Mobile Hamburger Toggle (Right Aligned on Mobile) */}
           <div className="flex lg:hidden items-center space-x-2">
-            <Link
-              href="/tools/open-access-calculator"
-              className="px-3 py-1.5 text-xs font-bold rounded-full bg-[#F8BC26] text-[#1C2C34] shadow-2xs"
-            >
-              Calc ROI
-            </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100 rounded-xl transition-colors"
@@ -544,6 +518,46 @@ export function Header() {
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* =========================================================================
+          EXECUTIVE SUB-HEADER ACTION STRIP: CLIENT PORTAL & SAVINGS CALCULATOR
+          Shifted directly under the main header to create maximum room in header navbar
+         ========================================================================= */}
+      <div className="bg-slate-50/95 backdrop-blur-md border-t border-slate-200/80 py-2 sm:py-2.5 px-4 sm:px-6 lg:px-8 shadow-2xs">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          {/* Left: Industrial Credential & Surcharge Exemption Proof */}
+          <div className="flex items-center space-x-3 text-xs font-mono text-slate-600 truncate">
+            <span className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100/80 border border-emerald-300 text-emerald-800 text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+              <span>CERC Cat-IV &amp; NOAR Standing</span>
+            </span>
+            <span className="hidden md:inline text-slate-300">|</span>
+            <span className="hidden md:inline text-[11px] text-slate-600 font-sans font-medium truncate">
+              18%–42% Recurring Tariff Savings for 100 kW+ Industrial Consumers
+            </span>
+          </div>
+
+          {/* Right: Shifted Action Buttons (Client Portal & Calculate Savings) */}
+          <div className="flex items-center space-x-2.5 sm:space-x-3 ml-auto flex-shrink-0">
+            <Link
+              href="/portal/dashboard"
+              className="px-3.5 sm:px-4 py-1.5 sm:py-2 text-xs font-bold rounded-full border border-slate-300 hover:border-slate-800 bg-white hover:bg-slate-100 text-[#1C2C34] transition-all flex items-center space-x-1.5 shadow-2xs active:scale-95 flex-shrink-0"
+            >
+              <span>Client Portal</span>
+              <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+            </Link>
+
+            <Link
+              href="/tools/open-access-calculator"
+              className="px-4 sm:px-5 py-1.5 sm:py-2 text-xs font-bold rounded-full bg-gradient-to-r from-[#F8BC26] to-[#E5A812] hover:from-[#eab308] hover:to-[#ca8a04] text-[#1C2C34] shadow-[0_2px_12px_rgba(248,188,38,0.28)] hover:shadow-[0_4px_16px_rgba(248,188,38,0.38)] transition-all duration-200 flex items-center space-x-1.5 active:scale-95 flex-shrink-0"
+            >
+              <Calculator className="w-3.5 h-3.5" />
+              <span>Calculate Savings</span>
+              <ArrowRight className="w-3.5 h-3.5 ml-0.5" />
+            </Link>
           </div>
         </div>
       </div>
