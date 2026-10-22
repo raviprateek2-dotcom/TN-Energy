@@ -93,31 +93,31 @@ export function Header() {
       {/* =========================================================================
           MAIN NAVIGATION BAR (WAAREE-GRADE MODERN ARCHITECTURE)
          ========================================================================= */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={navRef}>
+      <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8" ref={navRef}>
         <div className="flex items-center justify-between h-20">
           
           {/* Brand Logo & Precision Mark */}
-          <Link href="/" className="flex items-center space-x-3 group flex-shrink-0 mr-6 xl:mr-10">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#F8BC26] to-[#E5A812] flex items-center justify-center text-[#1C2C34] shadow-[0_4px_16px_rgba(248,188,38,0.35)] group-hover:scale-105 transition-transform duration-200 flex-shrink-0">
+          <Link href="/" className="flex items-center space-x-2.5 sm:space-x-3 group flex-shrink-0 mr-3 xl:mr-6 2xl:mr-8">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-[#F8BC26] to-[#E5A812] flex items-center justify-center text-[#1C2C34] shadow-[0_4px_16px_rgba(248,188,38,0.35)] group-hover:scale-105 transition-transform duration-200 flex-shrink-0">
               <Zap className="w-5 h-5 fill-current stroke-[2.5]" />
             </div>
             <div className="flex flex-col">
               <span className="font-black text-xl sm:text-2xl tracking-tight text-[#1C2C34] flex items-center leading-none">
                 TOPNOTCH <span className="text-[#D97706] ml-1.5">ENERGY</span>
               </span>
-              <span className="text-[9px] uppercase font-mono tracking-[0.22em] text-slate-400 mt-1 font-semibold hidden sm:block">
+              <span className="text-[9px] uppercase font-mono tracking-[0.18em] text-slate-400 mt-1 font-semibold hidden xl:block">
                 Enterprise Power Trading &amp; Open Access
               </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation Links - Generously Spaced With Breathing Room */}
-          <nav className="hidden lg:flex items-center space-x-1.5 xl:space-x-2.5">
+          {/* Desktop Navigation Links - Single-Line Guaranteed Across All Screens */}
+          <nav className="hidden lg:flex items-center flex-nowrap space-x-0.5 xl:space-x-1.5 2xl:space-x-2.5">
             {/* Solutions Mega-Menu */}
-            <div className="relative">
+            <div className="relative flex-shrink-0">
               <button
                 onClick={() => toggleMegaMenu("solutions")}
-                className={`flex items-center px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all ${
+                className={`flex items-center px-2.5 xl:px-3.5 py-1.5 xl:py-2 text-xs xl:text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
                   activeMegaMenu === "solutions"
                     ? "text-[#1C2C34] bg-slate-100 font-bold"
                     : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
@@ -125,7 +125,7 @@ export function Header() {
               >
                 <span>Solutions</span>
                 <ChevronDown
-                  className={`w-3.5 h-3.5 ml-1 transition-transform ${
+                  className={`w-3.5 h-3.5 ml-1 transition-transform flex-shrink-0 ${
                     activeMegaMenu === "solutions" ? "rotate-180" : ""
                   }`}
                 />
@@ -239,10 +239,10 @@ export function Header() {
             </div>
 
             {/* Solar & BESS Mega-Menu */}
-            <div className="relative">
+            <div className="relative flex-shrink-0">
               <button
                 onClick={() => toggleMegaMenu("solar")}
-                className={`flex items-center px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all ${
+                className={`flex items-center px-2.5 xl:px-3.5 py-1.5 xl:py-2 text-xs xl:text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
                   activeMegaMenu === "solar"
                     ? "text-[#1C2C34] bg-slate-100 font-bold"
                     : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
@@ -250,7 +250,7 @@ export function Header() {
               >
                 <span>Solar &amp; BESS</span>
                 <ChevronDown
-                  className={`w-3.5 h-3.5 ml-1 transition-transform ${
+                  className={`w-3.5 h-3.5 ml-1 transition-transform flex-shrink-0 ${
                     activeMegaMenu === "solar" ? "rotate-180" : ""
                   }`}
                 />
@@ -342,14 +342,14 @@ export function Header() {
             {/* Market Intelligence with Pulsing Live Pill */}
             <Link
               href="/market-intelligence"
-              className={`flex items-center px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all relative ${
+              className={`flex items-center px-2.5 xl:px-3.5 py-1.5 xl:py-2 text-xs xl:text-[13px] font-semibold rounded-full transition-all relative whitespace-nowrap flex-shrink-0 ${
                 pathname === "/market-intelligence"
                   ? "text-[#1C2C34] bg-slate-100 font-bold"
                   : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
               }`}
             >
               <span>Market Intel</span>
-              <span className="ml-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-mono font-bold flex items-center">
+              <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-mono font-bold flex items-center flex-shrink-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse" />
                 LIVE
               </span>
@@ -358,7 +358,7 @@ export function Header() {
             {/* Industrial Case Studies */}
             <Link
               href="/case-studies"
-              className={`px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all ${
+              className={`px-2.5 xl:px-3.5 py-1.5 xl:py-2 text-xs xl:text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
                 pathname === "/case-studies"
                   ? "text-[#1C2C34] bg-slate-100 font-bold"
                   : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
@@ -370,7 +370,7 @@ export function Header() {
             {/* ROI Calculators */}
             <Link
               href="/tools/open-access-calculator"
-              className={`px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all ${
+              className={`px-2.5 xl:px-3.5 py-1.5 xl:py-2 text-xs xl:text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
                 pathname === "/tools/open-access-calculator"
                   ? "text-[#1C2C34] bg-slate-100 font-bold"
                   : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
@@ -382,7 +382,7 @@ export function Header() {
             {/* State Policy Comparator */}
             <Link
               href="/tools/compare-states"
-              className={`px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all ${
+              className={`px-2.5 xl:px-3.5 py-1.5 xl:py-2 text-xs xl:text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
                 pathname === "/tools/compare-states"
                   ? "text-[#1C2C34] bg-slate-100 font-bold"
                   : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
@@ -394,7 +394,7 @@ export function Header() {
             {/* Due Diligence Dossier */}
             <Link
               href="/procurement-dossier"
-              className={`px-3.5 py-2 text-[13px] font-semibold rounded-full transition-all ${
+              className={`px-2.5 xl:px-3.5 py-1.5 xl:py-2 text-xs xl:text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
                 pathname === "/procurement-dossier"
                   ? "text-[#1C2C34] bg-slate-100 font-bold"
                   : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
@@ -422,7 +422,7 @@ export function Header() {
           Shifted directly under the main header to create maximum room in header navbar
          ========================================================================= */}
       <div className="bg-slate-50/95 backdrop-blur-md border-t border-slate-200/80 py-2 sm:py-2.5 px-4 sm:px-6 lg:px-8 shadow-2xs">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto flex items-center justify-between gap-4">
           {/* Left: Industrial Credential & Surcharge Exemption Proof */}
           <div className="flex items-center space-x-3 text-xs font-mono text-slate-600 truncate">
             <span className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100/80 border border-emerald-300 text-emerald-800 text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
