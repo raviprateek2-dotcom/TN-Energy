@@ -56,20 +56,20 @@ export function Footer() {
       <section className="relative bg-white text-[#1C2C34] py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden border-t border-slate-200">
         
         {/* Right Half: High-Resolution Lush Green Fields with Tall Wind Turbines & Solar Merging into White */}
-        <div className="absolute right-0 top-0 bottom-0 w-full lg:w-3/5 pointer-events-none select-none overflow-hidden z-0">
+        <div className="absolute right-0 top-0 bottom-0 w-full lg:w-2/3 pointer-events-none select-none overflow-hidden z-0">
           <Image
-            src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1600&q=80"
+            src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=2000&q=85"
             alt="Lush green fields with majestic wind turbines and solar generation standing tall in the background"
             fill
-            sizes="(max-width: 1024px) 100vw, 60vw"
-            className="object-cover object-center lg:object-right opacity-90"
+            sizes="(max-width: 1024px) 100vw, 66vw"
+            className="object-cover object-center lg:object-right opacity-100"
           />
           {/* Left-to-Right Seamless Gradient Mask: White to Transparent */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 lg:via-white/70 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 lg:via-white/35 to-transparent z-10" />
           {/* Mobile Vertical Fade for 100% Text Readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/85 to-transparent lg:hidden z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/60 to-transparent lg:hidden z-10" />
           {/* Top and Bottom Fades for Organic Blending */}
-          <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/70 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/30 z-10" />
         </div>
 
         {/* Foreground Content */}
@@ -176,16 +176,16 @@ export function Footer() {
         {/* Cinematic Green Fields with Solar & Wind Turbines Standing Tall Background Overlay */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <Image
-            src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2000&q=80"
+            src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2400&q=85"
             alt="Lush green fields with tall wind turbines and clean energy generation standing tall in the background"
             fill
             sizes="100vw"
-            className="object-cover object-bottom opacity-40 sm:opacity-45 scale-105"
+            className="object-cover object-center opacity-85 sm:opacity-90 scale-100"
           />
           {/* Multi-Stop Seamless Gradient Masks: Preserves Vibrant Green Fields & Tall Wind Turbines with 100% WCAG Text Contrast */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#060913] via-[#060913]/85 to-[#060913]/70" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#060913]/95 via-[#060913]/60 to-[#060913]/90" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_40%,rgba(16,185,129,0.08),transparent_70%)]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#060913]/95 via-[#060913]/55 to-[#060913]/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#060913]/85 via-[#060913]/25 to-[#060913]/85" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_40%,rgba(16,185,129,0.15),transparent_70%)]" />
         </div>
 
         {/* Top Edge Ambient Horizon Beam */}
