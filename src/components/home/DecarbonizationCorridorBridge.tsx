@@ -333,46 +333,68 @@ export function DecarbonizationCorridorBridge() {
         {/* =========================================================================
             PART 2: 4-STAGE FAST-TRACK TRANSITION PATHWAY (VISUAL PIPELINE)
            ========================================================================= */}
-        <div className="mt-14">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <span className="text-xs font-mono uppercase tracking-widest text-[#F8BC26] font-bold">
-              Predictable Engineering Timeline
-            </span>
-            <h4 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mt-1">
-              From Plant Audit to Synchronized Power in 45 Days
-            </h4>
+        <div className="mt-14 relative rounded-3xl overflow-hidden border border-white/20 p-6 sm:p-10 lg:p-12 bg-[#0A0F1D] shadow-2xl">
+          {/* Contrasty Merged High-Voltage Engineering Background Image */}
+          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
+            <Image
+              src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=2000&q=80"
+              alt="High-voltage transmission pylon and industrial engineering grid infrastructure"
+              fill
+              sizes="(max-width: 1280px) 100vw, 1280px"
+              className="object-cover object-center opacity-70 sm:opacity-80 scale-105"
+            />
+            {/* Contrasty Multi-Directional Gradient Masks */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1D] via-[#0A0F1D]/50 to-black/40" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1D]/85 via-transparent to-[#0A0F1D]/80" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(10,15,29,0.7)_100%)]" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {FAST_TRACK_STAGES.map((step, idx) => (
-              <div
-                key={step.stage}
-                className="relative p-6 rounded-2xl bg-white/[0.03] border border-slate-800 hover:border-slate-700 transition-all hover:-translate-y-1 group"
-              >
-                {/* Step Number Glow */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-3xl font-black font-mono text-slate-700 group-hover:text-[#F8BC26] transition-colors">
-                    {step.stage}
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full bg-white/5 border border-slate-700/80 text-[10px] font-mono font-bold text-[#F8BC26]">
-                    {step.days}
-                  </span>
+          <div className="relative z-10">
+            <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+              <span className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#F8BC26]/20 border border-[#F8BC26]/40 text-xs font-mono uppercase tracking-widest text-[#F8BC26] font-bold shadow-md">
+                Predictable Engineering Timeline
+              </span>
+              <h4 className="text-xl sm:text-2xl lg:text-3xl font-black text-white mt-1 drop-shadow-md">
+                From Plant Audit to Synchronized Power in 45 Days
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-200 font-sans max-w-lg mx-auto drop-shadow-sm leading-relaxed">
+                Structured timeline execution backed by institutional SLA milestones, NABL-calibrated CEA Class 0.2s metering, and automated SLDC connectivity.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {FAST_TRACK_STAGES.map((step, idx) => (
+                <div
+                  key={step.stage}
+                  className="relative p-6 rounded-2xl bg-[#0B132B]/85 backdrop-blur-md border border-white/20 hover:border-[#F8BC26]/60 transition-all duration-300 hover:-translate-y-1 group shadow-2xl flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Step Number Glow */}
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-3xl font-black font-mono text-slate-400 group-hover:text-[#F8BC26] transition-colors">
+                        {step.stage}
+                      </span>
+                      <span className="px-2.5 py-1 rounded-full bg-[#F8BC26]/15 border border-[#F8BC26]/40 text-[10px] font-mono font-bold text-[#F8BC26]">
+                        {step.days}
+                      </span>
+                    </div>
+
+                    <h5 className="text-base font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">
+                      {step.title}
+                    </h5>
+
+                    <p className="text-xs text-slate-300 leading-relaxed mb-4">
+                      {step.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-white/10 flex items-center space-x-1.5 text-[11px] font-mono text-emerald-400 font-bold">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>{step.badge}</span>
+                  </div>
                 </div>
-
-                <h5 className="text-base font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">
-                  {step.title}
-                </h5>
-
-                <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                  {step.description}
-                </p>
-
-                <div className="pt-3 border-t border-slate-800/80 flex items-center space-x-1.5 text-[11px] font-mono text-emerald-400">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>{step.badge}</span>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 

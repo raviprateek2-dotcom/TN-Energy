@@ -600,7 +600,22 @@ export default function MarketingHomePage() {
       {/* =========================================================================
           SECTION 8: TURNKEY 45-DAY TRANSITION JOURNEY
          ========================================================================= */}
-      <section className="py-20 sm:py-28 bg-[#F9FAFB] relative overflow-hidden">
+      <section className="relative py-20 sm:py-28 bg-[#F9FAFB] text-[#1C2C34] overflow-hidden">
+        {/* Contrasty Merged Industrial Substation Engineering Background Image */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
+          <Image
+            src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=2000&q=80"
+            alt="Turnkey 33 kV substation bay and engineering infrastructure"
+            fill
+            sizes="100vw"
+            className="object-cover object-center lg:object-right opacity-40 sm:opacity-50"
+          />
+          {/* High-Contrast Directional Gradient Masks: Merging into #F9FAFB with Crisp Foreground Readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#F9FAFB] via-[#F9FAFB]/90 lg:via-[#F9FAFB]/75 to-[#F9FAFB]/35" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#F9FAFB] via-transparent to-[#F9FAFB]/80" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_75%_50%,rgba(217,119,6,0.06),transparent_70%)]" />
+        </div>
+
         {/* Subtle Architectural Corner Watermarks */}
         <CornerIndustrialWatermark type="windmills" position="top-right" size={320} opacity={0.06} />
         <CornerIndustrialWatermark type="solar-array" position="bottom-left" size={320} opacity={0.06} />
@@ -614,7 +629,7 @@ export default function MarketingHomePage() {
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-[#1C2C34] tracking-tight">
               From Plant Audit to Live Exchange Power in 45 Days
             </h2>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-sans">
+            <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-sans max-w-2xl mx-auto">
               Our institutional team handles all DISCOM approvals, SLDC NOC clearances, ABT metering installations, and exchange onboarding with zero operational distraction for your plant team.
             </p>
           </div>
