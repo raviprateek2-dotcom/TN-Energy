@@ -31,9 +31,18 @@ export function Header() {
   const pathname = usePathname();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
 
   const [audioEnabled, setAudioEnabled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 15);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -90,23 +99,28 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-xl border-b border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all">
-      {/* =========================================================================
-          UNIFIED SINGLE-ROW EXECUTIVE NAVBAR (72PX HEIGHT)
-         ========================================================================= */}
-      <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8" ref={navRef}>
-        <div className="flex items-center justify-between h-[72px]">
-          
+    <header className="fixed top-2.5 sm:top-4 inset-x-0 z-50 pointer-events-none transition-all duration-300">
+      {/* Floating Island Capsule Outer Container */}
+      <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto px-3 sm:px-6 pointer-events-auto" ref={navRef}>
+        
+        {/* Island Capsule Shell */}
+        <div
+          className={`h-[64px] sm:h-[68px] rounded-full px-3.5 sm:px-6 flex items-center justify-between transition-all duration-300 ${
+            scrolled
+              ? "bg-white/92 backdrop-blur-2xl border border-slate-200/90 shadow-[0_12px_36px_rgba(0,0,0,0.12),0_2px_4px_rgba(0,0,0,0.04)]"
+              : "bg-white/80 backdrop-blur-2xl border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.04)]"
+          }`}
+        >
           {/* Brand Logo & Identity (Left) */}
-          <Link href="/" className="flex items-center space-x-2.5 sm:space-x-3 group flex-shrink-0 mr-3 xl:mr-6">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#F8BC26] to-[#E5A812] flex items-center justify-center text-[#1C2C34] shadow-[0_4px_16px_rgba(248,188,38,0.32)] group-hover:scale-105 transition-transform duration-200 flex-shrink-0">
-              <Zap className="w-5 h-5 fill-current stroke-[2.5]" />
+          <Link href="/" className="flex items-center space-x-2.5 sm:space-x-3 group flex-shrink-0 mr-2 xl:mr-6">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-[#F8BC26] to-[#E5A812] flex items-center justify-center text-[#1C2C34] shadow-[0_4px_16px_rgba(248,188,38,0.32)] group-hover:scale-105 transition-transform duration-200 flex-shrink-0">
+              <Zap className="w-4 h-4 sm:w-5 sm:h-5 fill-current stroke-[2.5]" />
             </div>
             <div className="flex flex-col">
-              <span className="font-black text-xl sm:text-2xl tracking-tight text-[#1C2C34] flex items-center leading-none">
+              <span className="font-black text-lg sm:text-xl tracking-tight text-[#1C2C34] flex items-center leading-none">
                 TOPNOTCH <span className="text-[#D97706] ml-1.5">ENERGY</span>
               </span>
-              <span className="text-[9px] uppercase font-mono tracking-[0.16em] text-slate-400 mt-1 font-semibold hidden xl:block">
+              <span className="text-[9px] uppercase font-mono tracking-[0.16em] text-slate-400 mt-0.5 font-semibold hidden xl:block">
                 Power Trading &amp; Open Access
               </span>
             </div>
@@ -120,9 +134,9 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => toggleDropdown("solutions")}
-                className={`flex items-center px-3 py-2 text-xs xl:text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
+                className={`flex items-center px-3 py-1.5 text-xs xl:text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
                   activeMenu === "solutions" || pathname?.startsWith("/solutions")
-                    ? "text-[#1C2C34] bg-slate-100 font-bold"
+                    ? "text-[#1C2C34] bg-slate-100/90 font-bold"
                     : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
                 }`}
               >
@@ -135,7 +149,7 @@ export function Header() {
               </button>
 
               {activeMenu === "solutions" && (
-                <div className="absolute left-0 mt-3 w-[780px] bg-white border border-slate-200 rounded-3xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.12)] z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute left-0 mt-4 w-[780px] bg-white/95 backdrop-blur-2xl border border-slate-200 rounded-3xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.15)] z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="grid grid-cols-12 gap-6">
                     {/* Left & Middle: 5 Key Capabilities (7 cols) */}
                     <div className="col-span-7 space-y-1.5">
@@ -250,9 +264,9 @@ export function Header() {
             {/* 2. Market Intelligence (Live 96-Block Terminal) */}
             <Link
               href="/market-intelligence"
-              className={`flex items-center px-3 py-2 text-xs xl:text-[13px] font-semibold rounded-full transition-all relative whitespace-nowrap flex-shrink-0 ${
+              className={`flex items-center px-3 py-1.5 text-xs xl:text-[13px] font-semibold rounded-full transition-all relative whitespace-nowrap flex-shrink-0 ${
                 pathname === "/market-intelligence"
-                  ? "text-[#1C2C34] bg-slate-100 font-bold"
+                  ? "text-[#1C2C34] bg-slate-100/90 font-bold"
                   : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
               }`}
             >
@@ -266,9 +280,9 @@ export function Header() {
             {/* 3. Industrial Case Studies */}
             <Link
               href="/case-studies"
-              className={`px-3 py-2 text-xs xl:text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
+              className={`px-3 py-1.5 text-xs xl:text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
                 pathname === "/case-studies"
-                  ? "text-[#1C2C34] bg-slate-100 font-bold"
+                  ? "text-[#1C2C34] bg-slate-100/90 font-bold"
                   : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
               }`}
             >
@@ -280,9 +294,9 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => toggleDropdown("tools")}
-                className={`flex items-center px-3 py-2 text-xs xl:text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
+                className={`flex items-center px-3 py-1.5 text-xs xl:text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
                   activeMenu === "tools" || pathname?.startsWith("/tools") || pathname === "/procurement-dossier" || pathname === "/statutory-compliance"
-                    ? "text-[#1C2C34] bg-slate-100 font-bold"
+                    ? "text-[#1C2C34] bg-slate-100/90 font-bold"
                     : "text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100/70"
                 }`}
               >
@@ -295,7 +309,7 @@ export function Header() {
               </button>
 
               {activeMenu === "tools" && (
-                <div className="absolute right-0 mt-3 w-80 bg-white border border-slate-200 rounded-3xl p-4 shadow-[0_24px_60px_rgba(0,0,0,0.12)] z-50 animate-in fade-in slide-in-from-top-2 duration-150 space-y-1">
+                <div className="absolute right-0 mt-4 w-80 bg-white/95 backdrop-blur-2xl border border-slate-200 rounded-3xl p-4 shadow-[0_24px_60px_rgba(0,0,0,0.15)] z-50 animate-in fade-in slide-in-from-top-2 duration-150 space-y-1">
                   <div className="text-[10px] font-mono uppercase tracking-wider font-bold text-slate-400 px-3 pb-1">
                     Simulators &amp; Compliance Hub
                   </div>
@@ -349,8 +363,8 @@ export function Header() {
 
           </nav>
 
-          {/* Executive Action CTAs (Right — Integrated in Single Row) */}
-          <div className="hidden lg:flex items-center space-x-2 xl:space-x-3 flex-shrink-0 ml-3 xl:ml-6">
+          {/* Executive Action CTAs (Right — Integrated in Floating Capsule) */}
+          <div className="hidden lg:flex items-center space-x-2 xl:space-x-3 flex-shrink-0 ml-2 xl:ml-6">
             {/* Audio Feedback Toggle */}
             <button
               type="button"
@@ -369,7 +383,7 @@ export function Header() {
             {/* Client Portal Link Button */}
             <Link
               href="/portal/dashboard"
-              className="px-3.5 xl:px-4 py-2 text-xs font-bold rounded-full border border-slate-300 hover:border-slate-800 bg-white hover:bg-slate-50 text-[#1C2C34] transition-all flex items-center space-x-1.5 shadow-2xs whitespace-nowrap active:scale-95"
+              className="px-3.5 xl:px-4 py-1.5 text-xs font-bold rounded-full border border-slate-300 hover:border-slate-800 bg-white/90 hover:bg-white text-[#1C2C34] transition-all flex items-center space-x-1.5 shadow-2xs whitespace-nowrap active:scale-95"
             >
               <span>Client Portal</span>
               <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
@@ -378,7 +392,7 @@ export function Header() {
             {/* Calculate Savings CTA Button */}
             <Link
               href="/tools/open-access-calculator"
-              className="px-4 xl:px-5 py-2 text-xs font-bold rounded-full bg-gradient-to-r from-[#F8BC26] to-[#E5A812] hover:from-[#eab308] hover:to-[#ca8a04] text-[#1C2C34] shadow-[0_2px_12px_rgba(248,188,38,0.28)] hover:shadow-[0_4px_16px_rgba(248,188,38,0.38)] transition-all flex items-center space-x-1.5 whitespace-nowrap active:scale-95 font-sans"
+              className="px-4 xl:px-5 py-1.5 text-xs font-bold rounded-full bg-gradient-to-r from-[#F8BC26] to-[#E5A812] hover:from-[#eab308] hover:to-[#ca8a04] text-[#1C2C34] shadow-[0_2px_12px_rgba(248,188,38,0.28)] hover:shadow-[0_4px_16px_rgba(248,188,38,0.38)] transition-all flex items-center space-x-1.5 whitespace-nowrap active:scale-95 font-sans"
             >
               <Calculator className="w-3.5 h-3.5" />
               <span>Calculate Savings</span>
@@ -391,117 +405,118 @@ export function Header() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100 rounded-xl transition-colors"
+              className="p-2 text-slate-700 hover:text-[#1C2C34] hover:bg-slate-100 rounded-full transition-colors"
               aria-label="Toggle Navigation Menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
 
         </div>
-      </div>
 
-      {/* Mobile Dropdown Drawer */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-slate-200 bg-white p-5 space-y-2 animate-in slide-in-from-top-2 duration-150 shadow-xl max-h-[80vh] overflow-y-auto">
-          <div className="text-[10px] uppercase font-mono font-bold text-slate-400 pb-1">
-            Solutions &amp; Capabilities
-          </div>
-          <Link
-            href="/solutions/power-trading-bilateral-contracts"
-            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
-          >
-            ⚡ Power Trading &amp; Bilateral Bourses
-          </Link>
-          <Link
-            href="/solutions/open-access-execution-regulatory"
-            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
-          >
-            🏢 Group Captive Open Access (Section 42)
-          </Link>
-          <Link
-            href="/solutions/renewable-energy-sustainability"
-            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
-          >
-            ☀️ Rooftop Solar EPC &amp; BESS
-          </Link>
-          <Link
-            href="/solutions/abt-metering-telemetry-infrastructure"
-            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
-          >
-            📟 ABT 0.2s SEM Metering &amp; AMR
-          </Link>
-          <Link
-            href="/solutions/energy-cost-optimization-bill-audits"
-            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
-          >
-            📊 HT Energy Bill Audits &amp; DSM
-          </Link>
+        {/* Mobile Dropdown Drawer (Floating Capsule Expansion) */}
+        {mobileMenuOpen && (
+          <div className="mt-2.5 rounded-3xl border border-slate-200/90 bg-white/95 backdrop-blur-2xl p-5 space-y-2 animate-in slide-in-from-top-2 duration-150 shadow-2xl max-h-[75vh] overflow-y-auto">
+            <div className="text-[10px] uppercase font-mono font-bold text-slate-400 pb-1">
+              Solutions &amp; Capabilities
+            </div>
+            <Link
+              href="/solutions/power-trading-bilateral-contracts"
+              className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
+            >
+              ⚡ Power Trading &amp; Bilateral Bourses
+            </Link>
+            <Link
+              href="/solutions/open-access-execution-regulatory"
+              className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
+            >
+              🏢 Group Captive Open Access (Section 42)
+            </Link>
+            <Link
+              href="/solutions/renewable-energy-sustainability"
+              className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
+            >
+              ☀️ Rooftop Solar EPC &amp; BESS
+            </Link>
+            <Link
+              href="/solutions/abt-metering-telemetry-infrastructure"
+              className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
+            >
+              📟 ABT 0.2s SEM Metering &amp; AMR
+            </Link>
+            <Link
+              href="/solutions/energy-cost-optimization-bill-audits"
+              className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
+            >
+              📊 HT Energy Bill Audits &amp; DSM
+            </Link>
 
-          <div className="text-[10px] uppercase font-mono font-bold text-slate-400 pt-3 pb-1">
-            Intelligence &amp; Regulatory Tools
-          </div>
-          <Link
-            href="/market-intelligence"
-            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
-          >
-            📈 Live 96-Block IEX Terminal (LIVE)
-          </Link>
-          <Link
-            href="/case-studies"
-            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
-          >
-            🏭 Industrial Case Studies &amp; Audits
-          </Link>
-          <Link
-            href="/tools/open-access-calculator"
-            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
-          >
-            🧮 Rooftop vs Open Access Calculator
-          </Link>
-          <Link
-            href="/tools/compare-states"
-            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
-          >
-            ⚖️ Multi-State Policy Comparator
-          </Link>
-          <Link
-            href="/procurement-dossier"
-            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
-          >
-            🛡️ Vendor Empanelment Dossier
-          </Link>
-          <Link
-            href="/statutory-compliance"
-            className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
-          >
-            📜 Statutory Regulations &amp; SLDC NOCs
-          </Link>
-
-          <div className="pt-3 flex flex-col space-y-2">
+            <div className="text-[10px] uppercase font-mono font-bold text-slate-400 pt-3 pb-1">
+              Intelligence &amp; Regulatory Tools
+            </div>
+            <Link
+              href="/market-intelligence"
+              className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
+            >
+              📈 Live 96-Block IEX Terminal (LIVE)
+            </Link>
+            <Link
+              href="/case-studies"
+              className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
+            >
+              🏭 Industrial Case Studies &amp; Audits
+            </Link>
             <Link
               href="/tools/open-access-calculator"
-              className="w-full text-center py-2.5 text-xs font-bold rounded-full bg-[#F8BC26] text-[#1C2C34] flex items-center justify-center space-x-2"
+              className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
             >
-              <Calculator className="w-3.5 h-3.5" />
-              <span>Calculate Plant Savings</span>
+              🧮 Rooftop vs Open Access Calculator
             </Link>
             <Link
-              href="/portal/dashboard"
-              className="w-full text-center py-2.5 text-xs font-bold rounded-full bg-[#1C2C34] text-white"
+              href="/tools/compare-states"
+              className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
             >
-              Open Client Portal
+              ⚖️ Multi-State Policy Comparator
             </Link>
-            <a
-              href={`tel:${BRAND.contacts.phonePrimary}`}
-              className="w-full text-center py-2 text-xs font-semibold text-slate-600 flex items-center justify-center space-x-1.5"
+            <Link
+              href="/procurement-dossier"
+              className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
             >
-              <PhoneCall className="w-3 h-3 text-[#D97706]" />
-              <span>24x7 NOC Hotline: {BRAND.contacts.phonePrimary}</span>
-            </a>
+              🛡️ Vendor Empanelment Dossier
+            </Link>
+            <Link
+              href="/statutory-compliance"
+              className="block text-sm font-semibold text-[#1C2C34] py-2 border-b border-slate-100"
+            >
+              📜 Statutory Regulations &amp; SLDC NOCs
+            </Link>
+
+            <div className="pt-3 flex flex-col space-y-2">
+              <Link
+                href="/tools/open-access-calculator"
+                className="w-full text-center py-2.5 text-xs font-bold rounded-full bg-[#F8BC26] text-[#1C2C34] flex items-center justify-center space-x-2"
+              >
+                <Calculator className="w-3.5 h-3.5" />
+                <span>Calculate Plant Savings</span>
+              </Link>
+              <Link
+                href="/portal/dashboard"
+                className="w-full text-center py-2.5 text-xs font-bold rounded-full bg-[#1C2C34] text-white"
+              >
+                Open Client Portal
+              </Link>
+              <a
+                href={`tel:${BRAND.contacts.phonePrimary}`}
+                className="w-full text-center py-2 text-xs font-semibold text-slate-600 flex items-center justify-center space-x-1.5"
+              >
+                <PhoneCall className="w-3 h-3 text-[#D97706]" />
+                <span>24x7 NOC Hotline: {BRAND.contacts.phonePrimary}</span>
+              </a>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+
+      </div>
     </header>
   );
 }

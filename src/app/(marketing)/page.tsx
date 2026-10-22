@@ -48,7 +48,7 @@ export default function MarketingHomePage() {
         <HeroBackgroundCarousel />
 
         {/* Hero Narrative Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-36 pb-20 lg:pb-28 w-full">
           <div className="max-w-3xl space-y-6">
             
             {/* Accreditation Badge */}
